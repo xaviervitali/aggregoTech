@@ -1,0 +1,58 @@
+{% extends 'baseWithNav.html.twig' %}
+{% block stylesheets %}
+    {# <link rel="stylesheet" href="{{asset("assets/css/userView.css")}}"/> #}
+{% endblock %}
+
+{% block body %}
+
+<div>
+<p>Objet du message :  <span class="fs-4">{{contact.request | capitalize }}</span><p>
+<p>Date du message :  <span class="fs-4">{{contact.createdAt | format_datetime( locale='fr') }}</span><p>
+<p>Expéditeur du message :  <span class="fs-4">{{contact.firstname  | capitalize }} {{contact.lastname  | capitalize }} ({{ contact.entity}})</span><p>
+<p>Adresse email :  <span class="fs-4">{{contact.email }}</span><p>
+
+<p>N° de contact :  <span class="fs-4">{{contact.phone }}</span><p>
+<p>Adresse du contact : <span class="fs-4"><a href="https://www.google.fr/maps?q={{contact.address}}" target="_blank">  {{contact.address }}</a></span><p>
+<div>Message : 
+<p>
+ <span class="fs-4">{{ contact.message}}</span>
+</p>
+</div>
+
+<hr>
+  <textarea placeholder="Message réponse" id="mytextarea">
+
+  </textarea>
+  <p class="fst-italic my-2 p-2 bg-info text-light">
+  Le message sera envoyé à "{{contact.email }}" de la part de "contact@aggregotech.fr" avec copie à "aggregotech-aci@gmail.com" aura comme Objet "demande de {{ contact.request }}" et aura comme corps le contenu ci-dessus.
+  </p >
+<button class="btn btn-success" onclick ="sendEmail()">Envoyer le message</button>
+<a class="btn btn-danger" href="{{path("contact_delete", {"id": contact.id })}}" onclick ="alert('supprimer le message ?')">Supprimer ce message</a>
+</div>
+
+{% endblock %}
+{% block javascripts %}
+<script src="https://cdn.tiny.cloud/1/jwifx6cyqjsshd8l1nxakb6hbbvlisgj6ngqgvw0aiyc15lr/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+ <script>
+    tinymce.init({
+      selector: '#mytextarea',
+      plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+      toolbar_mode: 'floating',
+        language: 'fr_FR'
+    });
+
+
+    function sendEmail(){
+          $.ajax({
+    url: "{{path("sendEmail", {id: contact.id })}}",
+    type: "POST",
+    data: { message: tinymce.get('mytextarea').getContent() },
+    success: function (data) {
+      console.log(data);
+
+      window.location.reload();
+    },
+});
+    }
+  </script>
+{% endblock %}

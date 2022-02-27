@@ -1,0 +1,48 @@
+{% extends "baseWithNav.html.twig" %}
+
+    {% block body %}
+    <h2 class=" my-2">Editer une catégorie</h2>
+    <div class=" my-2">
+    {{form_start(form)}}
+    {{form_label(form.title,"", {'label_attr': {'class': 'bold'}})}}
+    {{ form_widget(form.title) }}
+    </div>
+    <hr>
+     <div class=" my-2">
+    {{form_label(form.description,"", {'label_attr': {'class': 'bold'}})}}
+    {{ form_widget(form.description) }}
+       </div>
+    <hr>
+
+    <p class="bold my-2">Liste des Questions</p>
+    <div class="d-flex justify-content-around align-items-stretch  flex-wrap my-2  m-1 " >
+    {% for field in form.fields %}
+       <div class="d-flex   align-items-center justify-content-between border choices p-1">
+         {{ form_widget(field) }}
+         {{ form_label(field, "", {'label_attr': {'class': 'mx-2'}}) }}
+         <div>
+        <a class="btn btn-sm btn-primary d-block m-1" >Modifier</a>
+        <a class="btn btn-sm btn-danger d-block  m-1" >Supprimer</a>
+         </div>
+       </div>
+    {% endfor %}
+    </div>
+    <div class="text-center my-2">
+        <a href="{{ path('field_add') }}">Ajouter une question</a>
+ 
+    </div>
+    <div class="row">
+
+
+        <button class="btn btn-success col-6 p-3 m-2 m-auto" type="submit">Valider</button>
+        </div>
+    {{form_end(form)}}
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+<script>
+
+</script>
+{% endblock %}

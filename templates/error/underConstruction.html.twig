@@ -1,0 +1,127 @@
+{% extends "base.html.twig" %}
+{% block body %}
+
+<style>
+video { 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    transform: translateX(-50%) translateY(-50%);
+  background-size: cover;
+  transition: 1s opacity;
+}
+.stopfade { 
+   opacity: .5;
+}
+
+#polina { 
+  font-family: Agenda-Light, Agenda Light, Agenda, Arial Narrow, sans-serif;
+  font-weight:100; 
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 2rem;
+  width: 500px;
+
+  margin:2rem;
+  float: right;
+  font-size: 1.2rem;
+}
+h1 {
+  font-size: 3rem;
+  text-transform: uppercase;
+  margin-top: 0;
+  letter-spacing: .3rem;
+}
+#polina button { 
+  display: block;
+  width: 80%;
+  padding: .4rem;
+  border: none; 
+  margin: 1rem auto; 
+  font-size: 1.3rem;
+  background: rgba(255,255,255,0.23);
+  color: #fff;
+  border-radius: 3px; 
+  cursor: pointer;
+  transition: .3s background;
+}
+#polina button:hover { 
+   background: rgba(0,0,0,0.5);
+}
+
+a {
+  display: inline-block;
+  color: #fff;
+  padding: .5rem;
+  transition: .6s background; 
+}
+a:hover{
+  background:rgba(0,0,0,0.9);
+}
+
+strong{
+  font-weight: bold;
+}
+
+li :hover{
+  transform: scaleY(1.2);
+}
+</style>
+<video id="bgvid" playsinline autoplay muted loop poster="{{asset("assets/img/underContruction.jpg")}}" >
+  <!-- 
+- Video needs to be muted, since Chrome 66+ will not autoplay video with sound.
+WCAG general accessibility recommendation is that media such as background video play through only once. Loop turned on for the purposes of illustration; if removed, the end of the video will fade in the same way created by pressing the "Pause" button  -->
+<source src='{{asset("assets/img/dessin.mp4")}}' type="video/mp4">
+ <source src="{{asset("assets/img/dessin.webm")}}" type="video/webm"> 
+</video>
+<div id="polina">
+  <h1 style="color: white">En construction</h1>$
+
+  <p class="text-center"><a href="{{ path('app_login')}}">Espace Salarié</a></p>
+
+  <p>Le site <span style="font-size:2rem">Aggrego-Tech</span> arrive bientôt
+  <p><strong>Objet :</strong></p>
+
+  <p>Contribuer au développement de l'insertion par l'activité économique. 3 activités vous serons proposées : </p>
+  <p><ul>
+  
+  <li>La création de site Web</li>
+  <li>La numérisation de documents</li>
+  <li>La transcription de documents audio</li>
+  </ul></p>
+  <p>
+    <strong>Objectifs socioprofessionnels   :</strong>
+    <ul>
+      <li>Autonomie dans les démarches</li>
+      <li>Développer les savoirs, savoir-être et savoir-faire</li>
+      <li>Évaluer les capacités et l’employabilité</li>
+      <li>Réduire les freins périphériques </li>
+      <li>Élaborer un projet professionnel dans l’objectif d’accéder à l’emploi durable</li>
+      <li>Appréhender le monde de l’entreprise (PMSMP)</li>
+      <li>Se former et se qualifier pendant l’atelier ou après</li>
+      <li>Reprendre une place dans le monde du travail</li>
+    </ul>
+
+  </p>
+
+  <p>
+<p><strong>Nous contacter :</strong>
+</p>
+<ul>
+<li>
+<a href="mailto:aggregotech.aci@gmail.com">Direction</a>
+</li>
+<li>
+<a href="mailto:contact@aggregotech.fr">Encadrement technique</a>
+
+</li>
+
+</ul>
+</p>
+<hr>
+{% endblock %}

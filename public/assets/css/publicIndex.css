@@ -1,0 +1,79 @@
+body {
+  background-image: url("") !important;
+}
+
+main .nuage {
+  width: 100%;
+
+  text-align: center;
+  object-fit: contain;
+}
+
+main h1 {
+  margin: 60px;
+  color: rgba(5, 5, 88);
+}
+
+main ul {
+  display: flex;
+  justify-content: space-evenly;
+align-items: center;
+  list-style: none;
+}
+
+
+main li {
+  list-style: none;
+}
+
+/* LOGO */
+
+
+
+/* effets des logos */
+main a img {
+  opacity: 0.7;
+}
+
+main li:hover {
+  opacity: 1;
+  animation: bounce 0.2s infinite alternate;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50px);
+  }
+}
+
+main .financeurs {
+  margin-top: 100px;
+	
+}
+
+@media only screen and (max-width: 926px) {
+  main ul {
+    flex-wrap: wrap;
+  }
+}
+
+.partenaires img {
+  padding-top: 10px;
+  width: 100px;
+display: block;
+}
+
+ol, ul{
+padding: 0;
+}
+
+.financeurs img{
+	
+  padding-top: 10px;
+  width: 150px;
+display: block;
+}
+

@@ -1,0 +1,442 @@
+/* @import url("https://fontsheader .googleapisheader .com/css2?family=Poppins:wght@200&display=swap"); */
+
+/* Variables */
+/* header:root {
+  --font-size: 1rem;
+} */
+header {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  letter-spacing: 7px;
+  width: 100%;
+  overflow: hidden;
+
+}
+/* 
+header a {
+  text-decoration: none;
+  color: black;
+}
+
+header .light-mode {
+  --navbar-color: rgba(0, 0, 0, 0.8);
+  --navbar-bg-color: rgba(248, 248, 248, 0.9);
+  box-shadow: 0 0 2em black;
+  background-color: rgba(3, 3, 49);
+  /* background-blend-mode: screen; */
+}
+header .dark-mode {
+  --navbar-color: rgb(255, 255, 255);
+  --navbar-bg-color: rgb(27, 27, 27);
+}
+
+header .menu {
+  width: 100%;
+
+  text-align: center;
+  display: flex;
+  /* align-items: center; */
+  justify-content: space-between;
+}
+
+header .logo {
+  height: 100%;
+  width: 20%;
+  display: flex; /* contexte sur le parent */
+  flex-direction: column; /* direction d'affichage verticale */
+  justify-content: center; /* alignement vertical */
+  align-items: center;
+}
+
+.logo img,
+.logo a {
+  display: inline-block;
+  object-fit: contain;
+}
+header .titre {
+  text-align: center;
+}
+
+/* bouton salar */
+header .logsal {
+  /* width: 80px; */
+  /* margin-right: 20px; */
+}
+
+header .salar {
+  border: none;
+  /* width: 15%; */
+  background-color: transparent;
+  position: relative;
+}
+
+header .navbar dark-mode {
+  display: flex;
+}
+
+header ul {
+  list-style: none;
+}
+
+/* Basic style */
+header body {
+  margin: 0;
+  font-size: var(--font-size);
+  font-family: "Poppins", sans-serif;
+  text-align: center;
+  align-items: center;
+  justify-content: space-around;
+}
+
+header .main-content {
+  padding: 1rem;
+}
+
+/* Navbar */
+header .navbar {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: space-between;
+  /* padding: 10px; */
+  background: var(--navbar-bg-color);
+  color: var(--navbar-color);
+}
+
+header .navbar__links {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+header .navbar__link {
+  /* padding: 0 10px; */
+  letter-spacing: 0;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header .navbar__link > a {
+  color: var(--navbar-color);
+  text-decoration: none;
+}
+
+header .burger {
+  display: none;
+}
+/* sous cat atel*/
+header .satel {
+  display: none;
+  list-style: none;
+  flex-direction: column;
+}
+
+header .atel:hover header .satel {
+  text-align: center;
+  display: block;
+  list-style: none;
+  flex-direction: column;
+  position: absolute;
+}
+
+/*  mode tel */
+@media screen and (max-width: 767.98px) {
+  header .navbar__links {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 0;
+    /* height: calc(100vh - 65px); */
+    position: absolute;
+    top: 120px;
+    right: 0;
+    background: var(--navbar-bg-color);
+    transform: translateX(110%);
+    transition: all 0.5s ease-in-out;
+    margin-top: 85px;
+    margin-left: 80px;
+    list-style: none;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  header .show-nav .navbar__links {
+    width: 100vw;
+    transform: translateX(0);
+  }
+
+  header .navbar__link {
+    transform: translateX(101%);
+    transition: all 0.5s ease-in-out;
+  }
+
+  header .show-nav .navbar__link {
+    transform: translateX(0);
+  }
+  header .navbar__link > a {
+    display: block;
+    padding: 1rem;
+    font-size: 1header 0.6rem;
+    color: var(--navbar-color);
+    transition: all 0.4s ease-in-out;
+  }
+  header .navbar__link > a:hover {
+    /* padding-left: 2rem; */
+    letter-spacing: 5px;
+  }
+
+  /* bouton burger */
+  header .burger {
+    display: block;
+    position: relative;
+    padding: 0;
+    width: 45px;
+    height: 45px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  /* animation burger */
+  header .bar {
+    display: block;
+    width: 45px;
+    height: 4px;
+    border-radius: 3px;
+    background: var(--navbar-color);
+    transition: all 0.5s ease-in-out;
+  }
+  header .bar::before,
+  header .bar::after {
+    content: "";
+    width: 45px;
+    height: 4px;
+    position: absolute;
+    left: 0;
+    background: var(--navbar-color);
+    border-radius: 3px;
+    transition: all 0.5s ease-in-out;
+  }
+  header .bar::before {
+    transform: translateY(-12px);
+  }
+  header .bar::after {
+    transform: translateY(12px);
+  }
+  header .show-nav .bar {
+    width: 0;
+    background: transparent;
+  }
+  header .show-nav .bar::before {
+    transform: rotate(45deg);
+  }
+  header .show-nav .bar::after {
+    transform: rotate(-45deg);
+  }
+
+  /* Animations cat tel */
+  header .show-nav .first {
+    transition: all 1s ease-out;
+  }
+  header .show-nav .second {
+    transition: all 0.1s ease-out;
+  }
+  header .show-nav .third {
+    transition: all 0.2s ease-out;
+  }
+  header .show-nav .four {
+    transition: all 0.3s ease-out;
+  }
+  header .show-nav .fifth {
+    transition: all 0.4s ease-out;
+  }
+
+  /* sous cat atel tel */
+  header .atel:hover .satel {
+    display: block;
+    list-style: none;
+    flex-direction: column;
+    position: relative;
+    text-align: left;
+  }
+}
+
+/*  Medium device - Bonus */
+@media screen and (min-width: 768px) {
+  header .navbar__link > a::after {
+    display: block;
+    content: "";
+    width: 0;
+    height: 1px;
+    background: var(--navbar-color);
+    transition: width 0.4s;
+  }
+  header .navbar__link:hover > a::after {
+    width: 100%;
+  }
+}
+
+/************************************************ CAROUSEL *************************************************/
+
+@import url("https://fontsheader .googleapisheader .com/css2?family=Poppins:wght@200&display=swap");
+
+header .carousel {
+  margin-left: 15%;
+  margin-right: 15%;
+  font-family: "Poppins", sans-serif;
+  text-align: center;
+  background: var(--carousel-bg-color);
+  color: var(--carousel-color);
+  /* background-color: rgb(209, 209, 209); */
+}
+
+header a {
+  text-decoration: none;
+  color: var(--carousel-color);
+}
+/* 
+a:hover{
+    text-decoration: overline;
+    color: cadetblue;
+} */
+
+header .light-mode {
+  --carousel-color: rgb(0, 0, 0);
+  --carousel-bg-color: #f0f0f0;
+}
+header .dark-mode {
+  --carousel-color: rgb(255, 255, 255);
+  --carousel-bg-color: rgb(39, 39, 39);
+}
+
+header .slide-container__link > a {
+  color: var(--carousel-color);
+  text-decoration: none;
+}
+
+/* ul */
+header ul .slides {
+  display: block;
+  position: relative;
+  /* height: 600px; */
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  list-style: none;
+}
+
+header .slides * {
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+header ul .slides input {
+  display: none;
+}
+
+/* li */
+header .slide-container {
+  display: block;
+}
+/* image */
+header .slide-image {
+  display: block;
+  position: absolute;
+  width: 100%;
+  /* height: 100%; */
+  top: 0;
+  opacity: 0;
+  transition: all 0.7s ease-in-out;
+}
+
+header .slide p {
+  position: absolute;
+  top: 200px;
+}
+header .slide-image img {
+  width: auto;
+  min-width: 100%;
+  /* height: 100px; */
+}
+
+header .carousel-controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  font-size: 100px;
+  /* line-height: 600px; */
+  color: #fff;
+}
+
+header .carousel-controls label {
+  display: none;
+  position: absolute;
+  /* padding: 0 20px; */
+  opacity: 0;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+/* flêches */
+header .slide-image:hover + .carousel-controls label {
+  opacity: 0.5;
+}
+
+header .carousel-controls label:hover {
+  opacity: 1;
+}
+
+header .carousel-controls .prev-slide {
+  width: 49%;
+  text-align: left;
+  left: 0;
+}
+
+header .carousel-controls .next-slide {
+  width: 49%;
+  text-align: right;
+  right: 0;
+}
+/* points */
+header .carousel-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  z-index: 999;
+  text-align: center;
+}
+
+header .carousel-dots .carousel-dot {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #fff;
+  opacity: 0.5;
+  margin: 10px;
+}
+/* slide */
+input:checked + .slide-container .slide-image {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 1s ease-in-out;
+}
+
+input:checked + .slide-container .carousel-controls label {
+  display: block;
+}
+
+input:checked + .slide-container .nav label {
+  display: block;
+} */

@@ -1,0 +1,120 @@
+{% extends "baseWithNav.html.twig" %}
+
+{% block body %}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ label }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.2.0/css/tableexport.css" integrity="sha512-+m+NCQG6uttXsLjwxHTUdhov99LW3TSFEiM2LSFMwfOePszb2as348/96cCBG35mOK+3Gp4P0EQRWpKLZfGTnA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+   {% if is_granted('ROLE_EMPLOYEE') %}
+
+<p class="text-danger" style="font-size:1.rem">L'emmargement engage votre responsabilité. Tout abus sera sanctionné.
+    <button class="btn btn-success btn-lg attendanceButton my-2">Emmarger</button>
+</p>
+
+    {% endif %}
+<div class="overflow-auto" style="max-height: 800px;" >
+<table class="table table-striped" id="tbl_exporttable_to_xls">
+<thead>
+<th>Date</th>
+<th>Emmargement</th>
+<th>Signature</th>
+<th>Temps de présence</th>
+   {% if is_granted('ROLE_ADMIN') %}
+<th>Action</th>
+
+{% endif %}
+</thead>
+<tbody>
+{% set days = [] %}
+
+{% for att in attendances  | reverse %}
+
+    {% set currentDay = att.createdAt | format_datetime('short', 'none', locale='fr') %}
+    {% set day = attendances | filter(att=> att.createdAt |format_datetime('short', 'none', locale='fr') == currentDay )%}
+    {% for attendance in day %} 
+        {% if not (attendance.createdAt | format_datetime('short', 'none', locale='fr')  in days) %}
+            {% set days = days | merge ([currentDay]) %} 
+            <tr >
+            <td class="fs-2 align-middle">{{ currentDay }}</td>
+            <td>
+                {% for time in day  %}
+                
+                <div style="height:8rem; " class="d-flex flex-column justify-content-center" >
+                <div>{{time.createdAt |format_datetime('none', 'short', locale='fr') }} 
+                {% if not (time.addedBy.id == app.user.id)  %}
+                    (enregistré par {{time.addedBy}})
+                {% endif %}
+                </div>
+                
+                </div>
+                {% endfor %}
+            </td>
+            <td style="height:8rem; width: 8rem">
+                {% for time in day  %}
+                {% if user.signature  %}
+                <div  class="border"><img style="height:8rem;" src="{{ user.signature}}"></div>
+                {% endif %}
+                {% endfor %}
+            </td>
+            <td  class="align-middle fs-5">
+                {% set counter = 0 %}
+            {% if day | length > 1  %}
+                {% set times = day | reverse | map(e=>e.createdAt | format_datetime('none', 'short', locale='fr') ) %}
+                {# ex: times = ["23:39", "21:32", ...] #}
+
+                {% for i in range(0, times |length ,2) %}
+                  {% if i+1 < times | length %}
+                    {% set hours = times | slice(i, 2) | map (t=> t | split(':') [0]) %}
+                        {% set mins = times| slice(i, 2)  | map (t=> t | split(':') [1  ]) %} 
+                    {% if hours | length > 0 and mins | length > 0 %}
+                    {% set total =  (hours[0] - hours[1]) * 60 + (mins[0] - mins[1])  %}
+
+                    {% set counter = counter + total %}
+                    {% endif %}
+                {% endif %}
+                {% endfor %}
+
+                
+{{ (counter / 60) | round(0, 'floor') }} h {{ counter - ((counter / 60) | round(0, 'floor'))*60 }}
+
+{% else %}
+---
+            {% endif %}
+
+            </td>
+               {% if is_granted('ROLE_ADMIN') %}
+               <td>
+                {% for time in day  %}
+                 <div style="height:8rem;"  class="d-flex flex-column justify-content-center" >
+<a href="{{path('attendance_delete', {'id': time.id})}}" class="btn btn-danger btn-sm ">Supprimer</a>
+</div>
+{% endfor %}
+</td>
+
+{% endif %}
+            </tr>
+        {% endif %}
+    {% endfor %} 
+{% endfor %}
+</tbody>
+</table>
+</div>
+          {% if is_granted('ROLE_ADMIN') %}
+          {% include '/attendance/calendar.html.twig'%}
+          {% endif %}
+
+
+
+
+{% endblock %}
+{% block javascripts%}
+    {% if is_granted('ROLE_EMPLOYEE') %}
+        <script src={{ asset("assets/js/attendance.js") }}></script>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,248 @@
+main h2 {
+  text-transform: uppercase;
+  color: rgb(5, 5, 82);
+  letter-spacing: 3px;
+  margin: auto;
+  margin: 0;
+}
+
+.flip-card h2 {
+  width: 80%;
+  margin: auto;
+  position: relative;
+  top: 20%;
+}
+
+main a {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* main .lienformulaire {
+  color: black;
+  max-height: 420px;
+  text-align: center;
+  border-bottom: 1px solid #e84743;
+  font-size: 1.6rem;
+  font-weight: bold;
+} */
+
+main .lienformulaire:hover > .button2 {
+  top: 0px;
+  transition-duration: 0.5s;
+  transition-property: top;
+}
+main .flip-card {
+  width: 400px;
+  height: 400px;
+  perspective: 1000px;
+  border-radius: 1em;
+}
+
+main .flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+main .flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+main .flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+  -webkit-box-shadow: 0px 10px 13px -7px #000000,
+    8px 9px 10px 5px rgba(0, 0, 0, 0.54);
+  box-shadow: 0px 10px 13px -7px #000000, 8px 9px 10px 5px rgba(0, 0, 0, 0.54);
+}
+
+/* Style the front side (fallback if image is missing) */
+main .flip-card-front {
+  border-radius: 2rem;
+  /* background-color: #fd5f00; */
+  color: black;
+  border-radius: 1em;
+  -webkit-box-shadow: 0px 10px 13px -7px #000000,
+    8px 9px 10px 5px rgba(0, 0, 0, 0.54);
+  box-shadow: 0px 10px 13px -7px #000000, 8px 9px 10px 5px rgba(0, 0, 0, 0.54);
+  background-color: rgba(255, 255, 255);
+  /* line-height: 60px; */
+  padding: 10% 5px;
+}
+
+/* Style the back side */
+main .flip-card-back {
+  border-radius: 1rem;
+  color: white;
+  transform: rotateY(180deg);
+  background-color: #141ba0ee;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* logocarte ********** */
+
+main .logocarte {
+  width: 100px;
+  margin-top: 40px;
+  /* border-radius: 1em;
+  border: 4px solid #ff7b19; */
+}
+
+main .button2 {
+  padding: 2rem;
+  position: fixed;
+  top: 250px;
+  /* width: 300px; */
+  /* height: 300px; */
+  z-index: 999;
+  right: 0;
+  overflow: hidden;
+  filter: hue-rotate(0deg);
+  color: tomato;
+  transition: all 0.1s linear;
+  padding: 1rem;
+  font-size: 2rem;
+  /* text-transform: capitalize; */
+  background-color: rgba(255, 255, 255, 0.8);
+  transition-duration: 1s;
+  text-transform: capitalize;
+
+  /* display: inline;
+  margin-left: auto !important; */
+}
+main .button2 a {
+  font-family: "Pacifico", cursive;
+  letter-spacing: 5px;
+  color: tomato;
+}
+main .button2 span {
+  position: absolute;
+  /* display: block; */
+}
+main .button2 span:nth-child(1) {
+  filter: hue-rotate(0deg);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #3a86ff);
+  animation: animate1 1s linear infinite;
+}
+@keyframes animate1 {
+  0% {
+    left: -100%;
+  }
+  50%,
+  100% {
+    left: 100%;
+  }
+}
+main .button2 span:nth-child(2) {
+  filter: hue-rotate(60deg);
+  top: -100%;
+  right: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #3a86ff);
+  animation: animate2 1s linear infinite;
+  animation-delay: 0.25s;
+}
+@keyframes animate2 {
+  0% {
+    top: -100%;
+  }
+  50%,
+  100% {
+    top: 100%;
+  }
+}
+main .button2 span:nth-child(3) {
+  filter: hue-rotate(120deg);
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  background: linear-gradient(270deg, transparent, #3a86ff);
+  animation: animate3 1s linear infinite;
+  animation-delay: 0.5s;
+}
+@keyframes animate3 {
+  0% {
+    right: -100%;
+    height: 3px;
+  }
+  50%,
+  100% {
+    height: 2px;
+    right: 100%;
+  }
+}
+main .button2 span:nth-child(4) {
+  filter: hue-rotate(300deg);
+  bottom: -100%;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, #3a86ff);
+  animation: animate4 1s linear infinite;
+  animation-delay: 0.75s;
+}
+@keyframes animate4 {
+  0% {
+    color: red;
+  }
+  50%,
+  100% {
+    bottom: 100%;
+  }
+}
+
+main li a {
+  font-size: 1.2rem;
+}
+
+main ul {
+  margin-top: 50px;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+main a {
+  color: var(--brand-bg-color);
+}
+
+@media screen and (max-width: 996px) {
+  .button2 {
+    bottom: 0;
+    height: 5rem;
+    top: 80% !important;
+  }
+
+  .d-lg-none .d-md-block {
+    /* margin-top: 250px; */
+    padding: 10px 50px 30px 50px;
+    margin: auto;
+    width: 80%;
+    /* height: 400px; */
+    /* border: 1px solid rgba(5, 5, 88); */
+    border-radius: 1em;
+    -webkit-box-shadow: 0px 13px 13px -7px #000000;
+    box-shadow: 0px 13px 13px -7px #000000;
+    background: rgba(244, 250, 253, 0.815);
+    /* text-align: center; */
+    color: rgba(5, 5, 88);
+  }
+}

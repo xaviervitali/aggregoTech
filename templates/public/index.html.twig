@@ -1,0 +1,88 @@
+
+{% extends 'baseWithPublicMenu.html.twig' %}
+{% block stylesheets %}
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+<link rel="stylesheet" href="{{asset("assets/css/publicIndex.css")}}"/>
+{% endblock %}
+  {% block main %}
+      <div>
+      <img class="nuage" src="{{asset("assets/img/nuagefini-resize.png")}}" alt="logo Association"/>
+    </div>
+
+    <!-- Financeurs -->
+    <section class="financeurs">
+      <h1>Nos Financeurs</h1>
+      <ul>
+        <a href="https://travail-emploi.gouv.fr" target="_blank">
+          <li>
+            <img
+              class="ministere"
+              src="{{asset("assets/img/logo_ministere_du_travail.png")}}" alt="Logo Ministere du Travail"
+            /></li
+        ></a>
+        <li>
+          <a
+            href="https://www.gouvernement.fr/les-priorites/france-relance"
+            target="_blank"
+            ><img
+              class="frrelance"
+              src="{{asset("assets/img/logo_fr_relance.jpg")}}" alt="Logo France Relance"
+          /></a>
+        </li>
+        <li>
+          <a href="https://www.departement13.fr" target="_blank"
+            ><img
+              class="dep13"
+              src="{{asset("assets/img/logo_bouches_du_rhone.jpg")}}" alt="Logo Departement13"
+          /></a>
+        </li>
+        <li>
+          <a href="https://www.ampmetropole.fr" target="_blank">
+            <img
+              class="metropole"
+              src="{{asset("assets/img/logo_metropole_aix.png")}}" alt="Logo Metropole Aix"
+            />
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Partenaires -->
+    <section class="partenaires">
+      <h1>Nos Partenaires</h1>
+      <ul>
+        <li>
+          <a href="https://www.pole-emploi.fr/accueil" target="_blank">
+            <img
+              class="poleemploi"
+              src="{{asset("assets/img/logo_pole_emploi.png")}}" alt="Logo Pole Emploi"
+          /></a>
+        </li>
+        <li>
+          <a href="https://www.chantierecole.org" target="_blank">
+            <img
+              class="chantierecole"
+              src="{{asset("assets/img/logo_chantier_ecole.png")}}" alt="Logo Chantier Ecole"
+            />
+          </a>
+        </li>
+        <li>
+                  <a href="https://ams-environnement.fr/" target="_blank">
+            <img 
+              class="ams"
+              src="{{asset("assets/img/LOGO_AMS_2020.png")}}" alt="Logo AMS">
+              </a>
+        </li>
+        <li>
+          <a href="https://www.solidatech.fr/" target="_blank">
+            <img 
+              class="solidatech"
+              src="{{asset("assets/img/solidatech.png")}}" alt="Logo solidatech">
+              </a>
+        </li>
+      </ul>
+    </section>
+  {% endblock %}

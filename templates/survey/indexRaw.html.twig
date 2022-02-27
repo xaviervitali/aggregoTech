@@ -1,0 +1,62 @@
+
+{% block surveyList %}
+<h2 class="my-2">Suivi des activités</h2>
+{% set categories = [] %}
+{% set mappedSurvey = [] %}
+{% for survey in surveys %}
+    {% if categories | filter(cat => cat == survey.category) | length == 0 %}
+        {% set categories = categories |merge([survey.category]) %}
+    {% endif %}
+{% endfor %}
+
+{% for category in categories %}
+<div class="border p-2 my-2">
+<h3 class="my-3">{{category}}</h3>
+    {% set fields = [] %}
+    {% for survey in surveys | filter(s=>s.category == category)  %}
+        {% if fields | filter(field => field == survey.field) | length == 0 %}
+            {% set fields = fields |merge([survey.field]) %}
+        {% endif %}
+    {% endfor %}
+
+    {% set dates = [] %}
+      {% for survey in surveys | filter(s=>s.category == category)  %}
+        {% if dates | filter(updatedAt => updatedAt == survey.updatedAt) | length == 0 %}
+            {% set dates = dates |merge([survey.updatedAt]) %}
+        {% endif %}
+    {% endfor %}
+   <table class="table">
+    <thead>
+        <tr>
+        {% for field in fields %}
+        <th scope="col">{{ field }}</th>
+        
+        {% endfor %}
+        <th>Date</th>
+        <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+
+        {% set currentCatSurvey = surveys | filter(s=>s.category == category) %}
+        {% for date in dates %}
+
+        <tr>
+        {% set currentID = 0 %}
+        {% for  answer in currentCatSurvey | filter(d=>d.updatedAt == date) %}
+               {% set currentID = answer.id  %}
+            <td>{{answer.answer}}</td>
+        {% endfor %}
+        <td>{{ date | date("d/m/Y à H:i:s") }}</td>
+        <td><a class="btn btn-sm btn-danger  m-1" href="{{ path('survey_delete', {'id': currentID }) }}">Supprimer</a> 
+ </td>  
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+</div>
+{% endfor %}
+
+{% endblock %}

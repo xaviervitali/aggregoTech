@@ -1,0 +1,31 @@
+.form-control {
+  margin: 1em 0;
+  /* max-width: 500px; */
+}
+
+.filesCat:nth-child(2n) {
+}
+
+.filesCat {
+  padding: 20px;
+  border: 1px solid #888;
+  margin: 20px;
+  min-width: 500px;
+background: white;
+}
+.filesCat > p {
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+tr td:first-child > * {
+  width: 200px;
+  text-align: center;
+}
+
+
+
+td i{
+  font-size: 3em;
+}

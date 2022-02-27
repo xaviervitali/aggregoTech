@@ -1,0 +1,55 @@
+@font-face {
+  font-family: "DDINExp";
+  src: url(../fonts/d-din/D-DIN.woff);
+}
+
+.modal-backdrop {
+  z-index: 1040 !important;
+}
+.modal-content {
+  margin: 2px auto;
+  z-index: 1100 !important;
+}
+
+li {
+  list-style: none;
+}
+
+.active {
+  /* background: rgba(255, 0, 0, 0.5); */
+  border-bottom: 2px solid red;
+  font-size: 1.2rem;
+}
+
+body {
+  background-image: url("../img/background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-color: rgba(255, 255, 255, 0.5);
+  background-blend-mode: color;
+}
+
+table {
+  background-color: white;
+  margin: 1em 0;
+}
+
+nav li {
+  text-transform: uppercase;
+  font-size: 15px;
+  /* text-shadow: 0 0 1px black; */
+}
+
+nav a {
+  text-decoration: none;
+}
+
+.connected_user {
+  font-size: 1.2em;
+}
+
+main {
+  width: 90%;
+  margin: auto;
+}

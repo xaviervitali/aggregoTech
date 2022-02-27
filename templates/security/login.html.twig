@@ -1,0 +1,23 @@
+{% extends 'baseWithPublicMenu.html.twig' %}
+{% block stylesheets %}
+ <link rel="stylesheet"  href="{{ absolute_url(asset('assets/css/login.css')) }}" />
+
+{% endblock %}
+{% block main %}
+
+ <div class="d-flex flex-column justify-content-center align-items-center">
+    <form action="" method="post" class="container">
+    <h1 class="text-center">AGGREGO-TECH</h1>
+    <p class="lead">Interface d'authentification</p>
+        <div class="form-group ">
+            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control my-5" autocomplete="username" required autofocus placeholder="Nom d'utilisateur">
+            <input type="password" name="password" id="inputPassword" class="form-control my-5" autocomplete="current-password" required placeholder="Mot de passe">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        </div>
+        <button class="btn btn-success w-100 my-5" type="submit">Connexion</button>
+    </form>
+    {% if error %}
+    {{ error.message }}
+    {% endif %}
+ </div>
+{% endblock %}

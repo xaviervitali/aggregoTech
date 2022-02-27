@@ -1,0 +1,225 @@
+
+{% extends 'baseWithPublicMenu.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{asset("assets/css/services.css")}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+    <div class="button2">
+    <a href="{{path("contact_new")}}">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        devis gratuit
+</a>
+    </div>
+      <section class="lienformulaire  d-md-none d-lg-block ">
+        <h2>Et si vous étiez notre prochain projet ?<h2>
+<ul>
+<li><a href="#web">
+Création et maintenance de sites Web</a></li>
+<li><a href="#demat">
+Dématérialisation des archives</a></li>
+<li><a href="#trans">
+Transcription de contenus audios/vidéos</a></li>
+</ul>  
+
+  
+</section>
+
+   <div class=" d-none d-lg-block ">
+      <section  id="web">
+        <div class=" my-2 flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="{{ asset("assets/img/logoHDT2.png")}}" class="logocarte" />
+              <h2>Création et maintenance de sites internet</h2>
+            </div>
+            <div class="flip-card-back">
+              <div>
+                <h5>A l’écoute de vos besoins :</h5>
+                <p>Construction de votre projet (cahier des charges).</p>
+              </div>
+              <div>
+                <h5>Développement et intégration :</h5>
+                <p>Création de votre site.</p>
+              </div>
+              <div>
+                <h5>Formation :</h5>
+                <p>
+                  Vous aidez à être autonome dans la mise à jour de votre site.
+                </p>
+              </div>
+              <div>
+                <h5>Maintenance :</h5>
+                <p>
+                  Nous vous proposons d’assurer le bon fonctionnement de votre
+                  site.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section  id="demat" >
+        <div class="my-2 m-auto flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="{{ asset("assets/img/logoHDT2.png")}}"  class="logocarte" />
+              <!-- <h2>
+              Vous souhaitez dématérialiser vos documents et déstocker vos
+              archives ?
+            </h2> -->
+              <h2>Dématérialisation des archives</h2>
+            </div>
+            <div class="flip-card-back">
+              <div>
+                <h5>A l’écoute de vos besoins :</h5>
+                <p>Construction de votre projet (cahier des charges)</p>
+              </div>
+              <div>
+                <h5>Dématérialisation :</h5>
+                <p>
+                  Préparation des documents, phase numérisation, phase
+                  d’indexation.
+                </p>
+              </div>
+              <div>
+                <h5>Déstockage :</h5>
+                <p>
+                  Nous vous aidons à trier vos documents (délai de conservation
+                  légal des archives).
+                </p>
+              </div>
+              <div>
+                <h5>Stockage numérique:</h5>
+                <p>
+                  Drive, clé, disque dur. Traitement confidentiel de tous vos
+                  contenus (avec accord de confidentialité).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section  id="trans">
+        <div class="flip-card my-2 ms-auto ">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="{{ asset("assets/img/logoHDT2.png")}}"  class="logocarte" />
+              <h2>Transcription de contenus audios/vidéos</h2>
+            
+            </div>
+            <div class="flip-card-back">
+              <div>
+                <h5>A l’écoute de vos besoins :</h5>
+                <p>Définition de votre projet</p>
+              </div>
+              <div>
+                <h5>Transcription :</h5>
+                <p>
+                  Saisie de votre fichier audio/vidéo en format texte (réunion,
+                  sous-titre, podcast)
+                </p>
+              </div>
+              <div>
+                <h5>Modalités :</h5>
+                <p>
+                  Nous supprimons les erreurs de français, les hésitations. Le
+                  texte n’est pas reformulé, il est amélioré et ainsi la lecture
+                  est facilitée. Traitement confidentiel de tous vos contenus
+                  (avec accord de confidentialité).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+ 
+      <!-- ******************liens javascript ********************* -->
+    </div>
+
+    <div class="d-lg-none d-md-block">
+      <h2 class="p-2" id='web'>Création et maintenance de sites internet</h2>
+        <div class="ms-5">
+          <div >
+            <h5>A l’écoute de vos besoins :</h5>
+            <p>Construction de votre projet (cahier des charges).</p>
+          </div>
+          <div >
+           <h5>Développement et intégration :</h5>
+            <p>Création de votre site.</p>
+          </div>
+          <div>
+            <h5>Formation :</h5>
+            <p>Vous aidez à être autonome dans la mise à jour de votre site.</p>
+          </div>
+          <div >
+            <h5>Maintenance :</h5>
+                <p>Nous vous proposons d’assurer le bon fonctionnement de votre
+                  site.</p>
+          </div>
+          </div>
+        
+          <h2 class="p-2" id='trans'>Dématérialisation des archives</h2>
+          <div class="ms-5">
+              <div>
+                <h5>A l’écoute de vos besoins :</h5>
+                <p>Construction de votre projet (cahier des charges)</p>
+              </div>
+              <div>
+                <h5>Dématérialisation :</h5>
+                <p>
+                  Préparation des documents, phase numérisation, phase
+                  d’indexation.
+                </p>
+              </div>
+              <div>
+                <h5>Déstockage :</h5>
+                <p>
+                  Nous vous aidons à trier vos documents (délai de conservation
+                  légal des archives).
+                </p>
+              </div>
+              <div>
+                <h5>Stockage numérique:</h5>
+                <p>
+                  Drive, clé, disque dur. Traitement confidentiel de tous vos
+                  contenus (avec accord de confidentialité).
+                </p>
+              </div>
+            </div>
+          <h2 class="p-2" id='demat'>Transcription de contenus audios/vidéos</h2>
+          <div class="ms-5">
+            <div>
+              <h5>A l’écoute de vos besoins :</h5>
+              <p>Définition de votre projet</p>
+            </div>
+            <div>
+              <h5>Transcription :</h5>
+              <p>
+                Saisie de votre fichier audio/vidéo en format texte (réunion,
+                sous-titre, podcast)
+              </p>
+            </div>
+            <div>
+              <h5>Modalités :</h5>
+              <p>
+                Nous supprimons les erreurs de français, les hésitations. Le
+                texte n’est pas reformulé, il est amélioré et ainsi la lecture
+                est facilitée. Traitement confidentiel de tous vos contenus
+                (avec accord de confidentialité).
+              </p>
+            </div>
+          </div>
+          </div>
+
+     
+{% endblock %}

@@ -1,0 +1,15 @@
+
+{% extends 'baseWithPublicMenu.html.twig' %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block main %}
+    <div class="bg-danger p-5 text-center rounded">
+       <p> Désolé {{ user.firstname }} votre accès a été résilié</p>
+        <p><a href="{{path("app_logout")}}" class="text-light">Revenir à l'accueil</a></p>
+    </div>
+
+
+{% endblock %}

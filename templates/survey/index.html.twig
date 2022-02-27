@@ -1,0 +1,9 @@
+{% extends 'baseWithNav.html.twig' %}
+
+{% block body %}
+{% if  surveys | length > 0 %}
+    {% include 'survey/indexRaw.html.twig' %}
+{% else %}
+<div>Vous n'avez pas encore enregistré d'activité</div>
+{% endif %}
+{% endblock %}

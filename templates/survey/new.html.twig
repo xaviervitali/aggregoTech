@@ -1,0 +1,74 @@
+{% extends 'baseWithNav.html.twig' %}
+
+
+{% block body %}
+<h2 class='mb-2'>Bienvenue {{app.user.firstname }} dans l'espace Suivi d'activité</h2>
+      {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+<div class="form-group">
+{{ form_start(form , {'attr': {'novalidate': 'novalidate'}})}}
+{{ form_row(form.categories)}}
+
+<div class="d-none questions">
+<div class="survey mt-2 p-2 border">
+
+</div>
+<button id="submit" class="btn d-block btn-success col-6 p-3 my-2 m-auto" type="submit" disabled>Valider</button>
+</div>
+{{ form_end(form)}}
+</div>
+<script>
+
+const categories = {{ categories  | raw }}
+let category = []
+document.querySelector("#survey_categories").addEventListener('change', e=> {
+  category = categories.find(c=>c.id == e.target.value)
+if(category  && category.fields.length > 0)
+{    
+    let html = "<h2>Liste des questions</h2><ul>"
+    category.fields.forEach(f=>{html += `
+    <li>
+        <input class="form-control" type="text" id="survey_fields_${f.id}" name="survey[fields][]" value="${f.id}" hidden>
+        <label for='survey_answer'>${f.title}</label>
+        <textarea class="form-control" id="survey_answer" name="survey[answer][]" required="required" placehodler="Votre réponse" data-label="${f.title}"  onKeyUp="toto(event)"></textarea
+>
+
+   </li>`})
+    document.querySelector(".survey").innerHTML = html + '</ul>'
+    document.querySelector('.questions').classList.remove('d-none')
+    toto()
+} else {
+    document.querySelector(".survey").innerHTML = "Pas de questions dans ce formulaire :("
+    document.querySelector('.questions').classList.add("d-none")
+
+}
+}
+)
+
+
+let answers = {}
+function toto(e  ){
+    if(e)
+{
+    const allAnswer = true
+const questionsCount = category.fields.length
+    
+    answers[e.target.getAttribute('data-label')] = e.target.value.trim()
+
+
+
+    if( Object.entries(answers).flat().filter(e=> e != "").length ===   questionsCount * 2){
+        document.querySelector('#submit').removeAttribute('disabled')
+    } else {
+        document.querySelector('#submit').setAttribute('disabled', '')
+
+    }
+
+
+}
+}
+</script>
+{% endblock %}

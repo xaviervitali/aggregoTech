@@ -1,0 +1,209 @@
+{% extends 'baseWithNav.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{asset("assets/css/userView.css")}}"/>
+{% endblock %}
+
+{% block body %}
+    <div class="d-flex align-items-center">
+    <div class="col-lg-3 col-md-4 col-sm-12">
+        <h3 >{{ user | avatar | raw}} {{user.firstname}} {{user.lastname}}</h3>
+
+    </div>    
+    <div class="row ">
+        <h5 class="col-auto">{{ user.roles |length > 1 ? (user | role ): ""}}</h5>
+        <div class="col-auto">
+        inscrit le
+        </div>
+        <h5 class="col-auto">{{ user.createdAt | date("d/m/y")}}</h5>
+        {% if user.leaveAt %}
+            <div class="col-auto">
+            a quitté AggregoTech le
+            </div>
+           <h5 class="col-auto">
+             {{user.leaveAt | date('d/m/y')}}. 
+             </h5>
+              <div class="col-auto">
+            <a href="{{path("user_not_leave", {id: user.id})}}"> Annuler le départ ?</a>
+            </div>
+            {% else %}
+            .
+        {% endif %}
+        </div>
+      
+    </div>
+    <hr>
+    <div class="row my-2 b">
+        <h2 class="col-4">Informations sur le compte</h2>
+        <div class="col">
+                       <div class="row my-2" >
+            <div class="col">
+                Genre
+            </div>
+            <div class="col">
+            <strong>{{user.gender}}</strong>
+            </div>
+     
+        </div>
+                <div class="row my-2" >
+            <div class="col">
+                Nom
+            </div>
+            <div class="col">
+            <strong>{{user.lastname}}</strong>
+            </div>
+     
+        </div>
+        <div class="row my-2" >
+            <div class="col">
+                Prénom
+            </div>
+            <div class="col">
+            <strong>{{user.firstname}}</strong>
+            </div>
+       
+        </div>
+        <div class="row my-2">
+            <div class="col">
+            Nom d'utilisateur 
+            </div>
+            <div class="col">
+             <strong>{{ user.username}}</strong>
+            </div>
+
+        </div>
+  <!-- Block type -->
+        <div class="row my-2" >
+            <div class="col">
+                Mot de passe
+            </div>
+            <div class="col">
+            <strong>****************</strong>
+            </div>
+      
+        </div>
+    <!-- fin block type -->
+      <!-- Block type -->
+        <div class="row my-2" >
+            <div class="col">
+                A propos
+            </div>
+            <div class="col">
+            <strong>{{ user.description ? user.description : user.firstname ~ " n'a pas encore renseigné ce champs"}}</strong>
+            </div>
+      
+        </div>
+    <!-- fin block type -->
+
+    
+    <!-- Block type -->
+        <div class="row my-2" >
+            <div class="col">
+                Signature
+            </div>
+            <div class="col">
+            {% if user.signature %}
+            <img class="profile-img" src="{{ user.signature }}">
+            {% else %}
+            Aucune signature définie pour cet utilisateur.trice
+            {% endif %}
+            </div>
+  
+        </div>
+    <!-- fin block type -->
+
+
+    <div class="col my-3 text-center ml-auto">
+    <a href={{path("user_edit", {id: user.id})}} >Modifier les Informations</a>
+        </div>
+        </div>
+    </div>
+        <hr>
+    <div>
+        <div class="row my-2">
+          <h2 class="col-4">Actions sur le compte</h2>
+        <div class="col">
+
+  <!-- Block type -->
+        <div class="row my-2" >
+            
+            <div class="col">
+            <a href="{{ path('attendance', {'id':user.id}) }}">Aller  aux emargements</a>
+            </div>
+        </div>
+    <!-- fin block type -->
+      <!-- Block type -->
+        <div class="row my-2" >
+        
+            <div class="col">
+            <a href="{{ path('survey_index', {'id':user.id}) }}">Aller aux activités</a>
+            </div>
+        </div>
+    <!-- fin block type -->
+{% if is_granted('ROLE_ADMIN') %}
+      <!-- Block type -->
+        <div class="row my-2" >
+         
+            <div class="col">
+            <a href="{{ path('user_leave', {'id':user.id}) }}" class="text-danger">Signaler l'utilisateur.trice comme partie</a>
+            </div>
+        </div>
+    <!-- fin block type -->
+      <!-- Block type -->
+        <div class="row my-2" >
+     
+            <div class="col">
+            <a onclick="alert('confirmez la suppression de {{user.firstname }} {{user.lastname}}')" href="{{ path('user_delete', {'id':user.id}) }}"  class="text-danger">Supprimer l'utilisateur.trice</a>
+            </div>
+        </div>
+    <!-- fin block type -->
+    {% endif %}
+        </div>
+
+    </div>
+<hr>
+ <div class="my-2">
+          <h2 class="col-4">Liste des fichiers uploadés</h2>
+            {% set cat =  user.getFileUploads | map (e=>e.fileCategory) %}
+            {% set catArray = [] %}
+            {% for cat in  user.getFileUploads | map (e=>e.fileCategory) %}
+                {% if  cat not in catArray %}
+                {% set catArray = catArray | merge([cat]) %}
+                {% endif %} 
+            {% endfor %}
+        
+<div class="row">
+{% if  user.getFileUploads  | length > 0 %}
+    <div class="{{ user == app.user ? "col-lg-8 col-md-6 col-sm-12" : "col-12" }}">
+        {% for cat in catArray %}
+            <h4 >{{cat == NULL ? "Non Classé" : cat | capitalize}}</h4>
+            <div class="row">
+                {% for file in user.getFileUploads | filter(e=>e.fileCategory == cat)%}
+                    <div class="card p-2 m-2">
+                        {{  file.fileUploadedName | preview  | raw }}
+                        <div class="card-body">
+                            <p class="card-title"><strong>{{file.title}}</strong></p>
+                            <p class="card-text">{{ file.updatedAt | date("d/m/y") }}</p>
+                            <p class="card-text">{{ file.description }}</p>
+                            <a href="/assets/vichFiles/{{ file.fileUploadedName }}" target="_blank" class="btn btn-primary btn-sm my-2">Visualiser</a>
+                            <a href="{{ path('file_delete', {'id':file.id}) }}" class="btn btn-danger btn-sm">Supprimer</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div> 
+            <hr>
+        {% endfor %}
+    </div>
+{% endif %}
+{% if user == app. user %}
+    <div class="col-lg-4 col-md-6 col-sm-12 border p-2">
+    <h2>Uploader un fichier</h2>
+
+    {% include "file/new.html.twig" %}
+    </div>
+{% endif %}
+</div>
+</div>
+{% endblock %}
+{% block javascripts %}
+  <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+{% endblock %}

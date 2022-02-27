@@ -1,0 +1,33 @@
+{% extends 'baseWithNav.html.twig' %}
+
+
+{% block body %}
+    <h1>Liste des familles de document</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for file_category in file_categories %}
+            <tr>
+                <td>{{ file_category.name }}</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" href="{{ path('file_category_edit', {'id': file_category.id}) }}">Visualiser</a>
+                      <a href="{{ path('file_category_delete', {'id':file_category.id}) }}" class="btn btn-danger btn-sm">Supprimer</a>
+                
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success" href="{{ path('file_category_new') }}">Ajouter une nouvelle famille de document</a>
+{% endblock %}

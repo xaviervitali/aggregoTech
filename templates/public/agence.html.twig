@@ -1,0 +1,37 @@
+{% extends 'baseWithPublicMenu.html.twig' %}
+
+{% block stylesheets %}
+
+    <link rel="stylesheet" href="{{asset("assets/css/pageAgence.css")}}"/>
+{% endblock %}
+
+
+{% block main %}
+    
+    <section class="presentation w-100 h-100" > 
+        <section class="titrePresentation">
+            <h1>L'AGENCE</h1>
+        </section>     
+        <article>
+            <p>Aggrego-Tech est une agence digitale sociale et solidaire qui agit pour l’inclusion sociale et professionnelle par le numérique.</p>
+            <p>De par ses valeurs, l’agence a été créée sous le statut associatif. Elle est conventionnée par l’Etat en qualité d’Atelier et Chantier d’Insertion.</p>
+            <p>Ses effectifs comptent des personnes rencontrant des difficultés sociales et professionnelles.
+            Elles sont embauchées en tant que salariés polyvalents du numérique et bénéficient d’un encadrement leur permettant de se remobiliser par la mise en situation de travail.</p> 
+            <p class="sndpart">En choisissant notre agence, nos clients contribuent au progrès social et au développement de l’économie locale :  </p>
+            <ul>
+                <li>Ils permettent à davantage de personnes en difficulté sociale et économique de se professionnaliser, de reprendre confiance en se formant en situation de travail pour offrir des prestations ou des produits de qualité.</li>
+                <li>Ils soutiennent l’innovation et la création d’initiatives participant au développement du territoire</li>
+                <li>Leurs achats participent au développement des richesses du territoire et favorisent des solutions alternatives durables</li>
+                <li>Leurs achats soutiennent l’innovation et la création d’initiatives participant au développement du territoire</li>
+            </ul>
+        </article> 
+        <a href="/contact" class="button2">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        REJOIGNEZ-NOUS
+        </a>   
+
+    </section>
+{% endblock %}

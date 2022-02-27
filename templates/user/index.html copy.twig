@@ -1,0 +1,67 @@
+{% extends 'baseWithNav.html.twig' %}
+
+
+{% block body %}
+<h2>Listes de utilisateurs</h2>
+<a class="btn btn-primary " href="{{ path('user_add') }}">Ajouter un utilisateur</a>
+{% set roles = {"salariés": employees, "anciens salariés": haveLeave, "administrateurs": admins, } %}
+
+{% for role in roles|keys %}
+<h3>Liste des {{role }}</h3>
+
+<table class="table  table-striped text-center  table-sm align-middle ">
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Prénom</th>
+      <th>Nom d'utilisateur</th>
+      <th>Role</th>
+      {# <th>Ajouté le</th> #}
+      <th class="text-end"></th>
+     
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in roles[role]  %}
+    {% if user.id != app.user.id %}
+    <tr>
+    <td>{{user.lastname}}</td>
+    <td>
+        {{user.firstname}}
+        </td>
+        <td>
+      {{user.username}}
+        </td>
+                <td>
+      {% for role in user.roles %}
+      {% if role != "ROLE_USER" %}
+      <p>{{ role | role }}</p>
+      {% endif %}
+      {% endfor %}
+        </td>
+        {# <td>
+        {{ user.createdAt |  date("d/m/Y H:i:s", "Europe/Paris")}}
+        </td> #}
+      <td class="text-end">
+        {% if user.roles | filter(e=>e == 'ROLE_ADMIN') == [] %}
+                <a class="btn btn-sm btn-success  m-1" href="{{ path('survey_index', {'id':user.id}) }}">Suivi d'activité</a>
+                <a class="btn btn-sm btn-success  m-1" href="{{ path('attendance', {'id':user.id}) }}">Emmargement</a>
+          {% endif %}
+                <a class="btn btn-sm btn-primary  m-1" href="{{ path('user_edit', {'id':user.id}) }}">Modifier</a>
+                {% if not user.leaveAt %}
+                <a class="btn btn-sm btn-info  m-1" href="{{ path('user_leave', {'id':user.id}) }}">Sorti.e</a>
+            {% endif %}
+      </td>
+    
+        </tr>
+      {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
+{% endfor %}
+<div>
+
+</div>
+
+  
+{% endblock %}

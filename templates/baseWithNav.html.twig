@@ -1,0 +1,115 @@
+{% extends "base.html.twig" %}
+{% set route_name = app.request.attributes.get('_route') %}
+        {% block stylesheets %}
+      
+
+        {% endblock %}
+{% block header %}
+        <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{{path("public")}}">
+      <img src="{{asset("assets/img/aggregoTech_logo.png")}}" >
+       
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav m-auto mb-2 mb-lg-0">
+       {% if is_granted('ROLE_ADMIN') %}
+          <li {% if route_name == "category_index" %} class="nav-item active" {% else %} class="nav-item" {% endif %} >
+            <a class="nav-link" href="{{ path('category_index')}}">Liste des activités</a>
+          </li>
+          <li {% if route_name == "field_index" %} class="nav-item active" {% else %} class="nav-item" {% endif %} >
+            <a class="nav-link" href="{{ path('field_index')}}">Liste des questions</a>
+          </li>
+
+          <li {% if route_name == "user_index" %} class="nav-item active" {% else %} class="nav-item" {% endif %} >
+            <a class="nav-link" href="{{ path('user_index')}}">Liste des utilisateurs</a>
+          </li>
+       <li {% if route_name == "contact_index" %} class="nav-item active" {% else %} class="nav-item" {% endif %} >
+            <a class="nav-link" href="{{ path('contact_index')}}">Liste des messages</a>
+          </li>
+        {% endif %}
+         
+          {% if is_granted('ROLE_EMPLOYEE') %}
+       
+             <li {% if route_name == "attendance" %} class="nav-item active" {% else %} class="nav-item" {% endif %} >
+            <a class="nav-link" href="{{path('attendance',  {id: app.user.id})}}">Emmargement</a>
+          </li>
+          <li {% if route_name == "survey_add" %} class="nav-item active" {% else %} class="nav-item" {% endif %} >
+            <a class="nav-link" href="{{ path('survey_add')}}">Nouvelle activité</a>
+          </li>
+           <li {% if route_name == "survey_index" %} class="nav-item active" {% else %} class="nav-item" {% endif %} >
+            <a class="nav-link" href="{{ path('survey_index', {id: app.user.id})}}">Suivi Activité</a>
+          </li>
+          {% endif %}
+            <li {% if route_name == "file_index" %} class="nav-item active" {% else %} class="nav-item" {% endif %} >
+            <a class="nav-link" href="{{ path('file_index')}}">Espace documentaire</a></li>
+
+            
+  
+          </ul>
+            <div class="connected_user">
+            <a href={{path("user_view", {id: app.user.id})}}>
+              <div class="text-center">
+                <div>{{app.user.firstname}} {{app.user.lastname}}</div>
+                
+            <div class="bg-dark text-center text-light p-2 rounded"  ><small>{{app.user | role}}</small></div>
+        </a>
+        <div>
+            <a href="{{ path('app_logout') }}" class="text-danger" >Se déconnecter</A>
+                </div>
+                </div>
+            </div>
+          
+  
+    </div>
+  </div>
+</nav>
+        {% endblock %} 
+                {# {% block footer %}
+<div class="px-5 bg-black w-100 text-light py-2 d-inline-flex p-2 justify-content-between">
+ <div>©aggrego-tech 2021</div>
+
+
+<div >
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModal">
+  mentions légales
+</button>
+
+
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Mentions légales</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       {% include "rgpd.html.twig"%}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+{% endblock %} #}
+
+
+{% block javascripts %}
+<script src="{{asset("assets/js/global.js")}}" ></script>
+
+{% endblock %}

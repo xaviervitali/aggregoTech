@@ -1,0 +1,40 @@
+{% extends 'baseWithNav.html.twig' %}
+
+
+{% block body %}
+<h1>Listes de questions</h1>
+
+<a class="btn btn-primary "  href="{{ path('field_add') }}">Ajouter une question</a>
+<table class="table  table-striped  table-sm align-middle">
+  <thead>
+    <tr>
+      <th>Question</th>
+      <th>Categories</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for field in fields %}
+    <tr>
+    <td>{{field.title}}</td>
+  
+        <td>
+    
+        <ul>
+        {% for category in field.categories %}
+          <li>{{category.title}}</li>
+        {% endfor %}
+        </ul>
+        </td>
+
+         
+        <td>
+        <a class="btn btn-sm btn-primary  m-1" href="{{ path('field_edit', {'id':field.id}) }}">Modifier</a>
+        <a class="btn btn-sm btn-danger  m-1" href="{{ path('field_delete', {'id':field.id}) }}">Supprimer</a> 
+        </td>  
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

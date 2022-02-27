@@ -1,0 +1,37 @@
+{% extends 'baseWithNav.html.twig' %}
+
+
+{% block body %}
+<h1>Listes de messages</h1>
+
+{# <a class="btn btn-primary "  href="{{ path('field_add') }}">Ajouter une question</a> #}
+<table class="table  table-striped  table-sm align-middle">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Nom Prénom</th>
+      <th>Entité</th>
+      <th>Demande</th>
+      <th>Aperçu du message</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for contact in contacts %}
+    <tr>
+   <td>{{contact.createdAt | date("d/m/y")}}</td>
+   <td>{{contact.lastname}} {{contact.firstname}}</td>
+   <td>{{contact.entity}}</td>
+   <td>{{contact.request}}</td>
+   <td>{{contact.message | slice(0, 100)}}</td>
+   <td>        <td>
+        <a  href="{{path("contact_view", {"id": contact.id})}}">Visualiser le message</a>
+
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
+
+

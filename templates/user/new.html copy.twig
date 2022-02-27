@@ -1,0 +1,79 @@
+{% extends 'baseWithNav.html.twig' %}
+
+
+{% block body %}
+<div class="form-group">
+
+{{form_start(form)}}
+<div class="border p-2">
+    <div class="form-group mb-2 mr-sm-2 row " >
+    <div class="col" >
+        {{ form_row(form.lastname) }}
+    </div>
+    <div class="col">
+        {{form_row(form.firstname) }}
+    </div>
+   <div class="col"> 
+
+        {{form_row(form.roles)}}
+    </div>
+    </div>
+</div>
+<div class="border p-2 my-2">
+    <h2>Identifiant et mot de passe</h2>
+    <div class="form-group mb-2 mr-sm-2 row ">
+    <div class="col">
+        {{form_row(form.username)}}
+    </div>
+   
+
+
+    <div class="col d-flex justify-content-around align-items-stretch">
+        {{form_row(form.password)}}
+        <button class="btn btn-block btn-light btn-sm newPwd">Generer un nouveau mot de passe</button>
+    </div>
+    </div>
+    <div class="row mt-5">
+    
+   <button class="btn btn-block btn-success col-6 p-3 m-auto">Valider</button>
+</div> 
+</div>
+
+</div>
+
+{{form_end(form)}}
+
+</div>
+
+<div>
+</div>
+<script>;
+document.querySelector("#user_firstname").addEventListener('keyup', e=>
+ fillUsername(e.target.value)
+
+)
+
+document.querySelector("#user_lastname").addEventListener('keyup', e=>
+ fillUsername(e.target.value)
+
+)
+
+function fillUsername(e){
+    document.querySelector("#user_username").value = document.querySelector("#user_lastname").value.replace(/[^a-zA-Z \-]/g, '').toLowerCase() + '-' + document.querySelector("#user_firstname").value.replace(/[^a-zA-Z \-]/g, '').toLowerCase()
+}
+
+
+async function getPassword(){
+{    return await fetch('{{ path('api', {"query" : "word"})}}').then(e=>e.json(e)).then(r=>{
+     document.querySelector("#user_password").setAttribute('type', 'text')
+    document.querySelector("#user_password").value = r
+    })}
+}
+
+document.querySelector('.newPwd').addEventListener('click', e=>{
+    e.preventDefault(e)
+    getPassword()
+
+})
+</script>
+{% endblock %}

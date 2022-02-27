@@ -1,0 +1,59 @@
+{% extends 'baseWithNav.html.twig' %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset("assets/css/userNew.css")}}"
+{% endblock %}
+{% block body %}
+<h2>Ajouter un nouvel utilisateur</h2>
+{{ form_start(form) }}
+<fielset >
+    <legend>Informations personnelles</legend>
+        {{ form_widget(form.gender) }}
+        {{ form_widget(form.firstname) }}
+        {{ form_widget(form.lastname) }}
+</fielset>
+<hr>
+<fielset >
+    <legend>Informations du compte</legend>
+        {{ form_widget(form.username) }}
+        <div class="d-flex">
+        {{ form_widget(form.password) }}
+        <button class="btn btn-info newPwd">Générer</button>
+        </div>
+        {{ form_widget(form.roles) }}
+        {# {{ form_row(form.imageFile) }} #}
+</fielset>
+<hr>
+<fielset >
+    <legend>Signature</legend>
+
+  <div class="sigPad" id="linear" >
+    <div class="sig sigWrapper current">
+     <div class="typed" style="display: none;"></div>
+      <canvas class="pad form-control " width="400" height="250"></canvas>
+        {{ form_widget(form.signature) }}
+
+      {# <input type="hidden" class="output" value=""  id="user_signature" name="user[signature]"> #}
+     <div class="clearButton" ><a href="#clear" >Effacer</a></div>
+  </div>
+  </div>
+</fielset>
+{{ form_errors(form) }}
+<hr>
+        <button class="btn btn-success d-block col-6 p-3 my-5 m-auto" type="submit">Valider</button>
+
+{{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+  <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/json2/20160511/json2.min.js" integrity="sha512-uWk2ZXl3GVrq6DZsrL5dSg1S/F3MNQ9VaDFigqXOoKUnWG58UxOuJGfTrzh5KjpoBvPiFniL2PahU2HUTFMJXw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="{{asset("assets/js/user.js")}}" ></script>
+<script>
+    $(document).ready(function() {
+      $('#linear').signaturePad({drawOnly:true, lineTop:200});
+
+    });
+  </script>
+{% endblock %}

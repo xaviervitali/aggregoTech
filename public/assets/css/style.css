@@ -1,0 +1,213 @@
+body{
+    
+    background-image: url(../IMG/background.png);
+    font-family: 'DDINExpRegular';
+    background-color: rgba(255, 255, 255,0.5);
+    background-blend-mode: color;
+    background-size: cover;
+    background-repeat: no-repeat; 
+    background-attachment: fixed;
+    color: rgba(5,5,88);
+
+    
+}
+
+input, textarea,select{
+    border-style: solid;
+    border-width: 0 0 3px 0;
+    border-color:  rgba(5,5,88);
+    border-radius: 0 0 0 0;
+    margin: 10px 0 10px 0;
+    padding-left: 10px;
+    color: white;
+}
+.souhait{
+    padding-left: 30px;
+}
+section{
+    display: flex;
+    align-items:stretch;
+    padding-top: 10px;
+    justify-content: center;
+}
+.condit{
+    width: 450px;
+    text-align: justify;
+
+}
+a {
+    outline: none;
+    text-decoration: none;
+    padding: 2px 1px 0;
+  }
+
+.Envoyer{
+        width: 250px;
+        max-width: 500px;
+        height: 60px;
+        font-weight: 700;
+        font-size: 28px;
+        background: rgba(5,5,88);
+        border: rgba(48, 48, 48, 0.5) solid 1px;
+        border-radius: 5px;
+        box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.25);
+        color: white;
+        margin-bottom: 2%;
+        text-align: center;
+        
+
+}
+input[type="submit"]:disabled { background: #696868;color: #ccc; }
+article
+{
+    width: 45%;
+    -webkit-box-shadow: 0px 10px 13px -7px #000000, 8px 9px 10px 5px rgba(0, 0, 0, 0.54);
+    box-shadow: 0px 10px 13px -7px #000000, 8px 9px 10px 5px rgba(0, 0, 0, 0.54);
+    transform-style: preserve-3d;
+    border-radius: 8px;
+    padding: 20px 70px 20px 70px;
+    margin-top: 40px;
+
+}
+
+
+aside
+{
+  box-shadow: 0px 10px 13px -7px #000000, 8px 9px 10px 5px rgba(0, 0, 0, 0.54);
+  transform-style: preserve-3d;
+  border-radius: 8px;
+  color: white;
+  background-color: #141ba0cc;
+  font-size: 1.2em;
+  text-align: center;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 50px;
+  margin: 40px 40px 0 0;
+
+}
+
+.map{
+    padding-top: 20px;
+} 
+    article > h1 {
+    font-weight: 500;
+    text-align: center;
+    }
+article > p {
+        font-weight: 300;
+        }
+.aff_form_{
+            display: flex;
+            flex-direction: column;
+            flex:wrap;
+            
+            min-height: 60px;
+            }
+#qui{
+    padding-right: 78%;
+}     
+        .aff_form{
+            width: 100%;
+            min-height: 60px;
+            margin-top: 2px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;     
+        }
+        .radio_style{
+            padding-left: 10px;
+            margin: 2px 0 2px 0;
+        }
+        .select_style{
+            margin: 2px 0 20px 0;
+        }
+        form div > label {
+        margin-bottom: 7px;
+        font-weight: 600;
+        }
+        .zonetext{
+        background-color: #141ba0cc;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: 500;
+        box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.25);
+        height: 50px;
+        color: -internal ;
+        
+        }
+        .adr{
+            background-color: #141ba0cc;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: 500;
+        box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.25);
+        height: 50px;
+        color: -internal ;
+        width: 100%;
+
+        }
+    
+        form div > textarea {
+        background-color: #141ba0cc;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: 500;
+        }
+        form div > textarea {
+        height: 195px;
+        padding: 15px 0px 0px 10px;
+        }
+        form div > input::placeholder, form div > textarea::placeholder {
+        color: white;
+        }
+        form div > select:invalid {
+        color: white;
+        }
+        form div > select option {
+        background: white ;
+        font-weight:bold;
+        font-size: 15px;
+        color: rgba(5,5,88);;
+        }
+        
+        form div:last-child {
+        align-items:center;
+        margin-top: 20px;
+        }
+        form button {   
+        width: 250px;
+        max-width: 500px;
+        height: 60px;
+        font-weight: 700;
+        font-size: 28px;
+        background: rgba(5,5,88);
+        border: rgba(48, 48, 48, 0.5) solid 1px;
+        border-radius: 5px;
+        box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.25);
+        color: white;
+        margin-bottom: 2%;
+        text-align: center;
+
+        }
+
+        .valider{
+                text-align: right;
+                padding-right: 50px;
+        }
+        .rgpd{
+            background-color: rgba(255, 255, 255, 0.8);        
+            padding: 20px;
+            font-size: 18px ;
+            text-align: justify;
+        }
+        textarea:focus, input:focus {
+            color: white;
+        }
+        
+        #adresse{
+            padding-right: 78%;
+        }

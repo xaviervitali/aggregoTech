@@ -1,0 +1,25 @@
+{% extends "baseWithNav.html.twig" %}
+    {% block body %}
+    {{form_start(form)}}
+  <div class="my-2">
+    {{form_start(form)}}
+    {{form_label(form.title,"", {'label_attr': {'class': 'bold'}})}}
+    {{ form_widget(form.title) }}
+    </div>
+    <hr>
+       <p class="bold my-2">Liste des Formulaires</p>
+    <div class="d-flex justify-content-between align-items-stretch  flex-wrap my-2  m-1 " >
+    {% for category in form.categories %}
+       <div class="d-flex  align-items-center justify-content-between border choices">
+         {{ form_widget(category) }}
+         {{ form_label(category, "", {'label_attr': {'class': 'mx-2'}}) }}
+         <div>
+        <a class="btn btn-sm btn-primary d-block m-1" >Modifier</a>
+        <a class="btn btn-sm btn-danger d-block  m-1" >Supprimer</a>
+         </div>
+       </div>
+    {% endfor %}
+</div>
+        <button class="btn btn-success d-block col-6 p-3 m-2 m-auto" type="submit">Valider</button>
+    {{form_end(form)}}
+    {% endblock %}

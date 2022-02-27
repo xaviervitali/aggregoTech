@@ -1,0 +1,77 @@
+
+{% extends 'baseWithPublicMenu.html.twig' %}
+{% block stylesheets %}
+
+{# 
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    /> #}
+    
+<link rel="stylesheet" href="{{asset("assets/css/aggregoteam.css")}}"/>
+{% endblock %}
+  {% block main %}
+      <h2 >Salariés permanents</h2>
+    <div class="cadres d-flex flex-wrap justify-content-around">
+    {% for user  in users | roleFilter( "ROLE_ADMIN") %}
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+                         {{user | avatar | raw}}
+                    {# <img src="{{ asset("/assets/img/user/avatar | raw" ) ~ user.username ~ ".png" }}  ? {{ asset("/assets/img/user/avatar"  ~ ".png" ) ~ user.username }}:  "" }}" class="logocarte"/> #}
+              <h2  class="titreservice">{{ user.firstname }} {{ user.lastname}}</h2>
+            </div>
+            <div class="flip-card-back">
+              <div>
+                           <p >{{ user.description }}</p>
+
+              </div>
+            </div>
+          </div>
+        </div> 
+        {% endfor %}
+</div>
+<hr>
+              <h2 >Salariés polyvalents</h2>
+    <div class="cadres d-flex flex-wrap justify-content-around">
+    {% for user  in users | roleFilter( "ROLE_EMPLOYEE") %}
+        <div class="flip-card-min">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+                         {{user | avatar | raw}}
+
+              <h2  class="titreservice">{{ user.firstname }}</h2>
+            </div>
+            <div class="flip-card-back">
+              <div>
+                <p >{{ user.description }}</p>
+              </div>
+            </div>
+          </div>
+        </div> 
+        {% endfor %}
+    </div>
+    <hr>
+              <h2 >Ils ont fait partie de l'équipe</h2>
+    <div class="cadres d-flex flex-wrap justify-content-around">
+    {% for user  in users | filter(e=>e.roles | length == 1) %}
+        <div class="flip-card-min">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+                   {{user | avatar | raw}}
+              
+              <h2  class="titreservice">{{ user.firstname }}</h2>
+            </div>
+            <div class="flip-card-back">
+              <div>
+                              <p >{{ user.description }}</p>
+
+              </div>
+            </div>
+          </div>
+        </div> 
+        {% endfor %}
+    </div>
+    
+        <p class="text-center bg-dark p-2 text-light"><small>Illustrations réalisées par <strong>Fadime Ekici</strong></small></p>
+    {% endblock %}

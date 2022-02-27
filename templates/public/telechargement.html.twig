@@ -1,0 +1,27 @@
+
+{% extends 'baseWithPublicMenu.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{asset("assets/css/telechargement.css")}}">
+
+{% endblock %}
+
+{% block main %}
+    <h1>Espace documentaire</h1>
+    <h2>Documents à consulter ou à télécharger</h2>
+{% if files | length %}
+    <div class="d-flex justify-content-around flex-wrap">
+
+    {% for file in files %}
+    <div class="text-center">
+    <embed src="{{asset("/assets/vichFiles/") ~ file.fileUploadedName}} "   type='application/pdf'/>
+    <h5>{{file.title }}</h5>
+    <p class="font-italic">{{file.description}}</p>
+</div>
+
+     {% endfor %} 
+     </div>
+  {% else %}
+  <p class="p-2 text-center">pas de document disponible</p>
+  {% endif %}
+{% endblock %}
