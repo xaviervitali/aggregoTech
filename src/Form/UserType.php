@@ -17,6 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class UserType extends AbstractType
 {
@@ -27,11 +28,13 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('firstname', TextType::class, ["label" => "Prénom", 'attr' => ['class' => 'form-control ',
-            "placeholder"=>"Prénom",
+            ->add('firstname', TextType::class, ["label" => "Prénom", 'attr' => [
+                'class' => 'form-control ',
+                "placeholder" => "Prénom",
             ]])
-            ->add('lastname', TextType::class, ["label" => "Nom", 'attr' => ['class' => 'form-control',
-            "placeholder"=>"Nom de famille",
+            ->add('lastname', TextType::class, ["label" => "Nom", 'attr' => [
+                'class' => 'form-control',
+                "placeholder" => "Nom de famille",
             ]])
             ->add('gender', ChoiceType::class, [
                 'attr' => ['class' => 'form-control '],
@@ -56,49 +59,65 @@ class UserType extends AbstractType
                 "label" => "Attribution",
 
             ])
-            // ->add("avatar", AvatarType::class,      ["label" => "Avatar",
-          
-            // ])
-        
+            ->add("avatar",  FileType::class, array(
+                'data_class' => null,
+                'required' => false,
+                'label' => 'Avatar',
+                // 'constraints' => array(
+                //     new Assert\Image(array(
+                //         'maxHeight' => 600,
+                //         'maxWidth' => 600,
+                //         'maxSize' => 1000000,
+                //         'maxHeightMessage' => 'Longeur maximale de 600Px',
+                //         'maxWidthMessage' => 'Largeur maximale de 600Px',
+                //         'maxSizeMessage' => 'Taille maximale de 1Mo',
+                //     ))
+                // ),
+                'invalid_message' => 'Cette valeur est invalide',
+                // 'mapped' => false, 
+                "attr" => ["accept" => "image/jpeg, image/png, image/gif"]
+            ))
             ->add(
                 "username",
                 TextType::class,
-                ["label" => "Nom d'utilisateur",
-                'attr' => ['class' => 'form-control ', 
-                "placeholder"=>"Nom d'utilisateur",
-                ]]
+                [
+                    "label" => "Nom d'utilisateur",
+                    'attr' => [
+                        'class' => 'form-control ',
+                        "placeholder" => "Nom d'utilisateur",
+                    ]
+                ]
             )
             ->add(
                 "description",
                 TextType::class,
                 [
                     // "label" => "A propos",
-                'attr' => ['class' => 'form-control my-2', 
-                // "placeholder"=>"A propos",
-                ]]
+                    'attr' => [
+                        'class' => 'form-control my-2',
+                        // "placeholder"=>"A propos",
+                    ]
+                ]
             )
-            ->add("password", PasswordType::class, ["label" => "Mot de passe", 'attr' => ['class' => 'form-control',
-          "placeholder"=>"Mot de passe"
-                ]])
-  
-            ->add('signature', HiddenType::class, ["attr"=>["class"=>"output"]])
+            ->add("password", PasswordType::class, ["label" => "Mot de passe", 'attr' => [
+                'class' => 'form-control',
+                "placeholder" => "Mot de passe"
+            ]])
 
-            ;
+            ->add('signature', HiddenType::class, ["attr" => ["class" => "output"]]);
 
-      // Data transformer
-      $builder->get('roles')
-      ->addModelTransformer(new CallbackTransformer(
-          function ($rolesArray) {
-               // transform the array to a string
-               return $rolesArray != null ? $rolesArray[0]: null;
-          },
-          function ($rolesString) {
-               // transform the string back to an array
-               return [$rolesString];
-          }
-  ));   
- 
-
+        // Data transformer
+        $builder->get('roles')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($rolesArray) {
+                    // transform the array to a string
+                    return $rolesArray != null ? $rolesArray[0] : null;
+                },
+                function ($rolesString) {
+                    // transform the string back to an array
+                    return [$rolesString];
+                }
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

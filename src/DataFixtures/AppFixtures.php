@@ -70,21 +70,21 @@ class AppFixtures extends AbstractFixture
         //     ->setUpdatedAt($immutable);
         //     });
 
-        // $this->createMany(FileCategory::class, 5, function (FileCategory $fileCategory) {
-        //     /**
-        //      * @var FileCategory $fileCategory
-        //      */
-        //     $fileCategory->setName($this->faker->word());
-        // });
-        // $this->createMany(FileUpload::class, 50, function (FileUpload $file) {
-        //     $user = $this->getRandomreference(User::class);
-        //     $category = $this->getRandomreference(FileCategory::class);
-        //     $file->setUser($user)
-        //         ->setDescription($this->faker->text(255))
-        //         ->setTitle($this->faker->text(255))
-        //         // ->setFileUploadedName($this->faker->file())
-        //         ->setFileCategory($category);
-        // });
+        $this->createMany(FileCategory::class, 5, function (FileCategory $fileCategory) {
+            /**
+             * @var FileCategory $fileCategory
+             */
+            $fileCategory->setName($this->faker->word());
+        });
+        $this->createMany(FileUpload::class, 50, function (FileUpload $file) {
+            $user = $this->getRandomreference(User::class);
+            $category = $this->getRandomreference(FileCategory::class);
+            $file->setUser($user)
+                ->setDescription($this->faker->text(255))
+                ->setTitle($this->faker->text(255))
+                // ->setFileUploadedName($this->faker->file())
+                ->setFileCategory($category);
+        });
     }
 
     public function getDependencies()

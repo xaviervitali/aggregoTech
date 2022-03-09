@@ -1,8 +1,8 @@
 /* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
 .flip-card {
   background-color: transparent;
-  width: 250px;
-  height: 250px;
+  width: 300px;
+  height: 300px;
   /* border: 1px solid #f1f1f1; */
   perspective: 1000px; /* Remove this if you don't want the 3D effect */
   margin: 2rem;
@@ -52,11 +52,11 @@
   height: 100%;
   -webkit-backface-visibility: hidden; /* Safari */
   backface-visibility: hidden;
-  border-radius: 50%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  clip-path: circle(50% at 50% 50%);
 }
 
 /* Style the front side (fallback if image is missing) */
@@ -81,6 +81,23 @@
   padding: 0.5em;
 }
 
+.logocarte {
+  /* width: 100%; */
+}
+
+body {
+  background: linear-gradient(
+    0deg,
+    rgba(6, 42, 91, 1) 10%,
+    rgba(255, 255, 255, 1) 86%
+  );
+}
+
+main > h2 {
+  color: #fff;
+  mix-blend-mode: difference;
+}
+
 .flip-card-front h2 {
   position: absolute;
   top: 75%;
@@ -95,14 +112,7 @@
   padding: 0;
 }
 
-.logocarte {
-  /* width: 100%; */
-}
-
-body {
-  background: linear-gradient(
-    0deg,
-    rgba(6, 42, 91, 1) 10%,
-    rgba(255, 255, 255, 1) 86%
-  );
+.flip-card-back p {
+  padding: 0;
+  margin: 0;
 }

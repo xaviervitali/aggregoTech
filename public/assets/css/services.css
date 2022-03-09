@@ -6,11 +6,11 @@ main h2 {
   margin: 0;
 }
 
-h5{
+h5 {
   margin-bottom: 0;
 }
 
-p{
+p {
   margin-bottom: 25px;
 }
 
@@ -268,4 +268,10 @@ main a {
 
 #trans .flip-card-back {
   background-image: url("../img/serviceTrans.jpg");
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }

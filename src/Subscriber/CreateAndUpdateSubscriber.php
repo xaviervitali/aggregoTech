@@ -45,12 +45,14 @@ class CreateAndUpdateSubscriber implements EventSubscriber
     public function preUpdate(LifecycleEventArgs $event)
     {
         $entity = $event->getObject();
-        
-        if (!$entity instanceof User && !$entity instanceof Avatar) {
+
+        if (!$entity instanceof User) {
             $date = new DateTimeImmutable();
             $entity->setUpdatedAt($date);
-        } 
+        } else {
 
+            dump($entity->getAvatar());
+        }
     }
 
 
@@ -65,20 +67,20 @@ class CreateAndUpdateSubscriber implements EventSubscriber
 
         $date = new DateTimeImmutable();
 
-        if ($entity instanceof Attendance ||  $entity instanceof FileCategory ) {
+        if ($entity instanceof Attendance ||  $entity instanceof FileCategory) {
             return;
         }
-        if (!$entity instanceof FileUpload ) {
+        if (!$entity instanceof FileUpload) {
 
             $entity->setCreatedAt($date);
         }
 
-if($entity instanceof Contact){
-    return;
-}
-     
-        
-        if (!$entity instanceof User)  {
+        if ($entity instanceof Contact) {
+            return;
+        }
+
+
+        if (!$entity instanceof User) {
             $entity->setUpdatedAt($date);
         } else {
             $plainPwd = $entity->getPassword();
@@ -87,10 +89,7 @@ if($entity instanceof Contact){
                 $entity,
                 $plainPwd
             );
-            $entity->setPassword($hashedPwd)
-            ;
+            $entity->setPassword($hashedPwd);
         }
     }
-
-
 }

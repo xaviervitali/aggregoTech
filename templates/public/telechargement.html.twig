@@ -13,11 +13,12 @@
     <div class="d-flex justify-content-around flex-wrap">
 
     {% for file in files %}
-    <div class="text-center">
-    <embed src="{{asset("/assets/vichFiles/") ~ file.fileUploadedName}} "   type='application/pdf'/>
-    <h5>{{file.title }}</h5>
-    <p class="font-italic">{{file.description}}</p>
-</div>
+        <div class="text-center">
+        <embed src="{{asset("/assets/vichFiles/") ~ file.fileUploadedName}} "   type='application/pdf'/>
+        <h5>{{file.title }}</h5>
+        <p class="font-italic">{{file.description}}</p>
+        <p><a href="{{asset("/assets/vichFiles/") ~ file.fileUploadedName}}">Télécharger</a></p>
+    </div>
 
      {% endfor %} 
      </div>

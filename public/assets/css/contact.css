@@ -282,3 +282,7 @@ input:focus {
     color: white;
   }
 }
+
+.corps {
+  margin-bottom: 50px;
+}

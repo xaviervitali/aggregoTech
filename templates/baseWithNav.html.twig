@@ -1,14 +1,11 @@
 {% extends "base.html.twig" %}
 {% set route_name = app.request.attributes.get('_route') %}
-        {% block stylesheets %}
       
-
-        {% endblock %}
 {% block header %}
         <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
   <div class="container-fluid">
     <a class="navbar-brand" href="{{path("public")}}">
-      <img src="{{asset("assets/img/aggregoTech_logo.png")}}" >
+      <img src="{{asset("assets/img/logoHDT2.png")}}" >
        
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,7 +32,7 @@
           {% if is_granted('ROLE_EMPLOYEE') %}
        
              <li {% if route_name == "attendance" %} class="nav-item active" {% else %} class="nav-item" {% endif %} >
-            <a class="nav-link" href="{{path('attendance',  {id: app.user.id})}}">Emmargement</a>
+            <a class="nav-link" href="{{path('attendance',  {id: app.user.id})}}">emargements</a>
           </li>
           <li {% if route_name == "survey_add" %} class="nav-item active" {% else %} class="nav-item" {% endif %} >
             <a class="nav-link" href="{{ path('survey_add')}}">Nouvelle activité</a>

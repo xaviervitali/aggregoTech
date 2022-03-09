@@ -30,7 +30,7 @@ class FileUpload
      * @Vich\UploadableField(mapping="fileUpload", fileNameProperty="fileUploadedName")
      * 
      * @FileExtension(
-     *     mimeTypes = {"image/*","video/*", "application/*", "text/*"},
+     *     mimeTypes = {"image/jpeg", "image/gif", "image/png", "video/mp4", "video/quicktime", "video/avi", "application/pdf","application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/vnd.oasis.opendocument.text","application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.presentationml.presentation" ,  "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "text/plain", "application/zip"},
      *     mimeTypesMessage = "Wrong file type (jpg, gif, png, mp4, mov,avi,pdf,doc,docx,odt, ppt, pttx, xls, xlsx, txt, zip)"
      * )
      * @Groups({"file:read"})

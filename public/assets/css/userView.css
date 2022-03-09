@@ -3,34 +3,24 @@
   padding: 0;
 }
 
-img {
+main img {
   width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 h2 {
   margin: 0;
 }
 
-a {
-  /* font-weight: bold; */
-}
-
-.col img {
-  height: 200px;
-}
 .card i {
   font-size: 3em;
 }
 
 .card {
   width: 300px;
-  /* height: 500px;  */
   text-align: center;
-}
-
-.card img {
-  height: 100px;
-  object-fit: contain;
 }
 
 .files {
@@ -38,6 +28,18 @@ a {
 }
 
 .profile-img {
-  height: 100px !important;
+  width: 200px;
+
   object-fit: contain;
+  border-radius: 0;
+}
+
+main .card img {
+  /* border-bottom: 1px solid gray; */
+  margin: auto;
+  max-height: 300px;
+  object-fit: cover;
+  text-align: center;
+
+  border-radius: 0;
 }

@@ -6,14 +6,34 @@
 {% block body %}
 <h2>Editer un  utilisateur</h2>
 {{ form_start(form,  { attr: {novalidate: 'novalidate'}} ) }}
-<fielset >
+<fieldset >
     <legend>Informations personnelles</legend>
         {{ form_widget(form.gender) }}
         {{ form_widget(form.firstname) }}
         {{ form_widget(form.lastname) }}
-</fielset>
-<hr>
-<fielset >
+        {{ form_row(form.description, {label: "A propos de " ~ user.firstname, placeholder: "A propos de vous " ~ user.firstname}) }}
+
+</fieldset>
+  <fieldset>
+  <legend>Avatar actuel</legend>
+  <div class="text-center">{{ user | avatar |raw }}</div>
+        {{ form_row(form.avatar) }}
+        </fieldset>
+        <fieldset >
+    <legend>Signature</legend>
+
+  <div class="sigPad" id="linear" >
+    <div class="sig sigWrapper current">
+     <div class="typed" style="display: none;"></div>
+      <canvas class="pad form-control " width="400" height="250"></canvas>
+
+        {{ form_widget(form.signature) }}
+     <div class="clearButton" ><a href="#clear">Effacer</a></div>
+  </div>
+  </div>
+</fieldset>
+
+<fieldset >
     <legend>Informations du compte</legend>
         {{ form_widget(form.username) }}
         {{ form_errors(form.username) | join(", ") | raw}}
@@ -22,29 +42,12 @@
         <button class="btn btn-info newPwd">Générer</button>
         </div>
         {{ form_widget(form.roles) }}
-        <hr>
-        {{ form_row(form.description, {label: "A propos de " ~ user.firstname, placeholder: "A propos de vous " ~ user.firstname}) }}
 
         </div>
         </div>
         </div>
-</fielset>
-<hr>
-<fielset >
-    <legend>Signature</legend>
+</fieldset>
 
-  <div class="sigPad" id="linear" >
-    <div class="sig sigWrapper current">
-     <div class="typed" style="display: none;"></div>
-      <canvas class="pad form-control " width="400" height="250"></canvas>
-        {{ form_widget(form.signature) }}
-
-     <div class="clearButton" ><a href="#clear">Effacer</a></div>
-  </div>
-  </div>
-</fielset>
-{{ form_errors(form) }}
-<hr>
         <button class="btn btn-success d-block col-6 p-3 my-5 m-auto" type="submit">Valider</button>
 
 {{ form_end(form) }}

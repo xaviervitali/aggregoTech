@@ -16,18 +16,18 @@ class PreviewExtension extends AbstractExtension
         ];
     }
 
-    public function showPreview($vichFile )
+    public function showPreview($vichFile)
     {
         $absoluteUrl = "assets/vichFiles/$vichFile";
-        try{
-                $mimeContent = mime_content_type($absoluteUrl) ;
+        try {
+            $mimeContent = mime_content_type($absoluteUrl);
 
-            if(str_contains($mimeContent, "image")){
+            if (str_contains($mimeContent, "image")) {
 
                 return "<img src='/$absoluteUrl' alt='$vichFile'>";
             }
 
-            if(str_contains($mimeContent, "video")){
+            if (str_contains($mimeContent, "video")) {
                 return <<<VIDEO
                 <video controls width="250" autoplay>
                 
@@ -42,27 +42,27 @@ class PreviewExtension extends AbstractExtension
                 VIDEO;
             }
 
-            if(str_contains($mimeContent, "application/pdf")){
+            if (str_contains($mimeContent, "application/pdf")) {
 
-                return '<i class="fas fa-file-pdf"></i>';
+                return '<i class="fas fa-file-pdf" style="color:red;"></i>';
             }
 
-            if(str_contains($mimeContent, "word") || str_contains($mimeContent, "text")){
+            if (str_contains($mimeContent, "word") || str_contains($mimeContent, "text")) {
 
-                return '<i class="far fa-file-word"></i>';
+                return '<i class="far fa-file-word"  style="color:blue;"></i>';
             }
-            
-            if(str_contains($mimeContent, "powerpoint") || str_contains($mimeContent, "powerpoint")){
 
-                return '<i class="far fa-file-powerpoint"></i>';
-            }
-            if(str_contains($mimeContent, "excel") || str_contains($mimeContent, "sheet")){
+            if (str_contains($mimeContent, "powerpoint") || str_contains($mimeContent, "powerpoint")) {
 
-                return '<i class="far fa-file-excel"></i>';
+                return '<i class="far fa-file-powerpoint"  style="color:orange;"></i>';
             }
-            
-            return '<i class="far fa-file-archive"></i>';
-        } catch(Exception $e){
+            if (str_contains($mimeContent, "excel") || str_contains($mimeContent, "sheet")) {
+
+                return '<i class="far fa-file-excel"  style="color:green;"></i>';
+            }
+
+            return '<i class="far fa-file-archive"  style="color:yellow;"></i>';
+        } catch (Exception $e) {
             return '<i class="far fa-question-circle"></i>';
         }
     }

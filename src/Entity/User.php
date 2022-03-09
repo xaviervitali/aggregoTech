@@ -10,19 +10,17 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
+
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  * @UniqueEntity(fields={"username"}, message="Le nom d'utilisateur existe déjà")
- * @Vich\Uploadable
-
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serializable
 {
 
-    
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -48,7 +46,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-    * @Assert\NotNull
+     * @Assert\NotNull
      * @Assert\NotBlank(message="le mot de passe ne peut être vide")
      */
     private $password;
@@ -114,13 +112,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $description;
 
- 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $avatar;
 
- 
 
 
-
-   
     public function __construct()
     {
         $this->surveys = new ArrayCollection();
@@ -215,7 +213,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    
+
 
     public function getFirstname(): ?string
     {
@@ -241,7 +239,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
- 
+
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -363,12 +361,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-  
-    
-    public function haveRole($role){
-       
-            return in_array($role, $this->getRoles());
-      
+
+
+    public function haveRole($role)
+    {
+
+        return in_array($role, $this->getRoles());
     }
 
     public function getGender(): ?string
@@ -409,5 +407,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
 
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+        ) = unserialize($serialized);
+    }
 }

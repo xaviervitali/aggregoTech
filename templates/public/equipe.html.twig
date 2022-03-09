@@ -2,18 +2,13 @@
 {% extends 'baseWithPublicMenu.html.twig' %}
 {% block stylesheets %}
 
-{# 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    /> #}
-    
+
 <link rel="stylesheet" href="{{asset("assets/css/aggregoteam.css")}}"/>
 {% endblock %}
   {% block main %}
       <h2 >Salariés permanents</h2>
     <div class="cadres d-flex flex-wrap justify-content-around">
-    {% for user  in users | roleFilter( "ROLE_ADMIN") %}
+    {% for user  in admins %}
         <div class="flip-card">
           <div class="flip-card-inner">
             <div class="flip-card-front">
@@ -32,9 +27,11 @@
         {% endfor %}
 </div>
 <hr>
-              <h2 >Salariés polyvalents</h2>
+    <h2 >Salariés polyvalents</h2>
     <div class="cadres d-flex flex-wrap justify-content-around">
-    {% for user  in users | roleFilter( "ROLE_EMPLOYEE") %}
+    {% for user  in employees %}
+      {% if   user.lastname  != "test"  %}
+
         <div class="flip-card-min">
           <div class="flip-card-inner">
             <div class="flip-card-front">
@@ -49,12 +46,15 @@
             </div>
           </div>
         </div> 
+        {% endif %}
+
         {% endfor %}
     </div>
+    {% if haveLeave %}
     <hr>
               <h2 >Ils ont fait partie de l'équipe</h2>
     <div class="cadres d-flex flex-wrap justify-content-around">
-    {% for user  in users | filter(e=>e.roles | length == 1) %}
+    {% for user  in haveLeave %}
         <div class="flip-card-min">
           <div class="flip-card-inner">
             <div class="flip-card-front">
@@ -70,8 +70,8 @@
             </div>
           </div>
         </div> 
-        {% endfor %}
+      {% endfor %}
     </div>
+    {% endif %}
     
-        <p class="text-center bg-dark p-2 text-light"><small>Illustrations réalisées par <strong>Fadime Ekici</strong></small></p>
     {% endblock %}

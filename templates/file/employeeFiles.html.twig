@@ -1,7 +1,8 @@
    {% if is_granted('ROLE_ADMIN') %}
     
-      {% if employeeFiles | length > 0 %}
         {% for cat in catArray %}
+    {% set currentFiles = employeeFiles | filter(e=>e.fileCategory == cat) %}
+      {% if  currentFiles  %}
          <div class="filesCat">
           <p>Famille : {{cat == NULL ? "Non Classé" : cat | capitalize}}</p>
         
@@ -14,8 +15,9 @@
               <th class="col"  data-sortable="true" >Ajouté le</th>
             </thead>
             <tbody>
-              {% for file in employeeFiles | filter(e=>e.fileCategory == cat)%}
-                            <tr >
+              {% for file in currentFiles %}
+                            
+                  <tr >
 
                  <td>
                   <div class="card p-2">
@@ -42,10 +44,10 @@
             </tbody>
            </table>
            </div>
+
+      {% endif %}
       {% endfor %}
 
-      {% else %}
-        <div class="text-center">-- Aucun document présent --</div>
-      {% endif %}
+   
 
   {% endif %}

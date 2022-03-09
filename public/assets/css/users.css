@@ -1,24 +1,20 @@
 .card {
-  background: linear-gradient(
-    rgba(255, 255, 0, 0.5) 0%,
-    rgba(218, 87, 37, 0.5) 20%,
-    rgb(157, 0, 255) 40%,
-    rgba(0, 0, 225, 0.5) 60%,
-    rgba(112, 200, 225, 0.5) 100%
-  );
-  background-color: rgba(255, 255, 255, 0.5);
-  background-blend-mode: color;
+  background-color: #c6bfa0;
+  color: white;
   margin: 10px;
 }
 
+.card:nth-child(2n) {
+  background-color: #9f8680;
+}
 
 .card img {
-    object-fit: cover;
-    width: 200px;
-    height: 200px;
-    text-align: center;
-    margin: auto;
-    border-radius: 50%;
-    box-shadow: 0 0 20px black;
-    margin: 1em auto;
+  object-fit: cover;
+  width: 200px;
+  height: 200px;
+  text-align: center;
+  margin: auto;
+  border-radius: 50%;
+  box-shadow: 0 0 20px black;
+  margin: 1em auto;
 }

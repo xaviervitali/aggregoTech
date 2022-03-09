@@ -20,27 +20,28 @@ class ContactController extends AbstractController
     public function index(ContactRepository $contactRepository): Response
     {
 
-        
+
         return $this->render('contact/index.html.twig', [
-            'contacts' => $contactRepository->findBy([],["createdAt"=>"DESC"]),
+            'contacts' => $contactRepository->findBy([], ["createdAt" => "DESC"]),
         ]);
     }
-        
+
     /**
      * @Route("/admin/contact/{id<\d+>}", name="contact_view")
      */
     public function view(Contact $contact): Response
-    { 
+    {
         return $this->render('contact/view.html.twig', [
             'contact' => $contact,
         ]);
     }
 
 
-        /**
+    /**
      * @Route("/admin/contact/delete/{id<\d+>}", name="contact_delete")
      */
-    public function delete(Contact $contact, EntityManagerInterface $em){
+    public function delete(Contact $contact, EntityManagerInterface $em)
+    {
         $em->remove($contact);
         $em->flush();
         return $this->redirectToRoute('contact_index');
@@ -68,7 +69,7 @@ class ContactController extends AbstractController
              * @var Contact $user
              */
             $user = $form->getData();
-        
+
             $message = <<<THANK
             <div class="text-center">
             <p>
@@ -84,23 +85,23 @@ class ContactController extends AbstractController
             </div>
             THANK;
 
-            
+
             $this->addFlash(
                 'info',
-              $message
+                $message
             );
             $em->persist($user);
             $em->flush();
 
             return $this->render("public/contact.html.twig", [
-                "form" => $form->createView(), "message"=>$message
+                "form" => $form->createView(), "message" => $message
             ]);
         }
         return $this->render("public/contact.html.twig", [
             "form" => $form->createView()
         ]);
     }
-     /**
+    /**
      * @Route("/admin/contact/sendemail/{id}",  name="sendEmail")
      */
     public function sendEmail(MailerInterface $mailer, Contact $contact, Request $request)
@@ -109,13 +110,13 @@ class ContactController extends AbstractController
         $message = $request->request->get("message");
 
         $email = (new Email())
-            ->from('contact@aggregotech.fr')
+            ->from('aggregotech-aci@gmail.com')
             ->to($contact->getEmail())
-            ->cc('aggregotech-aci@gmail.com')
+            ->cc('contact@aggregotech.fr')
             ->subject("demande de "  . $contact->getRequest())
             ->html($message);
 
-        $mailer->send($email); 
-        return new JsonResponse(json_encode( $email));
+        $mailer->send($email);
+        return new JsonResponse(json_encode($email));
     }
 }

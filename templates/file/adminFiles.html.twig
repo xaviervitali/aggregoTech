@@ -1,10 +1,34 @@
-      {% if adminFiles | length > 0 %}
-   
+{% if adminFiles | length > 0 %}
    {% for cat in catArray %}
       <div class="filesCat">
         <p>Famille : {{cat == NULL ? "Non Classé" : cat | capitalize}}</p>
+        <div class="cards">
+          {% for file in adminFiles | filter(e=>e.fileCategory == cat) %}
+            <div class="card p-2">
+              <p class="preview">{{ ( file.fileUploadedName) | preview  | raw }}</p>
+              <div class="card-body">
+                <p class="card-title"><strong>{{file.title}}</strong></p>
+                <p class="card-text">{{ file.description }}</p>
+                <p class="card-text">{{ file.user.firstname }} <strong>{{ file.user.lastname }}</strong></p>
+                <p class="card-text">{{ file.updatedAt | date("d/m/y") }}</p>
+                <p class="card-text">
+                  <a href="../assets/vichFiles/{{ file.fileUploadedName }}" target="_blank" class="btn btn-primary btn-sm my-2">Visualiser</a>
+                  {% if is_granted('ROLE_ADMIN') or file.user == currentUser %}
+                    <a href="{{ path('file_delete', {'id':file.id}) }}" class="btn btn-danger btn-sm">Supprimer</a>
+                  {% endif %}
+                </p>
+              </div>
+            </div> 
+          {% endfor %} 
+        </div>
+      </div>  
+    {% endfor %}
 
-        <table class="table table-striped" data-pagination="true"  data-search="true"  data-locale="fr-FR" data-toggle="table" >
+    {% else %}
+      <div class="text-center">-- Aucun document présent --</div>
+  {% endif %}
+
+        {# <table class="table table-striped" data-pagination="true"  data-search="true"  data-locale="fr-FR" data-toggle="table" >
           <thead>
             <th  data-sortable="true">Fichier</th>
             <th  data-sortable="true">Ajouté par</th>
@@ -34,11 +58,5 @@
                 <td>{{ file.updatedAt | date("d/m/y") }}</td>
         
               </tr>
-            {% endfor %} 
           </tbody>
-        </table>
-      </div>
-    {% endfor %}
-      {% else %}
-        <div class="text-center">-- Aucun document présent --</div>
-  {% endif %}
+        </table> #}

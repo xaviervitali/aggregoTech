@@ -3,14 +3,6 @@
   src: url(../fonts/d-din/D-DIN.woff);
 }
 
-.modal-backdrop {
-  z-index: 1040 !important;
-}
-.modal-content {
-  margin: 2px auto;
-  z-index: 1100 !important;
-}
-
 li {
   list-style: none;
 }
@@ -22,12 +14,20 @@ li {
 }
 
 body {
-  background-image: url("../img/background.jpg");
+  background-image: url("../img/nuagefini-resize.png");
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   background-attachment: fixed;
   background-color: rgba(255, 255, 255, 0.5);
-  background-blend-mode: color;
+  background-blend-mode: lighten;
+}
+
+header img {
+  width: 200px;
+}
+
+header {
+  height: 200px;
 }
 
 table {
@@ -38,7 +38,6 @@ table {
 nav li {
   text-transform: uppercase;
   font-size: 15px;
-  /* text-shadow: 0 0 1px black; */
 }
 
 nav a {
@@ -48,8 +47,43 @@ nav a {
 .connected_user {
   font-size: 1.2em;
 }
-
 main {
   width: 90%;
   margin: auto;
+
+  min-width: 500px;
+  /* height: 50vh; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+  /* height: 100vh; */
+}
+main > * {
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid black;
+  margin: 1rem 0;
+}
+
+main > div {
+  background-color: white;
+}
+
+.btn-success {
+  background-color: #a5b1b0 !important;
+}
+.btn {
+  border: 1px solid transparent;
+}
+.btn:hover {
+  border: 1px solid red;
+}
+
+.btn-primary {
+  background-color: #5f636d !important;
+}
+
+.btn-danger {
+  background-color: #675d5f !important;
 }

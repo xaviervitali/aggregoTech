@@ -2,30 +2,25 @@
 
 namespace App\Controller;
 
-use App\Entity\Signature;
 use App\Entity\User;
-use App\Form\EditUserType;
 use App\Form\FileUploadType;
 use App\Form\UserType;
-use App\Repository\SignatureRepository;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Faker\Provider\Image;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Console\SignalRegistry\SignalRegistry;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Security;
-use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class UserController extends AbstractController
 {
     private $security;
+
+    private  $avatar;
 
     public function __construct(Security $security)
     {
@@ -44,7 +39,7 @@ class UserController extends AbstractController
         $form = $this->createForm(UserType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-    
+
             $user = $form->getData();
             $em->persist($user);
             $em->flush();
@@ -57,25 +52,32 @@ class UserController extends AbstractController
     }
 
 
-       /**
+    /**
      * @Route("/profile/user/edit/{id<\d+>}", name="user_edit")
      */
-    public function edit(Request $request,  EntityManagerInterface $em,User $user ): Response
+    public function edit(Request $request,  EntityManagerInterface $em, User $user, UserRepository $userRepository): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user = $form->getData();
 
-            $em->persist($user);
+        $this->avatar = !$this->avatar ? $user->getAvatar() : $this->avatar;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /**
+             * @var User $userTemp
+             */
+            $userTemp = $form->getData();
+
+            $this->setAvatar($userTemp, $em);
+            $em->persist($userTemp);
             $em->flush();
 
 
-            return $this->redirectToRoute("user_view", ["id"=>$user->getId()]);
+            return $this->redirectToRoute("user_view", ["id" => $user->getId()]);
         }
 
         return $this->render("user/edit.html.twig", [
-            "form" => $form->createView(), "user"=>$user
+            "form" => $form->createView(), "user" => $user
         ]);
     }
     /**
@@ -83,8 +85,9 @@ class UserController extends AbstractController
      */
     public function view(Request $request,  User $user, EntityManagerInterface $em, UserPasswordHasherInterface $encoder): Response
     {
-        if($this->security->getUser() == $user || in_array("ROLE_ADMIN", $this->security->getUser()->getRoles())){        $form = $this->createForm(UserType::class, $user);
-       
+        if ($this->security->getUser() == $user || in_array("ROLE_ADMIN", $this->security->getUser()->getRoles())) {
+            $form = $this->createForm(UserType::class, $user);
+
             $form = $this->createForm(FileUploadType::class);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
@@ -94,24 +97,24 @@ class UserController extends AbstractController
                 $task = $form->getData();
                 $user = $this->getUser();
                 $task->setUser($user);
-    
-                
+
+
                 $em->persist($task);
                 $em->flush();
-    
+
                 return  $this->render("user/view.html.twig", [
-                    'user' => $user, "form"=>$form->createView()
-                   ]);
+                    'user' => $user, "form" => $form->createView()
+                ]);
+            }
+
+            return $this->render("user/view.html.twig", [
+                'user' => $user, "form" => $form->createView()
+            ]);
         }
 
-        return $this->render("user/view.html.twig", [
-         'user' => $user, "form"=>$form->createView()
-        ]);
-    }
-
 
         return $this->render("user/view.html.twig", [
-        'user' => $this->security->getUser()
+            'user' => $this->security->getUser()
         ]);
     }
 
@@ -120,29 +123,29 @@ class UserController extends AbstractController
      */
     public function index(UserRepository $userRepository): Response
     {
-        $admins = array_filter( $userRepository->findBy([], ["lastname" => "ASC"]), function($user){
+        $admins = array_filter($userRepository->findBy([], ["lastname" => "ASC"]), function ($user) {
             /**
              * @var User $user
              */
             return $user->haveRole("ROLE_ADMIN");
         });
 
-        $employees =  array_filter( $userRepository->findBy([], ["lastname" => "ASC"]), function($user){
+        $employees =  array_filter($userRepository->findBy([], ["lastname" => "ASC"]), function ($user) {
             /**
              * @var User $user
              */
             return $user->haveRole("ROLE_EMPLOYEE") && $user->getLeaveAt() == NULL;
         });
 
-        $haveLeave =  array_filter( $userRepository->findBy([], ["leaveAt" => "DESC"]), function($user){
+        $haveLeave =  array_filter($userRepository->findBy([], ["leaveAt" => "DESC"]), function ($user) {
             /**
              * @var User $user
              */
             return $user->getLeaveAt() != NULL;
         });
-  
+
         return $this->render('user/index.html.twig', [
-            'admins' => $admins,  'employees' => $employees,'haveLeave' => $haveLeave,
+            'admins' => $admins,  'employees' => $employees, 'haveLeave' => $haveLeave,
         ]);
     }
 
@@ -174,13 +177,13 @@ class UserController extends AbstractController
         return $this->redirectToRoute('user_index');
     }
 
-      /**
+    /**
      * @Route("/admin/user/haveLeave/{id<\d+>}", name="user_leave")
      */
     public function leave(User $user, EntityManagerInterface $em)
     {
         // $em->remove($user);
-        
+
         $user
             ->setLeaveAt(new DateTimeImmutable())
             ->setRoles([]);
@@ -188,13 +191,13 @@ class UserController extends AbstractController
         return $this->redirectToRoute('user_index');
     }
 
-          /**
+    /**
      * @Route("/admin/user/haveNotLeave/{id<\d+>}", name="user_not_leave")
      */
     public function notLeave(User $user, EntityManagerInterface $em)
     {
         // $em->remove($user);
-        
+
         $user
             ->setLeaveAt(NULL)
             ->setRoles(["ROLE_EMPLOYEE"]);
@@ -207,45 +210,141 @@ class UserController extends AbstractController
      */
     public function notAvailable(User $user)
     {
-        return $this->render('user/notAvailable.html.twig', ["user"=>$user]);
-
+        return $this->render('user/notAvailable.html.twig', ["user" => $user]);
     }
-    // /**
-    //  * @Route("/profile/user/signature", name="signature_add", methods={"POST"})
-    //  */
-    // public function signatureAdd(EntityManagerInterface $em, Request $request, SignatureRepository $signatureRepository) :JsonResponse
-    // {
+    // SI ON VEUT CREER DES MINIATURES
+    // CHARGER LE CONTENU DE L'IMAGE D'ORIGINE DANS LA MEMOIRE PHP
+    // http://php.net/manual/fr/function.imagecreatefromjpeg.php
+    // LARGEUR ET HAUTEUR ORIGINALE
+    // RATIO = LARGEUR / HAUTEUR
+    // RATIO > 1 => LARGEUR > HAUTEUR => PAYSAGE
+    // RATIO < 1 => LARGEUR < HAUTEUR => PORTRAIT
+    // LARGEUR => 1920 x HAUTEUR => 1080 (FULLHD)
+    // miniature DOIT RENTRER DANS UN CARRE DE 800x800
+    // LE PLUS GRAND COTE REMPLIT LE CARRE => 800
+    // Lmini = 800
+    // Hmini = HAUTEUR * Lmini / L => 1080 * 800 / 1920
 
-    //     /**
-    //      * @var User $user
-    //      */
-    //     $user = $this->security->getUser();
-    //     $file = $request->request->get('signature');
-    //     if ($file) {
-         
+    // http://php.net/manual/fr/function.imagesx.php
+    // http://php.net/manual/fr/function.imagesy.php
 
-    //         $oldSignature = $signatureRepository->findOneBy(['user' => $user]);
-    //         if ($oldSignature) {
-    //             $signature = $oldSignature;
-    //             if(file_exists("assets/img/user/".$oldSignature->getImageName()))
-    //          {   unlink("assets/img/user/".$oldSignature->getImageName());}
-    //             $em->remove($signature);
-    //             $em->flush();
-    //         }
+    // CREER L'ESPACE MEMOIRE POUR L'IMAGE MINIATURE
+    // http://php.net/manual/fr/function.imagecreatetruecolor.php
+    // 800x800
+    // ON GARDE LE RATIO ORIGINAL 
+    // ET ON LE LIMITE DANS UN CARRE DE 800x800
+    // SI PAYSAGE
+    // Lmini = 800;
+    // Hmini = HAUTEUR * Lmini / LARGEUR 
+    // SI PORTRAIT
+    // Hmini = 800
+    // Lmini = LARGEUR * Hmini / HAUTEUR
 
-    //         $file = str_replace('data:image/png;base64,', '', $file);
-    //         $file = str_replace(' ', '+', $file);
-    //         $fileData = base64_decode($file);
-    //         $fileName = $user->getUserIdentifier() . ".png";
-    //         file_put_contents("assets/img/user/signature".$fileName, $fileData);
-            
-    //         $signature->setImageName($fileName);
-    //         $signature->setUser($user);
-    //         $em->persist($signature);
-    //         $em->flush();
-    //         return new JsonResponse(['status'=>'success', 'filename'=>$fileName]);
-    //     }
-    //     return new JsonResponse(['status'=>'error']);
+    // CREER LA COPIE DANS LA MINIATURE
+    // http://php.net/manual/fr/function.imagecopyresampled.php
 
-    // }
+    // SAUVEGARDER DANS UN FICHIER
+    // http://php.net/manual/fr/function.imagejpeg.php
+
+    function setAvatar(User $user, EntityManagerInterface $em,   $side = 300)
+    {
+        if ($user->getAvatar()) {
+
+            if ($this->avatar && $this->avatar != $user->getAvatar()) {
+                unlink("assets/img/user/" . $this->avatar);
+            }
+
+            $cheminSource = $user->getAvatar();
+
+            $userName = $user->getUserIdentifier();
+            // http://php.net/manual/fr/function.exif-imagetype.php
+            $imgType = exif_imagetype($cheminSource);
+            $ext = "";
+
+            switch ($imgType) {
+                case IMAGETYPE_JPEG:
+                    $imgSrc     = \imagecreatefromjpeg($cheminSource);
+                    $ext = "jpg";
+
+                    break;
+                case IMAGETYPE_PNG:
+                    $imgSrc     = \imagecreatefrompng($cheminSource);
+                    $ext = "png";
+
+                    // IL FAUDRA COPIER LA TRANSPARENCE EN PLUS
+                    break;
+                case IMAGETYPE_GIF:
+                    $imgSrc     = \imagecreatefromgif($cheminSource);
+                    $ext = "gif";
+
+                    // IL FAUDRA COPIER LA TRANSPARENCE EN PLUS
+                    break;
+            }
+
+            $cheminThumbnail = "assets/img/user/$userName.$ext";
+
+            // http://php.net/manual/fr/function.imagecreatefromjpeg.php
+
+
+            // http://php.net/manual/fr/function.imagesx.php
+            $largeurSrc = imagesx($imgSrc);
+            // http://php.net/manual/fr/function.imagesy.php
+            $hauteurSrc = imagesy($imgSrc);
+
+            // SI L'IMAGE EST PLUS PETITE
+            // ALORS ON NE CREE PAS DE MINIATURE
+            // ...
+
+            // PAYSAGE OU PORTRAIT
+            if ($largeurSrc > $hauteurSrc) {
+                // PAYSAGE
+                // Lmini = 300;
+                // Hmini = HAUTEUR * Lmini / LARGEUR
+                $largeurThumbnail = $side;
+                $hauteurThumbnail = $hauteurSrc * $largeurThumbnail / $largeurSrc;
+            } else {
+                // PORTRAIT
+                $hauteurThumbnail = $side;
+                $largeurThumbnail = $largeurSrc * $hauteurThumbnail / $hauteurSrc;
+            }
+            // CREER L'IMAGE THUMBNAIL VIDE
+            // http://php.net/manual/fr/function.imagecreatetruecolor.php
+            $imgThumbnail = imagecreatetruecolor($largeurThumbnail, $hauteurThumbnail);
+            imagealphablending($imgThumbnail, false);
+            imagesavealpha($imgThumbnail, true);
+
+            // COPIE AVEC RE-ECHANTILLONAGE (meilleure qualité...)
+            // http://php.net/manual/fr/function.imagecopyresampled.php
+            imagecopyresampled(
+                $imgThumbnail,
+                $imgSrc,
+                0,
+                0,
+                0,
+                0,
+                $largeurThumbnail,
+                $hauteurThumbnail,
+                $largeurSrc,
+                $hauteurSrc
+            );
+
+            // SAUVEGARDER DANS UN FICHIER
+            switch ($imgType) {
+                case IMAGETYPE_JPEG:
+                    imagejpeg($imgThumbnail, $cheminThumbnail);
+                    break;
+
+                case IMAGETYPE_PNG:
+                    imagepng($imgThumbnail, $cheminThumbnail);
+                    break;
+
+                case IMAGETYPE_GIF:
+                    imagegif($imgThumbnail, $cheminThumbnail);
+                    break;
+            }
+            $user->setAvatar("$userName.$ext");
+
+            // http://php.net/manual/fr/function.imagejpeg.php
+        }
+    }
 }

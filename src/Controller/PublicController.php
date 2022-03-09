@@ -28,7 +28,27 @@ class PublicController extends AbstractController
      */
     public function equipe(UserRepository $userRepository): Response
     {
-        return $this->render('public/equipe.html.twig', ["users" => $userRepository->findAll()]);
+        $admins = array_filter($userRepository->findBy([], ["firstname" => "ASC"]), function ($user) {
+            /**
+             * @var User $user
+             */
+            return $user->haveRole("ROLE_ADMIN");
+        });
+
+        $employees =  array_filter($userRepository->findBy([], ["firstname" => "ASC"]), function ($user) {
+            /**
+             * @var User $user
+             */
+            return $user->haveRole("ROLE_EMPLOYEE") && $user->getLeaveAt() == NULL;
+        });
+
+        $haveLeave =  array_filter($userRepository->findBy([], ["leaveAt" => "DESC"]), function ($user) {
+            /**
+             * @var User $user
+             */
+            return $user->getLeaveAt() != NULL;
+        });
+        return $this->render('public/equipe.html.twig', ["admins" => $admins, "employees" => $employees, "haveLeave" => $haveLeave]);
     }
 
 
@@ -55,7 +75,7 @@ class PublicController extends AbstractController
         return $this->render('public/dons.html.twig');
     }
 
-       /**
+    /**
      * @Route("/mentionslegales", name="mentionsLegales")
      */
     public function mentionLegales(): Response
@@ -72,9 +92,9 @@ class PublicController extends AbstractController
             /**
              * @var FileUpload $file
              */
-        return    strtolower( $file->getFileCategory()) == "public";
+            return    strtolower($file->getFileCategory()) == "public";
         });
-        
+
         return $this->render('public/telechargement.html.twig', ["files" => $files]);
     }
 }

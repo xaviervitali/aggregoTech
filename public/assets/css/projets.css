@@ -1,63 +1,26 @@
-main #carouselExampleCaptions {
-  background-color: rgba(0, 0, 0, 0.7);
-  border-radius: 8px;
-  box-shadow: 0px 10px 13px -7px;
-  padding-bottom: 10px;
-  overflow: hidden;
-}
-main .carousel-caption {
-  background-color: rgba(0, 0, 0, 0.5);
-  /* height: 40%; */
-  text-align: center;
-  margin-left: 160px;
-  margin-right: 160px;
-  border-radius: 8px;
-  overflow: auto;
-  font-family: "Poppins", sans-serif !important;
-}
-
-main .container {
-  padding-top: 15px;
-}
-
-main .carousel-item img {
-  height: 60vh;
+.carousel-item img {
+  height: 80vh;
   object-fit: cover;
 }
 
-main * a {
-  font-family: "Poppins", sans-serif !important;
-  text-decoration: none !important;
-  color: white !important;
-  font-weight: bold !important ;
-}
-main a:hover {
-  font-weight: 900 !important ;
-  color: crimson !important;
+.carousel-caption {
+  height: 40vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
 }
 
-/* bouton contact */
-main .contcatlink {
-  text-align: right;
-  padding-top: 10px;
-  padding-left: 57%;
-  display: flex;
+main #carouselExampleCaptions {
+  margin-bottom: 50px;
 }
 
-main .boutcont {
-  margin-left: 20px;
-  font-family: "Poppins", sans-serif;
-}
-
-main .boutcont:hover {
-  font-weight: bold;
-}
-
-main .titrpageproj {
-  padding-bottom: 20px;
-  text-align: center;
+.carousel-caption * {
+  font-weight: normal;
 }
 
 main .active {
   border: 0;
+}
+
+main img {
+  width: 100%;
 }
