@@ -1,9 +1,38 @@
 {% extends 'baseWithNav.html.twig' %}
-
+{% block stylesheets %}
+<style>
+i{
+}
+</style>
+{% endblock %}
 {% block body %}
-{% if  surveys | length > 0 %}
-    {% include 'survey/indexRaw.html.twig' %}
-{% else %}
-<div>Vous n'avez pas encore enregistré d'activité</div>
-{% endif %}
+    {% if surveys | length > 0%}
+        <table class="table table-striped">
+            <thead>
+                <th>Date</th>
+                <th>Organisme</th>
+                <th>Contact</th>
+                <th>Commentaire</th>
+                <th>Moyen</th>
+            </thead>
+            <tbody>
+                {% for survey in surveys %}
+                    <tr>
+                        <td>{{ survey.createdAt | date("d/m/Y", "Europe/Paris") }}</td>
+                        <td>
+                            <b>{{ (survey.addressBook.companyName  ?? "") | upper }}</b>
+                        </td>
+                        <td>{{ survey.contact }}</td>
+                        <td>{{ survey.comments }}</td>
+                        <td title="{{ survey.way }}">
+                        {{ survey.way | icon | raw }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Vous n'avez pas encore contacter <a href="{{path("addressBook")}}">d'organisme</a></p>
+    {% endif %}
+    <a href="{{path("addressBook")}}">Aller sur le carnet d'adresse</a>
 {% endblock %}

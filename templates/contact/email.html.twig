@@ -1,0 +1,16 @@
+
+    {% apply inline_css(source('@styles/email.css')) %}
+
+    <div>{{ message | raw }}</div>
+    <div class="signature"><strong>Xavier Vitali</strong></div>
+    <div>Encadrant Technique</div>
+    <div >
+      <em class="blue">Agence Digitale Sociale et Solidaire</em>
+    </div>
+    <div>
+      <em>07.60.45.88.42</em>
+    </div>
+    {# <img  class="headerlogo" src="{{asset("assets/img/logoHDT2.png")}}"></a>   #}
+    <div><img src= "{{ email.image("@images/signatureEmail.png")}}" alt="" /></div>
+    {% endapply %}
+

@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap");
+
+img {
+  width: 300px;
+  object-fit: contain;
+}
+
+.signature {
+  margin-top: 50px;
+}
+.blue {
+  color: blue;
+}
+
+* {
+  font-family: Helvetica, Arial, sans-serif;
+}

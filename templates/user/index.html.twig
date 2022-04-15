@@ -4,16 +4,18 @@
 {% endblock %}
 
 {% block body %}
+<div>
 <h2>Listes de utilisateurs</h2>
 <a class="btn btn-primary " href="{{ path('user_add') }}">Ajouter un utilisateur</a>
 {% set roles = {"salariés": employees, "anciens salariés": haveLeave, "administrateurs": admins, } %}
-
 {% for role in roles|keys %}
-<h3>Liste des {{role }}</h3>
+{% if ( roles[role]) | length > 0 %}
+<div>
+<h3>Liste des {{ role }}</h3>
 <div class="d-flex justify-content-around flex-wrap">
    {% for user in roles[role]  %}
     <div class="card  text-center">
- {{ user | avatar |raw}}
+         {{ user | avatar |raw}}
         <div class="card-body">
           <h5 class="card-title"><a href="{{path("user_view", {id: user.id})}}">{{ user.firstname}} {{user.lastname }}</a></h5>
           <p class="card-text">
@@ -30,15 +32,14 @@
         {% endif %}
         </div>
 </div>
-
 {% endfor %}
+
+</div> 
+{% endif %}
 </div> 
 
 {% endfor %}
 
-<div>
 
-</div>
-
-  
-{% endblock %}
+  </div>
+  {% endblock %}

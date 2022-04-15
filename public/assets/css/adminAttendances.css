@@ -1,0 +1,50 @@
+main img,
+main p {
+  height: 200px;
+  margin: 10px 0;
+}
+
+td {
+  max-width: 200px;
+}
+
+tr td:first-of-type p {
+  height: auto;
+}
+
+main p {
+  font-size: 1.2rem;
+}
+
+main img {
+  display: block;
+  /* height: auto; */
+  /* width: 30%; */
+  object-fit: cover;
+}
+
+td > p {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media print {
+  body {
+    background: none;
+  }
+  header,
+  .monthButtons {
+    display: none;
+  }
+  table,
+  #users {
+    width: 100vw;
+  }
+  main img,
+  main p {
+    height: 50px;
+    margin: 0;
+    font-size: 1rem;
+  }
+}

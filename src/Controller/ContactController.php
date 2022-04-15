@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Security\Core\Signature\SignatureHasher;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+
 
 class ContactController extends AbstractController
 {
@@ -56,9 +59,9 @@ class ContactController extends AbstractController
         $form->handleRequest($request);
         $message = <<<THANK
         <div class="text-center">
-        <p>
-        Merci, nous accusons récéption de votre message :
-        </p>
+            <div>
+                Merci, nous accusons récéption de votre message :
+            </div>
     
         
         </div>
@@ -107,14 +110,19 @@ class ContactController extends AbstractController
     public function sendEmail(MailerInterface $mailer, Contact $contact, Request $request)
     {
 
+
         $message = $request->request->get("message");
 
-        $email = (new Email())
-            ->from('aggregotech-aci@gmail.com')
+        $email = (new TemplatedEmail())
+            ->from('contact@aggregotech.fr')
             ->to($contact->getEmail())
-            ->cc('contact@aggregotech.fr')
+            ->cc('aggregotech.aci@gmail.com')
             ->subject("demande de "  . $contact->getRequest())
-            ->html($message);
+            ->htmlTemplate('contact/email.html.twig')
+            ->context(([
+                'contact' => $contact,
+                "message" => $message
+            ]));
 
         $mailer->send($email);
         return new JsonResponse(json_encode($email));

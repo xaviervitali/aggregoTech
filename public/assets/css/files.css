@@ -1,50 +1,50 @@
-.form-control {
-  margin: 1em 0;
-  /* max-width: 500px; */
-}
-
-.filesCat:nth-child(2n) {
-}
-
-.filesCat {
-  padding: 1rem;
-  border: 1px solid #888;
-  text-align: center;
-  background: white;
-  margin: 1rem;
-}
-.cards {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-}
-.card {
-  width: 350px;
-  margin: 1rem;
-}
-.preview > * {
-  width: 100%;
-  font-size: 3em;
-  height: 300px;
-  object-fit: cover;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.preview {
-}
-.filesCat > p {
-  font-weight: bold;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-tr td:first-child > * {
-  width: 150px;
-  text-align: center;
-}
-
-td i {
-  font-size: 3em;
-}
+.form-control {
+  margin: 1em 0;
+  /* max-width: 500px; */
+}
+
+.filesCat:nth-child(2n) {
+}
+
+.filesCat {
+  padding: 1rem;
+  border: 1px solid #888;
+  text-align: center;
+  background: white;
+  margin: 1rem;
+}
+.cards {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.card {
+  width: 350px;
+  margin: 1rem;
+}
+.preview > * {
+  width: 100%;
+  font-size: 3em;
+  height: 300px;
+  object-fit: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.preview {
+}
+.filesCat > p {
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+tr td:first-child > * {
+  width: 150px;
+  text-align: center;
+}
+
+td i {
+  font-size: 3em;
+}

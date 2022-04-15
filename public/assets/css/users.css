@@ -1,20 +1,20 @@
-.card {
-  background-color: #c6bfa0;
-  color: white;
-  margin: 10px;
-}
-
-.card:nth-child(2n) {
-  background-color: #9f8680;
-}
-
-.card img {
-  object-fit: cover;
-  width: 200px;
-  height: 200px;
-  text-align: center;
-  margin: auto;
-  border-radius: 50%;
-  box-shadow: 0 0 20px black;
-  margin: 1em auto;
-}
+.card {
+  background-color: #c6bfa0;
+  color: white;
+  margin: 10px;
+}
+
+.card:nth-child(2n) {
+  background-color: #9f8680;
+}
+
+.card img {
+  object-fit: cover;
+  width: 200px;
+  height: 200px;
+  text-align: center;
+  margin: auto;
+  border-radius: 50%;
+  box-shadow: 0 0 20px black;
+  margin: 1em auto;
+}

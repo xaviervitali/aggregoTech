@@ -1,0 +1,52 @@
+{% extends 'baseWithNav.html.twig' %}
+
+{%  block stylesheets %}
+    <link rel="stylesheet" href="{{ asset("assets/css/addressBook.css")}}">
+{% endblock %}
+{% block body %}
+<h2>Ajouter un organisme</h2>
+{{ form_start(addressBookform)}}
+{{ form_widget(addressBookform.companyName)}}
+{{ form_widget(addressBookform.address)}}
+{{ form_widget(addressBookform.website)}}
+{{ form_widget(addressBookform.description)}}
+<fieldset class="bg-white rounded p-2 " >
+ <legend>Contacts de l'organisme</legend>
+<div class="contact">
+
+    <ul
+    id="address_book_contacts"
+            data-prototype="{{ form_widget(addressBookform.contacts.vars.prototype)|e }}"
+            data-widget-tags="{{'<li class="ml-2"></li>'|e }}"
+            data-widget-counter="{{ addressBookform.contacts|length }}"
+        >
+
+    {{form_widget(addressBookform.contacts)}}
+    </ul>
+    <button type="button"   class="add-another-collection-widget btn btn-info btn-sm" data-list-selector="#address_book_contacts">Ajouter un contact</button>
+</fieldset>
+</div>
+<fieldset class="bg-white rounded p-2 " >
+ <legend>Activités de l'organisme</legend>
+ <div class="p-2">
+    {{form_widget(addressBookform.addressBookActivities)}}
+    <p>Pour supprimer un activité faire un click droit sur celle-ci</p>
+</div >
+</fieldset>
+<button class="btn btn-success">Ajouter l'organisme</button>
+{{ form_end(addressBookform)}}
+
+<hr>
+<h2>Ajouter une activité</h2>
+
+{{ form_start(addressBookActivityform)}}
+{{ form_widget(addressBookActivityform)}}
+<button class="btn btn-success">Ajouter l'activité</button>
+{{ form_end(addressBookActivityform)}}
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://cdn.tiny.cloud/1/jwifx6cyqjsshd8l1nxakb6hbbvlisgj6ngqgvw0aiyc15lr/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="{{ asset("assets/js/addressBook.js")}}"></script>
+
+{% endblock %}

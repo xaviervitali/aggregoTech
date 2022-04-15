@@ -1,26 +1,26 @@
-.carousel-item img {
-  height: 80vh;
-  object-fit: cover;
-}
-
-.carousel-caption {
-  height: 40vh;
-  background-color: rgba(0, 0, 0, 0.7);
-  border-radius: 8px;
-}
-
-main #carouselExampleCaptions {
-  margin-bottom: 50px;
-}
-
-.carousel-caption * {
-  font-weight: normal;
-}
-
-main .active {
-  border: 0;
-}
-
-main img {
-  width: 100%;
-}
+.carousel-item img {
+  height: 80vh;
+  object-fit: cover;
+}
+
+.carousel-caption {
+  height: 40vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+}
+
+main #carouselExampleCaptions {
+  margin-bottom: 50px;
+}
+
+.carousel-caption * {
+  font-weight: normal;
+}
+
+main .active {
+  border: 0;
+}
+
+main img {
+  width: 100%;
+}

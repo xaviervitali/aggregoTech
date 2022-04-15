@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Attendance;
 use App\Entity\User;
+use App\Form\AttendancesViewType;
 use App\Form\AttendanceType;
 use App\Repository\AttendanceRepository;
 use App\Repository\SignatureRepository;
@@ -22,16 +23,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
-
-use function PHPSTORM_META\map;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class AttendanceController extends AbstractController
 {
 
+
     /**
      * @Route("/profile/attendance/{id<\d+>}", name="attendance")
      */
-    public function index( AttendanceRepository $attendanceRepository, User $user, Request $request, EntityManagerInterface $em): Response
+    public function index(AttendanceRepository $attendanceRepository, User $user, Request $request, EntityManagerInterface $em): Response
     {
         /**
          * @var User $currentUser
@@ -52,7 +55,7 @@ class AttendanceController extends AbstractController
             $attendance = new Attendance;
 
             $attendance
-                ->setAddedBy($this->security->getUser())
+                ->setAddedBy($this->getUser())
                 ->setUpdatedAt(new DateTimeImmutable())
                 ->setUser($user)
                 ->setCreatedAt(DateTimeImmutable::createFromMutable($form->getData()["createdAt"]));
@@ -118,7 +121,7 @@ class AttendanceController extends AbstractController
     }
 
     /**
-     * @Route("/admin/attendance/delete//{id<\d+>}", name="attendance_delete")
+     * @Route("/admin/attendance/delete/{id<\d+>}", name="attendance_delete")
      */
     public function delete(Attendance $attendance, EntityManagerInterface $em)
     {
@@ -127,5 +130,36 @@ class AttendanceController extends AbstractController
         $em->remove($attendance);
         $em->flush();
         return $this->redirectToRoute('attendance', ['id' => $user->getId()]);
+    }
+
+    /**
+     * @Route("admin/attendances/view", name="admin_attendance_view")
+     */
+    public function adminAttendanceView(AttendanceRepository $attendanceRepository, UserRepository $userRepository)
+    {
+
+        return $this->render('attendance/adminAttendancesView.html.twig', [
+            "users" => array_filter($userRepository->findBy([], ["lastname" => "ASC"]), function ($user) {
+                return in_array("ROLE_EMPLOYEE", $user->getRoles());
+            }), "attendances" => $attendanceRepository->findAll(),
+
+        ]);
+    }
+
+    /**
+     * @Route("admin/getAttendances", name="admin_get_attendances")
+     */
+    public function getAttendances(Request $request, AttendanceRepository $attendanceRepository,)
+    {
+        $month = date_create($request->query->get('month'));
+        $user = $request->query->get('user');;
+        $attendances = $attendanceRepository->findByExampleField($month, $user);
+        $createdAt = (array_map(function ($a) {
+            return  $a->getCreatedAt();
+        }, $attendances));
+        $reponse = new JsonResponse($createdAt);
+
+
+        return $reponse;
     }
 }

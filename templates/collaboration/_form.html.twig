@@ -1,0 +1,25 @@
+{{ form_start(form) }}
+    <div class="row">
+    <div class="col">
+        {{ form_widget(form.name) }}
+    </div>
+    <div class="col">
+        {{ form_widget(form.url) }}
+    </div>
+    <div class="col d-flex">
+        {{ form_widget(form.collaborationChoice) }}
+    <a href="{{path("collaboration_choice_new")}}" class="btn btn-sm btn-info">Ajouter un type de collaboration</a>
+
+    </div>
+
+    <div class="col d-flex align-items-center justify-content-center">
+    <label for="collaboration_imageFile_file" class="d-block">Choisir un image</label>
+     
+    {{ form_widget(form.imageFile) }}
+
+
+    </div>
+    </div>
+    <hr>
+    <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}

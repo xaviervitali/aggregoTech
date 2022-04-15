@@ -1,0 +1,69 @@
+{% extends 'baseWithNav.html.twig' %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css">
+
+<style>
+main img{
+height: 100px;
+width: 100%;
+object-fit: contain;
+display: block;
+margin:auto;
+background: white;
+padding: 5px;
+}
+
+main div{
+    border: none;
+}
+
+main input, main select{
+    min-width: 500px;
+    text-align: center;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+    <h1>Liste des partenaires / financeurs</h1>
+    <a href="{{ path('collaboration_new') }}">Nouvelle entrée</a>
+
+    <table class="table table-striped table-light"  data-toggle="table"
+     data-pagination="true"
+  data-search="true">
+        <thead>
+            <tr>
+                <th data-sortable="true">Nom</th>
+                <th>Logo</th>
+                <th>Url</th>
+                <th data-sortable="true">Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for collaboration in collaborations | sort((a, b)=>(a.name > b.name ))%}
+            <tr>
+                <td>{{ collaboration.name }}</td>
+                <td ><img src={{asset("assets/img/collaboration/") ~ collaboration.logo }} ></td>
+                <td><a href={{ collaboration.url }} target="_blank">{{ collaboration.url }}</a></td>
+                <td>{{ collaboration.collaborationChoice | capitalize}}</td>
+                <td>
+                    <a href="{{ path('collaboration_delete', {'id': collaboration.id}) }}" class="text-danger">Supprimer</a>
+                    <a href="{{ path('collaboration_edit', {'id': collaboration.id}) }}" class="text-info">Editer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Pas d'enregistrement</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.19.1/locale/bootstrap-table-fr-FR.min.js" integrity="sha512-8kjFsrFq1W+Hd4uBWB1OTqxloFC+PbxowJgAKvvqvyWiU+QenTxaItEaKcymTKTQIj7UY8o0K2a0r9liccCowg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock %}

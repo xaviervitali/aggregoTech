@@ -12,10 +12,40 @@
       <img class="nuage" src="{{asset("assets/img/nuagefini-resize.png")}}" alt="logo Association"/>
     </div>
 
-    <!-- Financeurs -->
+{% set financeurs = collaborations | filter(c=> c.collaborationChoice == "financeur" ) %}
+{% set partenaires = collaborations | filter(c=> c.collaborationChoice == "partenaire" ) %}
+
     <section class="financeurs">
       <h1>Nos Financeurs</h1>
       <ul>
+      {% for financeur in financeurs %}
+        <a href="{{ financeur.url}}" target="_blank">
+          <li>
+            <img
+              src="{{asset("assets/img/collaboration/") ~ financeur.logo}}" alt="{{ financeur.name}}"
+            /></li>
+        </a>
+        <li>
+      {% endfor %}
+      </ul>
+    </section>
+
+    <section class="partenaires">
+      <h1>Nos Partenaires</h1>
+      <ul>
+            {% for partenaire in partenaires %}
+          <li>
+        <a href="{{ partenaire.url}}" target="_blank">
+            <img
+              src="{{asset("assets/img/collaboration/") ~ partenaire.logo}}" alt="{{ partenaire.name}}"
+            />
+        </a>
+            </li>
+      {% endfor %}
+      </ul>
+    </section>
+{# 
+    <!-- Financeurs -->
         <a href="https://travail-emploi.gouv.fr" target="_blank">
           <li>
             <img
@@ -97,5 +127,5 @@
               </a>
         </li>
       </ul>
-    </section>
+    </section> #}
   {% endblock %}

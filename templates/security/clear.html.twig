@@ -1,0 +1,28 @@
+{% extends 'baseWithNav.html.twig' %}
+
+{# {% extends "base.html.twig" %} #}
+
+{% block body %}
+<div class="d-flex justify-content-around align-items-center">
+{% if files | length > 0 %}
+  <div class=" overflow-auto"  style="max-height: 300px;">
+    <div class="card card-body">
+      <ul>
+        {% for file in files %}
+        <li>{{ file }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <a href ="{{path("clear_cache_api")}}" class="btn btn-danger  d-block ">Supprimer les fichiers ?</a>
+
+{% else %}
+<h3>Pas de fichier twig en cache</h3>
+{% endif %}
+</div>
+{% endblock %}
+{% block javascripts %}
+
+
+
+{% endblock %}

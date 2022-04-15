@@ -1,0 +1,107 @@
+{% extends 'baseWithNav.html.twig' %}
+
+{%  block stylesheets %}
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="{{ asset("assets/css/addressBook.css")}}">
+{% endblock %}
+{% block body %}
+<table 
+        class="table table-striped" 
+         id="table"
+        data-toggle="table"
+        data-pagination="true"
+         data-search="true"
+         >
+    <thead>
+        <th>Nom de l'organisme</th>
+        <th>Contact</th>
+        <th>Plus d'infos</th>
+        <th>Activités</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        {% for company in addressBook %}
+            <tr>
+                <td>
+                {% if company.website %}
+                <a href="{{company.website}}" target="_blank"><strong>{{company.companyName | upper}}</strong></a></td>
+                {% else %}
+                <strong>{{company.companyName | upper}}</strong>
+                {% endif %}
+                <td>
+                <ul>
+                {% for contact in company.contacts %}
+                <li class="text-center">
+                    <div>
+                    {{ contact.name}}
+                    </div>
+                    <div>
+                        <strong>
+                            {{ contact.role}}
+                        </strong>
+                    </div>
+                    <div> 
+                        <a href="mailto://{{contact.email}}">{{contact.email}}</a>
+                    </div>
+                    <div>{{ contact.phone}}</div>
+                    {# <hr> #}
+                </li>
+                {% endfor %}
+                </ul>
+                </td>
+                <td>{{company.description |raw}}</td>
+                <td>
+                    <ul>
+                        <li>{{company.addressBookActivities | map(e=>e.name | capitalize) | join("</li><li>") |raw }}
+                        </li>
+                    </ul>
+                </td>
+        <td>
+                    {% if is_granted('ROLE_ADMIN')  %}
+        <a href ={{path('addressBookEdit', {id: company.id})}} class="text-info">Modifier</a>
+        <a href ={{path('addressBookDelete', {id: company.id})}} class="text-danger">Supprimer</a>
+{% else %}
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal" data-id="{{company.id}}" data-company={{company.companyName}} data-contacts="{{ company.contacts | serialize("json", {groups:"group1"})  }}">
+  J'ai contacté l'organisme
+</button>
+
+
+        {% endif %}
+        </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+<!-- Modal -->
+<div class="modal fade " id="modal"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+       {{ form_start(form)}}
+      <div class="modal-body">
+       {{ form_widget(form)}}
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button submit" class="btn btn-primary" >Valider</button>
+      </div>
+       {{ form_end(form)}}
+
+    </div>
+  </div>
+</div>
+<a href="{{path('address_book_new')}}">Ajouter un organisme</a>
+{% endblock %}
+{% block javascripts %}
+
+
+    <script src="{{ asset("assets/js/addressBook.js")}}"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.19.1/locale/bootstrap-table-fr-CH.min.js" integrity="sha512-oMiFbd095KmJ9vWK5N/MhFffDzK0WT1bflfwdLkpnQTQFiL/SGo7p+ivb9tPwT2wrLGZhj1+/saaUt+NprpMgA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+{% endblock %}

@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\SurveyRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SurveyRepository::class)
@@ -19,78 +18,60 @@ class Survey
     private $id;
 
     /**
-     * @ORM\Column(type="text")
-   
-   
-    
-    
-     */
-    private $answer;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="surveys")
-     */
-    private $category;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Field::class, inversedBy="surveys")
-     */
-    private $field;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="surveys", cascade={"persist"})
-     */
-    private $user;
-
-    /**
      * @ORM\Column(type="datetime_immutable")
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="text")
      */
-    private $updatedAt;
+    private $comments;
 
- 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="surveys")
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=AddressBook::class, inversedBy="surveys")
+     */
+    private $addressBook;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $way;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=AddressBookContact::class, inversedBy="surveys")
+     */
+    private $contact;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getAnswer(): ?string
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->answer;
+        return $this->createdAt;
     }
 
-    public function setAnswer(string $answer): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
-        $this->answer = $answer;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getCategory(): ?Category
+    public function getComments(): ?string
     {
-        return $this->category;
+        return $this->comments;
     }
 
-    public function setCategory(?Category $category): self
+    public function setComments(string $comments): self
     {
-        $this->category = $category;
-
-        return $this;
-    }
-
-    public function getField(): ?Field
-    {
-        return $this->field;
-    }
-
-    public function setField(?Field $field): self
-    {
-        $this->field = $field;
+        $this->comments = $comments;
 
         return $this;
     }
@@ -107,28 +88,39 @@ class Survey
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getAddressBook(): ?AddressBook
     {
-        return $this->createdAt;
+        return $this->addressBook;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setAddressBook(?AddressBook $addressBook): self
     {
-        $this->createdAt = $createdAt;
+        $this->addressBook = $addressBook;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getWay(): ?string
     {
-        return $this->updatedAt;
+        return $this->way;
     }
 
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    public function setWay(string $way): self
     {
-        $this->updatedAt = $updatedAt;
+        $this->way = $way;
 
         return $this;
     }
 
+    public function getContact(): ?AddressBookContact
+    {
+        return $this->contact;
+    }
+
+    public function setContact(?AddressBookContact $contact): self
+    {
+        $this->contact = $contact;
+
+        return $this;
+    }
 }

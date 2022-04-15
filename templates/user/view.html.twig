@@ -93,6 +93,7 @@
             </div>
         </div>
     <!-- fin block type -->
+
         <!-- Block type -->
         <div class="row my-2" >
             <div class="col">
@@ -125,7 +126,8 @@
     </div>
     </div>
 </div>
-        
+{% if is_granted('ROLE_ADMIN') %}
+
     <div>
         <div class="row my-2">
           <h2 class="col-4">Actions sur le compte</h2>
@@ -141,13 +143,20 @@
     <!-- fin block type -->
       <!-- Block type -->
         <div class="row my-2" >
-        
+            
             <div class="col">
-            <a href="{{ path('survey_index', {'id':user.id}) }}">Aller aux activités</a>
+            <a href="{{ path('survey', {'id':user.id}) }}">Aller au suivi d'activités</a>
             </div>
         </div>
     <!-- fin block type -->
-{% if is_granted('ROLE_ADMIN') %}
+      <!-- Block type -->
+        <div class="row my-2" >
+        
+            <div class="col">
+            {# <a href="{{ path('survey_index', {'id':user.id}) }}">Aller aux activités</a> #}
+            </div>
+        </div>
+    <!-- fin block type -->
       <!-- Block type -->
         <div class="row my-2" >
          
@@ -164,13 +173,12 @@
             </div>
         </div>
     <!-- fin block type -->
-    {% endif %}
         </div>
 
     </div>
 </div>
 
- <div class="my-2">
+ {# <div class="my-2">
 
 {% if user == app. user %}
     <div class="col-lg-4 col-md-6 col-sm-12 border p-2">
@@ -179,7 +187,9 @@
     {% include "file/new.html.twig" %}
     </div>
 {% endif %}
-</div>
+</div> #}
+{% endif %}
+
 {% if  user.getFileUploads  | length > 0 %}
     {% set catArray = [] %}
     {% for cat in  user.getFileUploads | map (e=>e.fileCategory) %}

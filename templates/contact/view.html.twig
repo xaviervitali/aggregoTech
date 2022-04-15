@@ -23,11 +23,12 @@
   <textarea placeholder="Message réponse" id="mytextarea">
 
   </textarea>
-  <p class="fst-italic my-2 p-2 bg-info text-light">
-  Le message sera envoyé à "{{contact.email }}" de la part de "contact@aggregotech.fr" avec copie à "aggregotech-aci@gmail.com" aura comme Objet "demande de {{ contact.request }}" et aura comme corps le contenu ci-dessus.
-  </p >
+  {# <p class="fst-italic my-2 p-2 bg-info text-light">
+  Le message sera envoyé à "{{contact.email }}" de la part de "contact@aggregotech.fr" avec copie à "aggregotech.aci@gmail.com" aura comme Objet "demande de {{ contact.request }}" et aura comme corps le contenu ci-dessus.
+  </p > #}
 <button class="btn btn-success" onclick ="sendEmail()">Envoyer le message</button>
-<a class="btn btn-danger" href="{{path("contact_delete", {"id": contact.id })}}" onclick ="alert('supprimer le message ?')">Supprimer ce message</a>
+<a class="btn btn-danger col" href="{{path("contact_delete", {"id": contact.id })}}" onclick ="alert('supprimer le message ?')">Supprimer ce message</a>
+<a class="btn btn-success" href="mailto://{{contact.email}}?subject=demande de {{ contact.request }}">Répondre</a>
 </div>
 
 {% endblock %}
@@ -43,16 +44,16 @@
 
 
     function sendEmail(){
-          $.ajax({
+      if(confirm("Envoyer l'e-mail ?"))
+   {       $.ajax({
     url: "{{path("sendEmail", {id: contact.id })}}",
     type: "POST",
     data: { message: tinymce.get('mytextarea').getContent() },
     success: function (data) {
-      console.log(data);
 
       window.location.reload();
     },
-});
+});}
     }
   </script>
 {% endblock %}

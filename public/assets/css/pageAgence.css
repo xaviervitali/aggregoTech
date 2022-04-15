@@ -1,173 +1,173 @@
-.titrePresentation {
-  margin-top: 10px !important;
-}
-.titrePresentation {
-  font-size: 30px;
-  text-align: center;
-  margin: 0 25px 0 25px;
-  color: rgba(5, 5, 88);
-}
-
-.presentation ul li {
-  text-align: justify;
-}
-.presentation {
-  padding: 10px;
-  margin: auto;
-  width: 80% !important;
-
-  border-radius: 1em;
-  box-shadow: 0px 13px 13px -7px #000000;
-  background: rgba(255, 255, 255, 1);
-  color: rgba(5, 5, 88);
-}
-
-hr {
-  visibility: hidden;
-}
-.presentation p {
-  margin-top: 10px;
-  text-align: left;
-}
-
-.presentation ul {
-  margin-top: 10px;
-  list-style: circle;
-}
-
-.sndpart {
-  padding-top: 30px;
-}
-
-/* Bouton */
-.button2 {
-  position: relative;
-  display: inline-block;
-  padding: 10px 10px;
-  border-radius: 4px;
-  color: white;
-  text-decoration: none;
-  text-transform: uppercase;
-  overflow: hidden;
-  margin: 25px;
-  filter: hue-rotate(0deg);
-  background: rgba(5, 5, 88);
-  transition: all 0.1s linear;
-}
-.button2:hover {
-  background: none;
-  box-shadow: none;
-  color: rgba(5, 5, 88);
-}
-.button2:hover span {
-  position: absolute;
-  display: block;
-}
-.button2:hover span:nth-child(1) {
-  filter: hue-rotate(0deg);
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, #3a86ff);
-  animation: animate1 1s linear infinite;
-}
-@keyframes animate1 {
-  0% {
-    left: -100%;
-  }
-  50%,
-  100% {
-    left: 100%;
-  }
-}
-.button2:hover span:nth-child(2) {
-  filter: hue-rotate(60deg);
-  top: -100%;
-  right: 0;
-  width: 3px;
-  height: 100%;
-  background: linear-gradient(180deg, transparent, #3a86ff);
-  animation: animate2 1s linear infinite;
-  animation-delay: 0.25s;
-}
-@keyframes animate2 {
-  0% {
-    top: -100%;
-  }
-  50%,
-  100% {
-    top: 100%;
-  }
-}
-.button2:hover span:nth-child(3) {
-  filter: hue-rotate(120deg);
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  background: linear-gradient(270deg, transparent, #3a86ff);
-  animation: animate3 1s linear infinite;
-  animation-delay: 0.5s;
-}
-@keyframes animate3 {
-  0% {
-    right: -100%;
-    height: 3px;
-  }
-  50%,
-  100% {
-    height: 2px;
-    right: 100%;
-  }
-}
-.button2:hover span:nth-child(4) {
-  filter: hue-rotate(300deg);
-  bottom: -100%;
-  left: 0;
-  width: 3px;
-  height: 100%;
-  background: linear-gradient(360deg, transparent, #3a86ff);
-  animation: animate4 1s linear infinite;
-  animation-delay: 0.75s;
-}
-@keyframes animate4 {
-  0% {
-    bottom: -100%;
-  }
-  50%,
-  100% {
-    bottom: 100%;
-  }
-}
-
-@media screen and (max-width: 996px) {
-  .presentation {
-    margin: 0px;
-    padding: 50px;
-    width: 100% !important;
-    background: rgba(244, 250, 253, 0.8);
-    border-radius: 0%;
-  }
-  main li {
-    margin-bottom: 1rem;
-  }
-
-  main .presentation ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  main .presentation p {
-    text-align: justify;
-    font-size: larger;
-  }
-
-  hr {
-    visibility: visible;
-  }
-}
-/* 
-
-.presentation.bg-white{
-  width: 100% !important;
-} */
+.titrePresentation {
+  margin-top: 10px !important;
+}
+.titrePresentation {
+  font-size: 30px;
+  text-align: center;
+  margin: 0 25px 0 25px;
+  color: rgba(5, 5, 88);
+}
+
+.presentation ul li {
+  text-align: justify;
+}
+.presentation {
+  padding: 10px;
+  margin: auto;
+  width: 80% !important;
+
+  border-radius: 1em;
+  box-shadow: 0px 13px 13px -7px #000000;
+  background: rgba(255, 255, 255, 1);
+  color: rgba(5, 5, 88);
+}
+
+hr {
+  visibility: hidden;
+}
+.presentation p {
+  margin-top: 10px;
+  text-align: left;
+}
+
+.presentation ul {
+  margin-top: 10px;
+  list-style: circle;
+}
+
+.sndpart {
+  padding-top: 30px;
+}
+
+/* Bouton */
+.button2 {
+  position: relative;
+  display: inline-block;
+  padding: 10px 10px;
+  border-radius: 4px;
+  color: white;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  margin: 25px;
+  filter: hue-rotate(0deg);
+  background: rgba(5, 5, 88);
+  transition: all 0.1s linear;
+}
+.button2:hover {
+  background: none;
+  box-shadow: none;
+  color: rgba(5, 5, 88);
+}
+.button2:hover span {
+  position: absolute;
+  display: block;
+}
+.button2:hover span:nth-child(1) {
+  filter: hue-rotate(0deg);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #3a86ff);
+  animation: animate1 1s linear infinite;
+}
+@keyframes animate1 {
+  0% {
+    left: -100%;
+  }
+  50%,
+  100% {
+    left: 100%;
+  }
+}
+.button2:hover span:nth-child(2) {
+  filter: hue-rotate(60deg);
+  top: -100%;
+  right: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #3a86ff);
+  animation: animate2 1s linear infinite;
+  animation-delay: 0.25s;
+}
+@keyframes animate2 {
+  0% {
+    top: -100%;
+  }
+  50%,
+  100% {
+    top: 100%;
+  }
+}
+.button2:hover span:nth-child(3) {
+  filter: hue-rotate(120deg);
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  background: linear-gradient(270deg, transparent, #3a86ff);
+  animation: animate3 1s linear infinite;
+  animation-delay: 0.5s;
+}
+@keyframes animate3 {
+  0% {
+    right: -100%;
+    height: 3px;
+  }
+  50%,
+  100% {
+    height: 2px;
+    right: 100%;
+  }
+}
+.button2:hover span:nth-child(4) {
+  filter: hue-rotate(300deg);
+  bottom: -100%;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, #3a86ff);
+  animation: animate4 1s linear infinite;
+  animation-delay: 0.75s;
+}
+@keyframes animate4 {
+  0% {
+    bottom: -100%;
+  }
+  50%,
+  100% {
+    bottom: 100%;
+  }
+}
+
+@media screen and (max-width: 996px) {
+  .presentation {
+    margin: 0px;
+    padding: 50px;
+    width: 100% !important;
+    background: rgba(244, 250, 253, 0.8);
+    border-radius: 0%;
+  }
+  main li {
+    margin-bottom: 1rem;
+  }
+
+  main .presentation ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  main .presentation p {
+    text-align: justify;
+    font-size: larger;
+  }
+
+  hr {
+    visibility: visible;
+  }
+}
+/* 
+
+.presentation.bg-white{
+  width: 100% !important;
+} */

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Collaboration{% endblock %}
+
+{% block body %}
+    <h1>Collaboration</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ collaboration.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ collaboration.name }}</td>
+            </tr>
+            <tr>
+                <th>Logo</th>
+                <td>{{ collaboration.logo }}</td>
+            </tr>
+            <tr>
+                <th>Url</th>
+                <td>{{ collaboration.url }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('collaboration_index') }}">back to list</a>
+
+    <a href="{{ path('collaboration_edit', {'id': collaboration.id}) }}">edit</a>
+
+    {{ include('collaboration/_delete_form.html.twig') }}
+{% endblock %}
