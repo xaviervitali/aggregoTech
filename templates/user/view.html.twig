@@ -83,6 +83,7 @@
       
         </div>
     <!-- fin block type -->
+    {% if not is_granted("ROLE_EMPLOYEE") %}
       <!-- Block type -->
         <div class="row my-2" >
             <div class="col">
@@ -103,7 +104,7 @@
                 {{ user | avatar | raw }}
             </div>
         </div>
-    
+    {% endif %}
     <!-- Block type -->
         <div class="row my-2" >
             <div class="col">
@@ -126,7 +127,6 @@
     </div>
     </div>
 </div>
-{% if is_granted('ROLE_ADMIN') %}
 
     <div>
         <div class="row my-2">
@@ -149,6 +149,22 @@
             </div>
         </div>
     <!-- fin block type -->
+          <!-- Block type -->
+        <div class="row my-2" >
+            
+            <div class="col">
+            <a href="{{ path('holiday_index', {'id':user.id}) }}"  class="position-relative">Aller aux demandes de congés
+            {% set holidays = user.holidays | filter(h=>h.status == "n/a") | length %}
+            {% if holidays > 0 %}
+              <span class="position-absolute ms-20 top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ holidays}}
+                    <span class="visually-hidden">demande en cours</span>
+                </span>
+            {% endif %}
+                </a>
+            </div>
+        </div>
+    <!-- fin block type -->
       <!-- Block type -->
         <div class="row my-2" >
         
@@ -157,6 +173,7 @@
             </div>
         </div>
     <!-- fin block type -->
+{% if is_granted('ROLE_RH') %}
       <!-- Block type -->
         <div class="row my-2" >
          
@@ -173,22 +190,12 @@
             </div>
         </div>
     <!-- fin block type -->
+{% endif %}
         </div>
 
     </div>
 </div>
 
- {# <div class="my-2">
-
-{% if user == app. user %}
-    <div class="col-lg-4 col-md-6 col-sm-12 border p-2">
-    <h3>Uploader un fichier</h3>
-
-    {% include "file/new.html.twig" %}
-    </div>
-{% endif %}
-</div> #}
-{% endif %}
 
 {% if  user.getFileUploads  | length > 0 %}
     {% set catArray = [] %}

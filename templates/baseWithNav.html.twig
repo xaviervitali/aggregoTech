@@ -1,6 +1,8 @@
 {% extends "base.html.twig" %}
 {% set route_name = app.request.attributes.get('_route') %}
-      
+{% block stylesheets%}
+
+{% endblock %}
 {% block header %}
   <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
     <div class="container-fluid">
@@ -33,9 +35,9 @@
 
             {% endif %}
 
-            {% if is_granted('ROLE_ADMIN') %}
+            {% if not is_granted('ROLE_EMPLOYEE')%}
               
-              <ul>
+              <ul class="d-flex">
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Gestion des utilisateurs
@@ -44,13 +46,20 @@
                     <li class="nav-item">
                       <a class="nav-link" href="{{ path('user_index')}}">Liste des utilisateurs</a>
                     </li>
+                {% if  is_granted('ROLE_RH')%}
+
                     <li class="nav-item" >
                       <a class="nav-link" href="{{ path('admin_attendance_view')}}">Edition des emargements</a>
                     </li>
+                    {% endif %}
                   </ul>
+                                  </li>
+                                    <li class="nav-item">
+                  <a class="nav-link" href="{{ path('exutoire')}}">Exutoire</a>
+                </li>
                 </li>
               </ul>
-                            
+              {% if is_granted("ROLE_ADMIN") %}        
               <ul>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -63,31 +72,32 @@
                     <li class="nav-item" >
                       <a class="nav-link" href="{{ path('list_cache_files')}}">Vider les caches</a>
                     </li>
-                                    <li class="nav-item">
-                  <a class="nav-link" href="{{ path('exutoire')}}">Exutoire</a>
-                </li>
+              
                   </ul>
                 </li>
               </ul>
+                {% endif %}
+
+
+              {% if messages > 0 and is_granted("ROLE_RH") %}
               <ul class="d-flex">
-              {% if messages > 0 %}
                 <li class="nav-item">
                   <a class="nav-link  position-relative" href="{{ path('contact_index')}}" >Liste des messages
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    {{messages }}
+                    {{ messages }}
       
                       <span class="visually-hidden">unread messages</span>
                     </span>
                   </a>
                 </li>
-                {% endif %}
 
           
               </ul>
+                {% endif %}
 
             {% endif %}
-                 <ul>
-                <li class="nav-item dropdown">
+                <ul>
+                  <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Utilitaires
                   </a>
@@ -99,10 +109,14 @@
                             <a class="nav-link" href="{{ path('addressBook')}}">Carnet d'adresse</a>
 
                     </li>
-    
+
                   </ul>
                 </li>
               </ul>
+
+                </li>
+              </ul>
+
 
       </div>
 
@@ -165,6 +179,7 @@
 
 
 {% block javascripts %}
+
 <script src="{{asset("assets/js/global.js")}}" ></script>
 
 {% endblock %}

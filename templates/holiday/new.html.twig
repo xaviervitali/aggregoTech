@@ -1,0 +1,52 @@
+{% extends 'baseWithNav.html.twig' %}
+
+{% block stylesheets %}
+<style>
+.input-group .form-control{
+    width:200px ;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+    <h1>Formulaire de demande de congés</h1>
+
+{{ form_start(form)}}
+{{ form_row(form.holidayReason)}}
+<div style="height:100px;" class="bg-white p-2 my-1 rounded overflow-auto">
+<p class="fw-bold" >Informations complémentaires sur votre selection : </p>
+<p class="comment my-1 fst-italic">
+</p>
+</div>
+<div class="input-group my-1 d-flex justify-content-between text-center">
+    {{ form_row(form.startDate)}}
+    {{ form_row(form.endDate)}}
+    {{ form_row(form.restartAt)}}
+    {{ form_row(form.days)}}
+</div>
+    {{ form_widget(form.comment)}}
+<div class="form-control my-1">
+    {{ form_row(form.signature)}}
+
+    </div>
+<button class="btn btn-success btn-block my-2 mr-0">Valider ma demande de congés</button>
+{{ form_end(form)}}
+    <a href="{{ path('holiday_index', {'id': app.user.id}) }}">Retourner à la liste des congés</a>
+{% endblock %}
+{% block javascripts %}
+<script>
+
+    getComment(document.querySelector("#holiday_holidayReason").childNodes[0].value)
+    function getComment(holiday){
+        const holidayReason =  JSON.parse("{{ holidayReason| serialize('json', { groups: 'holidayReason_read'})  }}".replace(/&quot;/g,'"').replace(/&#039;/g, "'"))
+        const currentHolidayReason = holidayReason.filter(h=>h.id == holiday)[0]
+        document.querySelector(".comment").innerHTML = "<b>"+currentHolidayReason.name + "</b> : " + currentHolidayReason.comment 
+
+        
+    }
+    document.querySelectorAll('input[type="date"]').forEach(e=>e.classList.add("form-control"))
+    document.querySelector("#holiday_holidayReason").addEventListener("change",  function(e){
+        getComment(e.target.value)
+    })
+</script>
+{% endblock %}
