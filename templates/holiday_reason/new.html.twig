@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New HolidayReason{% endblock %}
+
+{% block body %}
+    <h1>Create new HolidayReason</h1>
+
+    {{ include('holiday_reason/_form.html.twig') }}
+
+    <a href="{{ path('holiday_reason_index') }}">back to list</a>
+{% endblock %}

@@ -4,42 +4,83 @@
 {% endblock %}
 
 {% block body %}
-<div>
-<h2>Listes de utilisateurs</h2>
-<a class="btn btn-primary " href="{{ path('user_add') }}">Ajouter un utilisateur</a>
-{% set roles = {"salariés": employees, "anciens salariés": haveLeave, "administrateurs": admins, } %}
-{% for role in roles|keys %}
-{% if ( roles[role]) | length > 0 %}
-<div>
-<h3>Liste des {{ role }}</h3>
-<div class="d-flex justify-content-around flex-wrap">
-   {% for user in roles[role]  %}
-    <div class="card  text-center">
-         {{ user | avatar |raw}}
-        <div class="card-body">
-          <h5 class="card-title"><a href="{{path("user_view", {id: user.id})}}">{{ user.firstname}} {{user.lastname }}</a></h5>
-          <p class="card-text">
-          Inscrit depuis le : {{ user.createdAt | date("d/m/y")}}
-          </p>
-           <p class="card-text">
-          Nom d'utilisateur : {{ user.username}}
-          </p>
-          {% if user.roles | filter(e=> e == "ROLE_EMPLOYEE") | length > 0%}
-             <p class="card-text"><small>
-              Dernier emargement :  <a href="{{ path('attendance', {'id':user.id}) }}">  {{ user.getAttendances() | length > 0 ? user.getAttendances() | map(e=>e.createdAt) | last | date("\\l\\e d/m/y à h:i"): "Pas d'emargement" }}</a>
-          </small>
-          </p>
-        {% endif %}
-        </div>
-</div>
-{% endfor %}
 
-</div> 
-{% endif %}
-</div> 
-
-{% endfor %}
-
-
-  </div>
-  {% endblock %}
+    <h2>Listes de utilisateurs</h2>
+    <a href="{{ path('user_add') }}">Ajouter un utilisateur</a>
+    {% for usersInRole in users| userListPerRole %}
+    <div style="background: rgba(255,255,255,.5);">
+      <h3>Liste des : {{ (usersInRole | first) | role}}s</h3>
+      <div class="d-flex justify-content-around flex-wrap" >
+        {% for user in usersInRole  %}
+          {% set holidays = user.holidays | filter(h=>h.status == "n/a") | length %}
+              <div class="card  text-center position-relative" style="width: 300px;">
+              {% if holidays > 0 %}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {{ holidays}}
+                  <span class="visually-hidden">{{ holidays}}demande de congés</span>
+                </span>
+              {% endif %}
+              {{ user | avatar |raw}}
+              <div class="card-body">
+                <h5 class="card-title"><a href="{{path("user_view", {id: user.id})}}">{{ user.firstname}} {{user.lastname }}</a></h5>
+                  <p class="card-text">
+                  {{ user | role}}
+                </p>
+                <p class="card-text">
+                  Inscrit depuis le : {{ user.createdAt | date("d/m/y")}}
+                </p>
+                <p class="card-text">
+                  Nom d'utilisateur : {{ user.username}}
+                </p>
+                {% if user.roles | filter(e=> e == "ROLE_EMPLOYEE") | length > 0%}
+                  <p class="card-text">
+                    <small> Dernier emargement :  <a href="{{ path('attendance', {'id':user.id}) }}">  {{ user.getAttendances() | length > 0 ? user.getAttendances() | map(e=>e.createdAt) | last | date("\\l\\e d/m/y à h:i"): "Pas d'emargement" }}</a>
+                    </small>
+                  </p>
+                {% endif %}
+              </div>
+              </div>
+        {% endfor %}
+              </div>    
+      </div>
+      
+    {% endfor %}
+    {# {% set roles = {"salariés": employees, "anciens salariés": haveLeave, "administrateurs": admins} %}
+    {% for role in roles|keys %}
+      {% if ( roles[role]) | length > 0 %}
+        <div>
+          <h3>Liste des {{ role }}</h3>
+          <div class="d-flex justify-content-around flex-wrap">
+            {% for user in roles[role]  %}
+              {% set holidays = user.holidays | filter(h=>h.status == "n/a") | length %}
+              <div class="card  text-center position-relative">
+                {% if holidays > 0 %}
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ holidays}}
+                    <span class="visually-hidden">{{ holidays}}demande de congés</span>
+                  </span>
+                {% endif %}
+                {{ user | avatar |raw}}
+                <div class="card-body">
+                  <h5 class="card-title"><a href="{{path("user_view", {id: user.id})}}">{{ user.firstname}} {{user.lastname }}</a></h5>
+                  <p class="card-text">
+                    Inscrit depuis le : {{ user.createdAt | date("d/m/y")}}
+                  </p>
+                  <p class="card-text">
+                    Nom d'utilisateur : {{ user.username}}
+                  </p>
+                  {% if user.roles | filter(e=> e == "ROLE_EMPLOYEE") | length > 0%}
+                    <p class="card-text">
+                      <small> Dernier emargement :  <a href="{{ path('attendance', {'id':user.id}) }}">  {{ user.getAttendances() | length > 0 ? user.getAttendances() | map(e=>e.createdAt) | last | date("\\l\\e d/m/y à h:i"): "Pas d'emargement" }}</a>
+                      </small>
+                    </p>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          </div> 
+        </div> 
+      {% endif %}
+      </div> 
+    {% endfor %} #}
+{% endblock %}
