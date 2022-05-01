@@ -17,7 +17,7 @@ class CollaborationChoiceController extends AbstractController
     #[Route('/', name: 'collaboration_choice_index', methods: ['GET'])]
     public function index(CollaborationChoiceRepository $collaborationChoiceRepository): Response
     {
-        return $this->render('collaboration_choice/index.html.twig', [
+        return $this->render('admin/collaboration_choice/index.html.twig', [
             'collaboration_choices' => $collaborationChoiceRepository->findAll(),
         ]);
     }
@@ -36,7 +36,7 @@ class CollaborationChoiceController extends AbstractController
             // return $this->redirectToRoute('collaboration_choice_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('collaboration_choice/new.html.twig', [
+        return $this->renderForm('admin/collaboration_choice/new.html.twig', [
             'collaboration_choice' => $collaborationChoice,
             'form' => $form,
             'collaboration_choices' => $collaborationChoiceRepository->findAll(),
@@ -47,7 +47,7 @@ class CollaborationChoiceController extends AbstractController
     #[Route('/{id}', name: 'collaboration_choice_show', methods: ['GET'])]
     public function show(CollaborationChoice $collaborationChoice): Response
     {
-        return $this->render('collaboration_choice/show.html.twig', [
+        return $this->render('admin/collaboration_choice/show.html.twig', [
             'collaboration_choice' => $collaborationChoice,
         ]);
     }
@@ -64,7 +64,7 @@ class CollaborationChoiceController extends AbstractController
             return $this->redirectToRoute('collaboration_choice_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('collaboration_choice/edit.html.twig', [
+        return $this->renderForm('admin/collaboration_choice/edit.html.twig', [
             'collaboration_choice' => $collaborationChoice,
             'form' => $form,
         ]);

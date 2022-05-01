@@ -20,7 +20,7 @@ class HolidayController extends AbstractController
     #[Route('/{id<\d+>}', name: 'holiday_index', methods: ['GET'])]
     public function index(HolidayRepository $holidayRepository, User $user): Response
     {
-        return $this->render('holiday/index.html.twig', [
+        return $this->render('admin/holiday/index.html.twig', [
             'holidays' => $holidayRepository->findBy(["user" => $user], ['id' => "DESC"]),
         ]);
     }
@@ -47,7 +47,7 @@ class HolidayController extends AbstractController
             return $this->redirectToRoute('holiday_index', ["id" => $user->getId()], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('holiday/new.html.twig', [
+        return $this->renderForm('admin/holiday/new.html.twig', [
             'holiday' => $holiday,
             'form' => $form,
             'holidayReason' => $holidayReasonRepository->findAll()
@@ -57,7 +57,7 @@ class HolidayController extends AbstractController
     #[Route('/show/{id}', name: 'holiday_show', methods: ['GET'])]
     public function show(Holiday $holiday): Response
     {
-        return $this->render('holiday/show.html.twig', [
+        return $this->render('admin/holiday/show.html.twig', [
             'holiday' => $holiday,
         ]);
     }
@@ -77,7 +77,7 @@ class HolidayController extends AbstractController
             return $this->redirectToRoute('holiday_index', ["id" => $holiday->getUser()->getId()], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('holiday/new.html.twig', [
+        return $this->renderForm('admin/holiday/new.html.twig', [
             'holiday' => $holiday,
             'form' => $form,
             'holidayReason' => $holidayReasonRepository->findAll()

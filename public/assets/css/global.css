@@ -30,8 +30,13 @@ body {
   background-blend-mode: lighten;
 }
 
-header img {
+/* header img {
   width: 200px;
+} */
+
+header img:last-child {
+  object-fit: contain;
+  width: 100px;
 }
 
 header {
@@ -44,10 +49,15 @@ table {
   margin: 1em 0;
 }
 
-nav li {
-  text-transform: uppercase;
+.navbar .nav-item {
+  padding: 0;
+  margin: 0;
+}
 
-  font-size: 15px;
+nav li {
+  text-transform: capitalize;
+
+  /* font-size: 15px; */
 }
 
 nav a {
@@ -55,7 +65,7 @@ nav a {
 }
 
 .connected_user {
-  font-size: 1.2em;
+  font-size: 1em;
 }
 
 main {
@@ -72,7 +82,8 @@ main {
   justify-content: center;
 }
 
-main > div {
+main > div,
+main table {
   border: 1px solid black;
 
   margin: 1rem 0;
@@ -101,3 +112,22 @@ main > div {
 .btn-danger {
   background-color: #675d5f !important;
 }
+
+.nav-link {
+  /* font-size: 0.9em; */
+}
+.dropdown-menu.show {
+  width: 20em;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* .dropdown-menu.show li:nth-child(2n) {
+  background-color: #eee;
+} */
+
+/* .dropdown-menu.show .nav-item:hover {
+  background-color: #888 !important;
+} */
