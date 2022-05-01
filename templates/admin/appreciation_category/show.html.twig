@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AppreciationCategory{% endblock %}
+
+{% block body %}
+    <h1>AppreciationCategory</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ appreciation_category.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ appreciation_category.title }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('appreciation_category_index') }}">back to list</a>
+
+    <a href="{{ path('appreciation_category_edit', {'id': appreciation_category.id}) }}">edit</a>
+
+    {{ include('admin/appreciation_category/_delete_form.html.twig') }}
+{% endblock %}

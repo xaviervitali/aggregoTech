@@ -1,0 +1,75 @@
+{% extends 'baseWithNav.html.twig' %}
+
+
+{% block body %}
+    {% if is_granted("ROLE_RH") or is_granted("ROLE_ADMIN") %}
+        <div>
+            <h2>Créer un nouveau Bilan</h2>
+            <select name="users" id="users" class="form-control my-2">
+                <option value="">--Merci de choisir un salarié--</option>
+                {% for user in users | filter(u=> u.roles | filter(r=>r == "ROLE_EMPLOYEE"))   %}
+                    <option value="{{user.id}}" >{{user.firstname}} {{user.lastname}}</option>
+                {% endfor %}
+            </select>
+            <button class="btn btn-success new-statement">Valider</button>
+        </div>
+    
+    {% endif %}
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                {% if is_granted("ROLE_RH") or is_granted("ROLE_ADMIN") %}
+                    <th>Nom du Salarié</th>
+                {% elseif is_granted("ROLE_EMPLOYEE")  %}
+                {% set statements = statements | filter(s=>s.user == app.user) %}
+                {% endif %}
+                <th>Date du Bilan</th>
+                <th>Commentaire du Salarié</th>
+                <th>Commentaire du Responsable</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        {% for statement in statements %}
+            <tr>
+      {% if is_granted("ROLE_RH") or is_granted("ROLE_ADMIN") %}
+            <td>{{statement.user.lastname}} {{statement.user.firstname}}</td>
+{% endif %}
+
+                <td>{{ statement.createdAt ? statement.createdAt| format_datetime('short', 'none', locale='fr') : '' }}</td>
+                <td>
+                {% if statement.userComment %}
+                    <p><b>Le</b> : {{ statement.userComment.createdAt | format_datetime('short', 'none', locale='fr')}}</p>
+                    <p>{{statement.userComment.comment }}</p>
+                {% else %}
+                   <p>Pas de commentaire pour l'instant</p>
+                {% endif %}
+                </td>
+                <td>
+                        {% if statement.managerComment %}
+                    <p><b>Le</b> : {{ statement.managerComment.createdAt | format_datetime('short', 'none', locale='fr')}}</p>
+                    <p>{{statement.managerComment.comment }}</p>
+                {% else %}
+                   <p>Pas de commentaire pour l'instant</p>
+                {% endif %}
+                <td>
+                    <a href="{{ path('statement_show', {'id': statement.id}) }}">Afficher</a>
+
+                    {# <a href="{{ path('statement_edit', {'id': statement.id}) }}">Ecrire un Commentaire</a> #}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+{% block javascripts %}
+<script src="{{ asset("assets/js/statement.js")}}"></script>
+{% endblock %}
+    {# <a href="{{ path('statement_new', {id: user.id}) }}">Create new</a> #}

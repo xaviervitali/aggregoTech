@@ -92,7 +92,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute("user_index");
         }
 
-        return $this->render("user/new.html.twig", [
+        return $this->render("admin/user/new.html.twig", [
 
             "form" => $form->createView()
 
@@ -150,7 +150,7 @@ class UserController extends AbstractController
 
 
 
-        return $this->render("user/edit.html.twig", [
+        return $this->render("admin/user/edit.html.twig", [
 
             "form" => $form->createView(), "user" => $user
 
@@ -201,7 +201,7 @@ class UserController extends AbstractController
 
 
 
-                return  $this->render("user/view.html.twig", [
+                return  $this->render("admin/user/view.html.twig", [
 
                     'user' => $user, "form" => $form->createView()
 
@@ -210,7 +210,7 @@ class UserController extends AbstractController
 
 
 
-            return $this->render("user/view.html.twig", [
+            return $this->render("admin/user/view.html.twig", [
 
                 'user' => $user, "form" => $form->createView()
 
@@ -221,7 +221,7 @@ class UserController extends AbstractController
 
 
 
-        return $this->render("user/view.html.twig", [
+        return $this->render("admin/user/view.html.twig", [
 
             'user' => $this->security->getUser()
 
@@ -241,7 +241,7 @@ class UserController extends AbstractController
     {
 
 
-        return $this->render('user/index.html.twig', [
+        return $this->render('admin/user/index.html.twig', [
 
             'users' => $userRepository->findAll()
         ]);
@@ -366,7 +366,7 @@ class UserController extends AbstractController
 
     {
 
-        return $this->render('user/notAvailable.html.twig', ["user" => $user]);
+        return $this->render('admin/user/notAvailable.html.twig', ["user" => $user]);
     }
 
     // SI ON VEUT CREER DES MINIATURES

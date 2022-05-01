@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Statement{% endblock %}
+
+{% block body %}
+    <h1>Edit Statement</h1>
+
+    {{ include('admin/statement/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('statement_index') }}">back to list</a>
+
+    {{ include('admin/statement/_delete_form.html.twig') }}
+{% endblock %}

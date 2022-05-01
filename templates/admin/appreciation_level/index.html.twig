@@ -1,0 +1,33 @@
+{% extends 'baseWithNav.html.twig' %}
+
+
+{% block body %}
+    <h1>Liste des niveaux d'aquisition</h1>
+    <div>
+        {% include("admin/appreciation_level/new.html.twig") %}
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for level in levels %}
+            <tr>
+                <td>{{ level.title }}</td>
+                <td>
+                 {{ include('admin/appreciation_level/_delete_form.html.twig') }}
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Pas de niveau pour l'instant</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'baseWithNav.html.twig' %}
+
+{% block stylesheets %}
+<style>
+@media print{
+    header{
+        display: none;
+    }
+
+
+}
+</style>
+{% endblock %}
+{% block body %}
+    <h2>Bilan du {{statement.createdAt |  format_datetime('short', 'none', locale='fr')}}</h2>
+ <table class="table table-striped overflow-auto table-light">
+    {% for category in categories %}
+        <tr><td colspan="4" class="fw-bold fs-4 text-center">{{category.title | upper}}</td></h3>
+        {% for skill in category.skills %}
+           <tr>
+                <td class="col-4">
+                    <p class="fw-bold ">{{ skill.title | capitalize }}</p>
+                    <p>{{skill.description |nl2br}}</p>
+                <td>
+                <td class="eval">
+                    {% set appreciation = statement.appreciations | filter(e=>e.skill == skill) |first %}
+                    <p><b>Niveau</b> : {{appreciation.level.title}}</p>
+                    <p><b>Commentaire</b> : {{appreciation.comment }}</p>
+                <td>
+            </tr> 
+        {% endfor %}
+
+    {% endfor %}
+  </table>
+<div>
+<h4 class="mb-5">Commentaires</h4>
+    {% if statement.userComment %}
+       <p><b>Le</b>  : {{ statement.userComment.createdAt | format_datetime('short', 'none', locale='fr')}}</p>
+        <p><b>Commentaire de {{ statement.userComment.user.firstname }} {{ statement.userComment.user.lastname }}</b> :</p>
+        <p class="fst-italic">{{ statement.userComment.comment |nl2br}}</p>
+    {% endif %}
+    
+    {% if statement.managerComment %}
+     <p><b>Le</b>  : {{ statement.managerComment.createdAt | format_datetime('short', 'none', locale='fr')}}</p>
+        <p><b>Commentaire de {{ statement.managerComment.user.firstname }} {{ statement.managerComment.user.lastname }}</b> :</p>
+        <p class="fst-italic">{{ statement.managerComment.comment |nl2br   }}</p>
+    {% endif %}
+    {% if not  statement.managerComment  and  not statement.userComment or  (statement.userComment and not statement.managerComment and is_granted("ROLE_RH") or statement.managerComment and not statement.userComment and is_granted("ROLE_EMPLOYEE"))  %}
+    {{ form_start(form)}}
+    {{ form_widget(form)}}
+            <button class="btn btn-success my-2">Enregitrer définitivement votre commentaire</button>
+    {{ form_end(form)}}
+    {% endif %}
+
+</div>
+{# {% if not disabled %}
+
+    {% else %}
+    {% if is_granted("ROLE_EMPLOYEE") %}
+        <p></b>Le</b>  : {{ statement.userComment.createdAt | format_datetime('short', 'none', locale='fr')}}</p>
+        <p><b>Commentaire du salarié</b> :</p>
+        <p>{{ statement}} 
+{% endif %} #}
+
+    {# <a href="{{ path('statement_index') }}">back to list</a> #}
+
+    {# <a href="{{ path('statement_edit', {'id': statement.id}) }}">edit</a> #}
+
+    {# {{ include('admin/statement/_delete_form.html.twig') }} #}
+{% endblock %}

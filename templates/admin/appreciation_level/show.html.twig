@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Level{% endblock %}
+
+{% block body %}
+    <h1>Level</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ level.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ level.title }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('appreciation_level_index') }}">back to list</a>
+
+    <a href="{{ path('appreciation_level_edit', {'id': level.id}) }}">edit</a>
+
+    {{ include('admin/appreciation_level/_delete_form.html.twig') }}
+{% endblock %}

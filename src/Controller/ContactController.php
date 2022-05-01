@@ -24,7 +24,7 @@ class ContactController extends AbstractController
     {
 
 
-        return $this->render('contact/index.html.twig', [
+        return $this->render('admin/contact/index.html.twig', [
             'contacts' => $contactRepository->findBy([], ["createdAt" => "DESC"]),
         ]);
     }
@@ -34,7 +34,7 @@ class ContactController extends AbstractController
      */
     public function view(Contact $contact): Response
     {
-        return $this->render('contact/view.html.twig', [
+        return $this->render('admin/contact/view.html.twig', [
             'contact' => $contact,
         ]);
     }

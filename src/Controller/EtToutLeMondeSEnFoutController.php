@@ -102,7 +102,7 @@ class EtToutLeMondeSEnFoutController extends AbstractController
             "Peut-être que ton cerveau joue à cache-cache",
 
         ];
-        return $this->render('et_tout_le_monde_s_en_fout/index.html.twig', [
+        return $this->render('admin/et_tout_le_monde_s_en_fout/index.html.twig', [
             "phrases" => $phrases
         ]);
     }

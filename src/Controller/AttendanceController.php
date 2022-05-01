@@ -62,7 +62,7 @@ class AttendanceController extends AbstractController
             $em->persist($attendance);
             $em->flush();
 
-            return $this->render('attendance/index.html.twig', [
+            return $this->render('admin/attendance/index.html.twig', [
                 'attendances' => $userAttendance,
                 "form" => $form->createView(),
                 "user" => $user
@@ -70,7 +70,7 @@ class AttendanceController extends AbstractController
             ]);
         }
 
-        return $this->render('attendance/index.html.twig', [
+        return $this->render('admin/attendance/index.html.twig', [
             'attendances' => $userAttendance,
             "form" => $form->createView(),
             "user" => $user
@@ -138,7 +138,7 @@ class AttendanceController extends AbstractController
     public function adminAttendanceView(AttendanceRepository $attendanceRepository, UserRepository $userRepository)
     {
 
-        return $this->render('attendance/adminAttendancesView.html.twig', [
+        return $this->render('admin/attendance/adminAttendancesView.html.twig', [
             "users" => array_filter($userRepository->findBy([], ["lastname" => "ASC"]), function ($user) {
                 return in_array("ROLE_EMPLOYEE", $user->getRoles());
             }), "attendances" => $attendanceRepository->findAll(),

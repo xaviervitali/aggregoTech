@@ -41,9 +41,12 @@ class UserExtension extends AbstractExtension
         $userList[] = array_filter($users, function ($e) {
             return count($e->getRoles()) == 1;
         });
+
+
         $users =  array_filter($users, function ($e) {
             return count($e->getRoles()) > 1;
         });
+
         $roles = array_unique(array_merge(...array_map(function ($u) {
             $ROLE_USER = array_search("ROLE_USER", $u->getRoles());
             return (array_slice($u->getRoles(), $ROLE_USER - 1, 1));
@@ -51,15 +54,15 @@ class UserExtension extends AbstractExtension
 
 
         foreach ($roles as $role) {
-            $userList[] =  array_filter($users, function ($e) use ($role) {
-                return in_array($role, $e->getRoles());
+            $userList[] =  array_filter($users, function ($user) use ($role) {
+                return in_array($role, $user->getRoles());
             });
         }
         return ($userList);
     }
 
 
-    public function roleRenamer(User $user)
+    public function roleRenamer($user)
 
     {
 

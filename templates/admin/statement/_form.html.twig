@@ -1,0 +1,29 @@
+{{ form_start(form, {attr:{class:"overflow-auto"}}) }}
+<p> <b>{{ categories | map( c=>c.skills |length) | reduce((carry, v) => carry + v)  }}</b> compétences réparties en <b>{{ categories | length}}</b>  catégories ! </p>
+    {% set appreciationPrototype = form_widget(form.appreciations.vars.prototype, {attr: {"required":false}}) %}
+ <table class="table table-striped overflow-auto table-light ">
+    {% for category in categories %}
+        <tr><td colspan="4" class="fw-bold fs-4 text-center">{{category.title | upper}}</td></h3>
+        {% for skill in category.skills %}
+           <tr>
+                <td class="col-4">
+                <p class="fw-bold ">{{ skill.title | capitalize }}</p>
+                <p>{{skill.description |nl2br}}</p>
+                <td>
+                <td class="eval">
+
+                    {{ appreciationPrototype | raw  }}
+                    {# <div class="d-none"> #}
+                    {# {{ skillPrototype  | replace({"__name__": skill.id, "title": skill.title, 'class="form-control"':"value="~skill.id, 'type="text"': ""}) |raw }}          #}
+                              
+                 {# </div> #}
+                <input  class="d-none" id="statement_skill" name="statement[skill]" value={{skill.id}}>
+                <td>
+            </tr> 
+        {% endfor %}
+
+    {% endfor %}
+  </table> 
+
+    <button  type="button" class="btn btn-success btn-lg" onClick="sendStatement()">{{ button_label|default('Valider le bilan') }}</button>
+{{ form_end(form) }}
