@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Controller\AddressBookController;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -14,6 +15,7 @@ use Symfony\Component\Security\Core\Security;
 class UserControllerSubscriber implements EventSubscriberInterface
 {
     private $security;
+    private $user;
 
     public function __construct(Security $security)
     {
@@ -23,31 +25,53 @@ class UserControllerSubscriber implements EventSubscriberInterface
     }
 
 
+    public function onKernelRequest($event)
+    {
+    }
+
+    public function onKernelController(ControllerEvent $event)
+    {
+        // ...
+        // dd($event);
+        // the controller can be changed to any PHP callable
+        // $event->setController($myCustomController);
+    }
+
     public function onKernelControllerArguments(ControllerArgumentsEvent $event)
     {
-        // dd($this->security->getUser());
-        if ($this->security->getUser()) {
-            if (strstr($event->getRequest()->getPathInfo(), "profile") && (in_array("ROLE_EMPLOYEE", $this->security->getUser()->getRoles()))) {
+        // $controller = $event->getController();
+        // $this->user = $this->security->getUser();
 
+        // $newArguments = [];
+        // foreach ($event->getArguments() as $argument) {
+        //     if ($argument instanceof User) {
+        //         $newArguments[] = $this->user;
+        //     } else {
+        //         $newArguments[] = $argument;
+        //     }
+        // }
 
-                $event->setArguments(array_map(
-                    function ($u) {
-                        if ($u instanceof User) {
-                            return  $u = $this->security->getUser();
-                        } else {
-                            return $u;
-                        }
-                    },
-                    $event->getArguments()
-                ));
-            }
-        }
+        // $requestedUser = $event->getRequest()->attributes->get("id");
+
+        // $event->getRequest()->attributes->set("id", $this->user->getId());
+        // $event->setController($controller);
+        // $event->setArguments($newArguments);
+
+        // dd($event->getRequest());
+
+        // dd($event->setArguments($event->getArguments()));
     }
 
     public static function getSubscribedEvents()
     {
         return [
             'kernel.controller_arguments' => 'onKernelControllerArguments',
+            "kernel.request" => "OnKernelRequest",
+            "kernel.controller" => "OnKernelController"
         ];
+    }
+
+    private function substituteUser($arguments)
+    {
     }
 }

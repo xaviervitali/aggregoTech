@@ -78,6 +78,38 @@ class AttendanceController extends AbstractController
         ]);
     }
 
+    /** 
+     *  @Route("/profile/attendance_beta", name="attendance_beta")
+     */
+    public function index2(AttendanceRepository $attendanceRepository, Request $request, EntityManagerInterface $em)
+    {
+        $form = $this->createForm(AttendanceType::class);
+        $date = new DateTimeImmutable();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /**
+             * @var Attendance attendance
+             */
+            $attendance = new Attendance;
+
+            $attendance
+                ->setAddedBy($this->getUser())
+                ->setUpdatedAt(new DateTimeImmutable())
+                ->setUser($this->getUser())
+                ->setCreatedAt($date);
+            $em->persist($attendance);
+            $em->flush();
+        }
+        return $this->render('admin/attendance/indexV2.html.twig', [
+            'attendances' => $attendanceRepository->findAll(),
+            "form" => $form->createView()
+
+
+        ]);
+    }
+
+
+
     /**
      * @Route("/profile/attendance/new", name="attendance_new")
      */

@@ -14,13 +14,18 @@
     {% endfor %}
 
     {% if is_granted('ROLE_EMPLOYEE') %}
+    {{ form_start(form)}}
+    {{ form_widget(form)}}
+    {{ form_end(form)}}
 
-        <div class="text-center">
-            <button class="btn btn-danger btn-lg attendanceButton my-2"><p>Emmarger</p><p class="badge "> L'emmargement engage votre responsabilité. Tout abus sera sanctionné.</p></button>
-        </div>
+        {# <div class="text-center">
+            <button class="btn btn-danger btn-lg attendanceButton my-2">
+            <p>Emmarger</p>
+            <p class="badge "> L'emmargement engage votre responsabilité. Tout abus sera sanctionné.</p></button>
+        </div> #}
     {% endif %}
-    <div  > 
-    <table 
+
+      <table 
         class="table table-striped" 
          id="table"
         data-toggle="table"
@@ -41,7 +46,8 @@
         <tbody>
             {% set days = [] %}
 
-            {% for att in attendances  | reverse %}
+            {% set attendances = attendances  | filter(att=>att.user == app.user) %}
+            {% for att in attendances | reverse %}
                 {% set currentDay = att.createdAt | format_datetime('short', 'none', locale='fr') %}
                 {% set day = attendances | filter(att=> att.createdAt |format_datetime('short', 'none', locale='fr') == currentDay )%}
                 {% for attendance in day %} 
@@ -62,8 +68,8 @@
                             </td>
                             <td style="height:8rem; width: 8rem">
                                 {% for time in day  %}
-                                {% if user.signature  %}
-                                <div  class="border"><img style="height:8rem;" src="{{ user.signature}}"></div>
+                                {% if app.user.signature  %}
+                                <div  class="border"><img style="height:8rem;" src="{{ app.user.signature}}"></div>
                                 {% endif %}
                                 {% endfor %}
                             </td>
@@ -103,18 +109,6 @@
             {% endfor %}
         </tbody>
     </table>
-    {% if is_granted('ROLE_RH') %}
-
-        {# {% include '/attendance/calendar.html.twig'%} #}
-    {% endif %}
-</div>
-{% endblock %}
-{% block javascripts%}
-    <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.19.1/locale/bootstrap-table-fr-CH.min.js" integrity="sha512-oMiFbd095KmJ9vWK5N/MhFffDzK0WT1bflfwdLkpnQTQFiL/SGo7p+ivb9tPwT2wrLGZhj1+/saaUt+NprpMgA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    {% if is_granted('ROLE_EMPLOYEE') %}
-        <script src={{ asset("assets/js/attendance.js") }}></script>
-    {% endif %}
-</div>
+    <div  > 
+   
 {% endblock %}
