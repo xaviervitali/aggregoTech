@@ -1,0 +1,39 @@
+{% extends 'baseWithNav.html.twig' %}
+{% block stylesheets %}
+<style>
+main img{
+height: 300px;
+object-fit: contain;
+}
+
+main div{
+    border: 0;
+}
+
+main input, main select{
+    min-width: 500px;
+    text-align: center;
+}
+
+main form label, main form a{
+    width: 300px;
+    display: block;
+    padding: 10px;
+    margin: 0 10px;
+    color: white; 
+    text-decoration: none;
+    border-radius: 5px;
+    background: #a5b1b0;
+    text-align: center;
+}
+</style>
+{% endblock %}
+
+
+{% block body %}
+    <h1>Créer un nouveau partenaire / financeur</h1>
+
+    {{ include('admin/collaboration/_form.html.twig') }}
+
+    <a href="{{ path('collaboration_index') }}">Retourner à la liste</a>
+{% endblock %}

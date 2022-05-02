@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('appreciation_category_delete', {'id': appreciation_category.id}) }}" onsubmit="return confirm('Supprimer la catégorie \'{{ appreciation_category.title }}\' supprimera toutes les compétences liées soit {{ appreciation_category.skills | length }} catégories, êtes vous sûr ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ appreciation_category.id) }}">
+    <button class="btn btn-danger">Supprimer la catégorie</button>
+
+</form>

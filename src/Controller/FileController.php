@@ -30,14 +30,23 @@ class FileController extends AbstractController
      */
     public function index(FileUploadRepository $fr, Request $request, EntityManagerInterface $em): Response
     {
-        $files = $fr->findBy([], ["updatedAt"=>'DESC']);
-        
+        $files = $fr->findBy([], ["updatedAt" => 'DESC']);
+
         $adminUpload = array_filter(
             $files,
             function ($f) {
                 return in_array('ROLE_ADMIN', $f->getUser()->getRoles());
             }
         );
+
+        $rhUpload =  array_filter(
+            $files,
+            function ($f) {
+                return in_array('ROLE_RH', $f->getUser()->getRoles());
+            }
+        );
+
+        $commonFiles = array_merge($adminUpload,   $rhUpload);
 
         $employeeUpload = array_filter(
             $files,
@@ -47,26 +56,26 @@ class FileController extends AbstractController
         );
 
 
-            $form = $this->createForm(FileUploadType::class);
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $task = $form->getData();
-                $user = $this->getUser();
-                $task->setUser($user);
+        $form = $this->createForm(FileUploadType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $task = $form->getData();
+            $user = $this->getUser();
+            $task->setUser($user);
             $task->setDescription($task->getDescription() ?? "Pas de description ...");
 
-                $em->persist($task);
-                $em->flush();
-    
-                return $this->redirectToRoute("file_index");
+            $em->persist($task);
+            $em->flush();
+
+            return $this->redirectToRoute("file_index");
         }
 
-        return $this->render('file/index.html.twig', [
-            'form'=>$form->createView(), 'adminFiles'=>$adminUpload, 'employeeFiles'=>$employeeUpload, 'currentUser' => $this->security->getUser()
+        return $this->render('admin/file/index.html.twig', [
+            'form' => $form->createView(), 'adminFiles' => $commonFiles, 'employeeFiles' => $employeeUpload, 'currentUser' => $this->security->getUser()
         ]);
     }
 
-        /**
+    /**
      * @Route("/profile/file/new", name="file_new")
      */
     public function new(EntityManagerInterface $em, Request $request): Response
@@ -81,28 +90,30 @@ class FileController extends AbstractController
             $user = $this->getUser();
             $task->setUser($user);
 
-            
+
             $em->persist($task);
             $em->flush();
 
             return $this->redirectToRoute("file_index");
-    }
+        }
 
-     return $this->render("file/new.html.twig", [
-         "form" => $form->createView()
-     ]);
+        return $this->render("admin/file/new.html.twig", [
+            "form" => $form->createView()
+        ]);
 
-        return $this->render('file/new.html.twig', ['form'=>$form
+        return $this->render('admin/file/new.html.twig', [
+            'form' => $form
         ]);
     }
 
-      /**
+    /**
      * @Route("/profile/file/delete/{id<\d+>}", name="file_delete")
      */
-    public function delete(FileUpload $fileUpload, EntityManagerInterface $em){
+    public function delete(FileUpload $fileUpload, EntityManagerInterface $em)
+    {
         $em->remove($fileUpload);
         $em->flush();
-        
+
         return $this->redirectToRoute('file_index');
     }
 }

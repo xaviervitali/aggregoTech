@@ -1,0 +1,12 @@
+{% extends 'baseWithNav.html.twig' %}
+
+
+{% block body %}
+    {{ include('admin/collaboration_choice/index.html.twig') }}
+    <hr>
+    <h1 class="mb-5">Ajouter un type de collaboration</h1>
+
+    {{ include('admin/collaboration_choice/_form.html.twig') }}
+
+    <a href="{{ path('collaboration_choice_index') }}">Retourner à la liste</a>
+{% endblock %}

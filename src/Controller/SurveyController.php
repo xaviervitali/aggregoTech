@@ -14,7 +14,7 @@ class SurveyController extends AbstractController
     public function index(SurveyRepository $surveyRepository, User $user): Response
     {
         return $this->render(
-            'survey/index.html.twig',
+            'admin/survey/index.html.twig',
             ["surveys" => $surveyRepository->findBy(["user" => $user], ["createdAt" => "DESC"])]
         );
     }

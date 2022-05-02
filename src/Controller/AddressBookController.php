@@ -39,7 +39,7 @@ class AddressBookController extends AbstractController
             // return $this->redirectToRoute('addressBook');
         }
 
-        return $this->render('address_book/new.html.twig', [
+        return $this->render('admin/address_book/new.html.twig', [
             "addressBookform" => $addressBookForm->createView(),
             "addressBookActivityform" => $addressBookActivityForm->createView()
 
@@ -68,7 +68,7 @@ class AddressBookController extends AbstractController
 
 
 
-        return $this->render('address_book/index.html.twig', [
+        return $this->render('admin/address_book/index.html.twig', [
             "addressBook" => $addressBookRepository->findAll(),
             "form" => $form->createView()
 
@@ -108,7 +108,7 @@ class AddressBookController extends AbstractController
             // return $this->redirectToRoute('addressBook');
         }
 
-        return $this->render('address_book/new.html.twig', [
+        return $this->render('admin/address_book/new.html.twig', [
             "addressBookform" => $addressBookForm->createView(),
             "addressBookActivityform" => $addressBookActivityForm->createView()
 

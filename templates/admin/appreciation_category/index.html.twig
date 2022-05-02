@@ -1,0 +1,47 @@
+{% extends 'baseWithNav.html.twig' %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset("assets/css/appreciationCategory.css")}}">
+
+{% endblock %}
+{% block body %}
+    <h1>Liste des catégories de compétences</h1>
+ <div>
+        {% include("admin/appreciation_category/new.html.twig") %}
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Compétence.s Liée.s</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for appreciation_category in appreciation_categories %}
+            <tr>
+                <td>{{ appreciation_category.title }}</td>
+                <td>
+                <ul >
+                
+                {{ appreciation_category.skills | map(e=> "<li style='list-style: inside;'>" ~ e.title ~ "</li>") | join | raw}}
+                </ul>
+                </td>
+                <td>
+                <a class="btn btn-success" href="{{ path("appreciation_category_edit", {id: appreciation_category.id}) }} ">Modifier</a>
+                 {{ include('admin/appreciation_category/_delete_form.html.twig') }}
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Pas de catégorie de compétences pour l'instant</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+   
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}

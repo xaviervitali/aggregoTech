@@ -1,0 +1,26 @@
+{{ form_start(form) }}
+{{ form_widget(form.title) }}
+<div class="mb-5">
+    <ul id="appreciation-category-skills-list"
+        data-prototype="{{ form_widget(form.skills.vars.prototype)|e }}"
+        data-widget-tags="{{ '<li></li>'|e }}"
+        data-widget-counter="{{ form.skills|length }}">
+
+           {% for skill in form.skills %}
+        <li class="skill{{skill.vars.data.id}}">
+            {{ form_widget(skill.title, {"attr": disabled ?? {"":""}} ) }}      
+            {{ form_widget(skill.description, {"attr":disabled ?? {"":""}}) }}
+        <button type="button" class="btn btn-sm btn-danger  d-block ms-auto"  data-id="{{skill.vars.data.id}}" onClick="removeSkill(this)">Supprimer la compétence</button>
+        </li>
+    {% endfor %}
+        </ul>
+        <button type="button"
+        class="btn btn-info add-another-collection-widget btn-sm d-block ms-auto"
+        data-list-selector="#appreciation-category-skills-list">Ajouter une compétence</button>
+</div>
+<button class="btn btn-success">Valider les Changements</button>
+{{ form_end(form) }}
+<script>
+const skillDeleteUrl = "{{ url("skill_delete", {id: 0}) }}"
+</script>
+<script src="{{ asset("assets/js/appreciationCategory.js")}}" ></script>

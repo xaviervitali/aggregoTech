@@ -20,16 +20,17 @@ class CategoryController extends AbstractController
      */
     public function index(CategoryRepository $categoryRepository): Response
     {
-        return $this->render('category/index.html.twig', [
-            'categories' => $categoryRepository->findBy([], ["updatedAt"=>"DESC"]),
-            "active"=>"category_index"
+        return $this->render('admin/category/index.html.twig', [
+            'categories' => $categoryRepository->findBy([], ["updatedAt" => "DESC"]),
+            "active" => "category_index"
         ]);
     }
 
     /**
      * @Route("/admin/category/edit/{id<\d+>}", name="category_edit")
      */
-    public function edit(Category $category, EntityManagerInterface $em,  Request $request){
+    public function edit(Category $category, EntityManagerInterface $em,  Request $request)
+    {
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -38,17 +39,18 @@ class CategoryController extends AbstractController
             $em->flush();
 
             return $this->redirectToRoute("category_index");
-    }
-     return $this->render("category/edit.html.twig", [
-         "category" => $category,
-         "form" => $form->createView()
-     ]);
+        }
+        return $this->render("admin/category/edit.html.twig", [
+            "category" => $category,
+            "form" => $form->createView()
+        ]);
     }
 
     /**
      * @Route("/admin/category/add", name="category_add")
      */
-    public function add(EntityManagerInterface $em,  Request $request){
+    public function add(EntityManagerInterface $em,  Request $request)
+    {
         $form = $this->createForm(CategoryType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -57,16 +59,17 @@ class CategoryController extends AbstractController
             $em->flush();
 
             return $this->redirectToRoute("category_index");
+        }
+        return $this->render("admin/category/edit.html.twig", [
+            "form" => $form->createView()
+        ]);
     }
-     return $this->render("category/edit.html.twig", [
-         "form" => $form->createView()
-     ]);
-    }
-    
+
     /**
      * @Route("/admin/category/delete/{id<\d+>}", name="category_delete")
      */
-    public function delete(Category $category, EntityManagerInterface $em){
+    public function delete(Category $category, EntityManagerInterface $em)
+    {
         $em->remove($category);
         $em->flush();
         return $this->redirectToRoute('category_index');

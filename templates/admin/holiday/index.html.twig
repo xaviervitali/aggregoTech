@@ -1,0 +1,47 @@
+{% extends 'baseWithNav.html.twig' %}
+
+
+{% block body %}
+    <h1>Liste des demandes de congés</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>N° de Semaine.s</th>
+                <th>Du</th>
+                <th>Au</th>
+                <th>Nb de jours</th>
+                <th>Etat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for holiday in holidays %}
+            <tr>
+            {% set startWeek = holiday.startDate | date("W") %}
+            {% set endWeek = holiday.endDate | date("W") %}
+                <td>Semaine{{ endWeek != startWeek ? "s": ""}} {{ startWeek}} {{ endWeek != startWeek ? "- "~endWeek: ""}}</td>
+                <td>{{ holiday.startDate ? holiday.startDate|date('Y-m-d') : '' }}</td>
+                <td>{{ holiday.endDate ? holiday.endDate|date('Y-m-d') : '' }}</td>
+                <td>{{ holiday.days }}</td>
+                <td class="fs-2">{{ holiday.status | holidayStatus | raw}}</td>
+                <td>
+                    <a href="{{ path('holiday_show', {'id': holiday.id}) }}">Afficher</a>
+                {% if holiday.user == app.user %}
+                    <a href="{{ path('holiday_edit', {'id': holiday.id}) }}">Editer</a>
+                    <a href="{{ path('holiday_edit', {'id': holiday.id}) }}">Supprimer</a>
+                {% endif %}
+                    
+                </td>
+
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Pas de demande en cours</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table> 
+
+    <a href="{{ path('holiday_new', {'id': app.user.id})  }}">Nouvelle demande de congés</a>
+{% endblock %}

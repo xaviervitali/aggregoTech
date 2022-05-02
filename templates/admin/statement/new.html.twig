@@ -1,0 +1,54 @@
+{% extends 'baseWithNav.html.twig' %}
+
+{% block stylesheets %}
+<style>
+
+form{
+}
+
+
+</style>
+{% endblock %}
+{% block body %}
+
+    {# <h2>Créer un bilan pour {{ user.nom |capitalize}} {{ user.prenom |capitalize}}</h2> #}
+<div>
+<h2>Nouveau Bilan pour {{ user.firstname }} {{ user.lastname }}</h2>
+{{ include("admin/statement/_form.html.twig")}}
+  </div>    
+    {# <a href="{{ path('statement_index') }}">back to list</a> #}
+{% endblock %}
+
+{% block javascripts %}
+<script>
+sendStatement
+ function sendStatement(){
+    var data = []
+    document.querySelectorAll(".eval").forEach(e=>{
+        data.push({
+            skill:e.querySelector("#statement_skill").value, 
+            level:e.querySelector("#statement_appreciations___name___level").value,
+            comment: e.querySelector("#statement_appreciations___name___comment").value,
+            user: {{user.id}}
+        })
+
+    })
+    const path = ""
+       fetch(path, {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then(response => 
+                 response.json()
+            
+        ).then(a=> window.location.href = "{{ url('statement_index')}}")
+        .catch(error=>console.log(error.message));
+        
+
+}
+
+</script>
+{% endblock %}

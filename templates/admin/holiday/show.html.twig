@@ -1,0 +1,117 @@
+{% extends 'baseWithNav.html.twig' %}
+
+{% block stylesheets %}
+<style>
+@media print {
+    header{
+        display: none;
+    }
+    div{
+        border : none !important;
+    }
+
+    div:first-of-type{
+        background: red !important;
+    }
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="bg-white">
+    <img src="{{ asset("assets/img/logo.jpg")}}" class="d-block" style="width: 200px;">
+    <h3 class="text-info text-center"  style="margin-top: 50px;">Demande d'autorisation de : {{ holiday.holidayReason.name}}</h3>
+    <div style="margin-top: 50px; width: 90%" class="mx-auto">
+        <p><b>Nom</b> : {{ holiday.user.lastname}}</p>
+        <p><b>Prénom</b> : {{ holiday.user.firstname}}</p>
+        {% set startWeek = holiday.startDate | date("W") %}
+                {% set endWeek = holiday.endDate | date("W") %}
+        <p><b>Semaine</b> : {{startWeek == endWeek ? startWeek : startWeek~"-"~endWeek}}</p>
+        <div  style="display: grid;  grid-template-columns: repeat(2, 1fr);">
+            <div class="my-3"><b>Du</b> : {{ holiday.startDate | format_datetime('short', 'none', locale='fr')}}</div>
+            <div class="my-3"><b>Au (inclus)</b> : {{ holiday.endDate | format_datetime('short', 'none', locale='fr')}}</div>
+            <div class="my-3"><b>Reprise</b> : {{ holiday.restartAt | format_datetime('short', 'none', locale='fr')}}</div>
+            <div class="my-3"><b>Nombre de jours</b> :  {{ holiday.days}}</div>
+        </div>
+        {% if holiday.comment %}
+            <p class="mb-5" style="font-size: .8em"><b>Commentaire du collaborateur</b> :  {{ holiday.comment}}</p>
+
+        {% endif %}
+        <div style=" display: grid;  grid-template-columns: repeat(2, 1fr); ">
+            <div class="col">
+                <p><b>Signature du collaborateur</b></p>
+                <p><b>Le</b> : {{ holiday.createdAt | format_datetime('short', 'none', locale='fr') }}<p>
+                <p> <img style="width: 100%;" src="{{ holiday.user.signature }}" style="width: 50%"></p>
+            </div>
+
+            <div class="col">
+            {% if holiday.manager %}
+                {% if holiday.status == "ok" %}
+                        <p><b>Signature du responsable hierarchique</b></p>
+                        <p><b>Le</b> : {{ holiday.acceptedAt | format_datetime('short', 'none', locale='fr') }}<p>
+                        <p><img style="width: 100%;" src="{{ holiday.manager.signature }}"></p>
+               
+                {% else %}
+                    <p class="text-danger">
+                    Le {{ holiday.acceptedAt | format_datetime('short', 'none', locale='fr') }}
+                        Votre demande a été refusée par {{ holiday.manager.firstname }} {{ holiday.manager.lastname }}
+                   <p>
+                {% endif %}
+                {% else %}
+                <div class="text-info col" >
+                Demande en cours de traitement par le responsable hierarchique
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') and holiday.status == "n/a" %}
+            <div>
+
+                    <a class="btn btn-success d-block my-3" href="{{ path('holiday_aggrement', {'id': holiday.id, status: "ok"}) }}">accepter</a>
+                    <a class="btn btn-danger  d-block my-3" href="{{ path('holiday_aggrement', {'id': holiday.id,  status: "ko"}) }}">refuser</a></td>
+            </div>
+            
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+    {# <h1>Holiday</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ holiday.id }}</td>
+            </tr>
+            <tr>
+                <th>StartDate</th>
+                <td>{{ holiday.startDate ? holiday.startDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>EndDate</th>
+                <td>{{ holiday.endDate ? holiday.endDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>RestartAt</th>
+                <td>{{ holiday.restartAt ? holiday.restartAt|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Days</th>
+                <td>{{ holiday.days }}</td>
+            </tr>
+            <tr>
+                <th>Comment</th>
+                <td>{{ holiday.comment }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('holiday_index') }}">back to list</a>
+
+    <a href="{{ path('holiday_edit', {'id': holiday.id}) }}">edit</a>
+
+    {{ include('holiday/_delete_form.html.twig') }} #}
+
+{% endblock %}

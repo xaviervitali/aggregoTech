@@ -1,81 +1,133 @@
-@font-face {
-  font-family: "DDINExp";
-  src: url(../fonts/d-din/D-DIN.woff);
-}
-
-li {
-  list-style: none;
-}
-
-.active {
-  /* background: rgba(255, 0, 0, 0.5); */
-  border-bottom: 2px solid red;
-  font-size: 1.2rem;
-}
-
-body {
-  background-image: url("../img/login_bg.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-  background-color: rgba(255, 255, 255, 0.5);
-  background-blend-mode: lighten;
-}
-
-header img {
-  width: 200px;
-}
-
-header {
-  height: 200px;
-  /* background-color: white; */
-}
-
-table {
-  margin: 1em 0;
-}
-
-nav li {
-  text-transform: uppercase;
-  font-size: 15px;
-}
-nav a {
-  text-decoration: none;
-}
-
-.connected_user {
-  font-size: 1.2em;
-}
-main {
-  width: 90%;
-  margin: auto;
-  min-width: 500px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-main > div {
-  border: 1px solid black;
-  margin: 1rem 0;
-  padding: 1rem;
-  /* background-color: white; */
-}
-
-.btn-success {
-  background-color: #a5b1b0 !important;
-}
-.btn {
-  border: 1px solid transparent;
-}
-.btn:hover {
-  border: 1px solid red;
-}
-
-.btn-primary {
-  background-color: #5f636d !important;
-}
-
-.btn-danger {
-  background-color: #675d5f !important;
-}
+@font-face {
+  font-family: "DDINExp";
+
+  src: url(../fonts/d-din/D-DIN.woff);
+}
+
+li {
+  list-style: none;
+}
+
+.active {
+  /* background: rgba(255, 0, 0, 0.5); */
+
+  border-bottom: 2px solid red;
+
+  font-size: 1.2rem;
+}
+
+body {
+  background-image: url("../img/login_bg.jpg");
+
+  background-repeat: no-repeat;
+
+  background-size: cover;
+
+  background-attachment: fixed;
+
+  background-color: rgba(255, 255, 255, 0.5);
+
+  background-blend-mode: lighten;
+}
+
+/* header img {
+  width: 200px;
+} */
+
+header img:last-child {
+  object-fit: contain;
+  width: 100px;
+}
+
+header {
+  height: 200px;
+
+  /* background-color: white; */
+}
+
+table {
+  margin: 1em 0;
+}
+
+.navbar .nav-item {
+  padding: 0;
+  margin: 0;
+}
+
+nav li {
+  text-transform: capitalize;
+
+  /* font-size: 15px; */
+}
+
+nav a {
+  text-decoration: none;
+}
+
+.connected_user {
+  font-size: 1em;
+}
+
+main {
+  width: 90%;
+
+  margin: auto;
+
+  min-width: 500px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+}
+
+main > div,
+main table {
+  border: 1px solid black;
+
+  margin: 1rem 0;
+
+  padding: 1rem;
+
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-success {
+  background-color: #a5b1b0 !important;
+}
+
+.btn {
+  border: 1px solid transparent;
+}
+
+.btn:hover {
+  border: 1px solid red;
+}
+
+.btn-primary {
+  background-color: #5f636d !important;
+}
+
+.btn-danger {
+  background-color: #675d5f !important;
+}
+
+.nav-link {
+  /* font-size: 0.9em; */
+}
+.dropdown-menu.show {
+  width: 20em;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* .dropdown-menu.show li:nth-child(2n) {
+  background-color: #eee;
+} */
+
+/* .dropdown-menu.show .nav-item:hover {
+  background-color: #888 !important;
+} */
