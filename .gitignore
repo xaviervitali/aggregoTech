@@ -8,6 +8,7 @@
 /public/bundles/
 /var/
 /vendor/
+/.vscode/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
