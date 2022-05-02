@@ -9,7 +9,6 @@
 /var/
 /vendor/
 /.vscode/
-.env
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
