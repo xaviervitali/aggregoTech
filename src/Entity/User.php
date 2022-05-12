@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 
@@ -113,6 +114,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      * @Assert\NotNull(message="le prénom ne peut être vide")
 
      * @Assert\NotBlank(message="le prénom ne peut être vide")
+     *  @Groups({"holiday"})
 
      */
 
@@ -127,6 +129,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      * @Assert\NotNull(message="le nom ne peut être vide")
 
      * @Assert\NotBlank(message="le nom ne peut être vide")
+     *  @Groups({"holiday"})
 
      */
 

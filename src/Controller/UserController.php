@@ -29,7 +29,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
 
 
@@ -39,6 +39,8 @@ class UserController extends AbstractController
 {
 
     private $security;
+    private $checker;
+
 
 
 
@@ -46,15 +48,13 @@ class UserController extends AbstractController
 
 
 
-    public function __construct(Security $security)
+    public function __construct(Security $security, AuthorizationCheckerInterface $checker)
 
     {
 
-        // Avoid calling getUser() in the constructor: auth may not
-
-        // be complete yet. Instead, store the entire Security object.
 
         $this->security = $security;
+        $this->checker = $checker;
     }
 
 
@@ -105,11 +105,11 @@ class UserController extends AbstractController
 
     /**
 
-     * @Route("/profile/user/edit/{id<\d+>}", name="user_edit")
+     * @Route("/admin/user/edit/{id<\d+>}", name="user_edit")
 
      */
 
-    public function edit(Request $request,  EntityManagerInterface $em, User $user, UserRepository $userRepository): Response
+    public function edit(Request $request,  EntityManagerInterface $em, User $user): Response
 
     {
 
@@ -159,63 +159,58 @@ class UserController extends AbstractController
 
     /**
 
-     * @Route("/profile/user/{id<\d+>}", name="user_view")
+     * @Route("/profile/user", name="user_view")
 
      */
 
-    public function view(Request $request,  User $user, EntityManagerInterface $em, UserPasswordHasherInterface $encoder): Response
+    public function view(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $encoder): Response
 
     {
 
-        if ($this->security->getUser() == $user || in_array("ROLE_ADMIN", $this->security->getUser()->getRoles())) {
+        // if ($this->security->getUser() == $user || $this->checker->isGranted("ROLE_ADMIN") || $this->checker->isGranted("ROLE_RH")) {
 
-            $form = $this->createForm(UserType::class, $user);
-
-
-
-            $form = $this->createForm(FileUploadType::class);
-
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-
-                /** 
-
-                 * @var FileUpload $task
-
-                 */
-
-                $task = $form->getData();
-
-                $user = $this->getUser();
-
-                $task->setUser($user);
+        //     $form = $this->createForm(UserType::class, $user);
 
 
 
+        //     $form = $this->createForm(FileUploadType::class);
+
+        //     $form->handleRequest($request);
+
+        //     if ($form->isSubmitted() && $form->isValid()) {
+
+        //         /** 
+
+        //          * @var FileUpload $task
+
+        //          */
+
+        //         $task = $form->getData();
+
+        //         $user = $this->getUser();
+
+        //         $task->setUser($user);
+        //         $em->persist($task);
+
+        //         $em->flush();
 
 
-                $em->persist($task);
 
-                $em->flush();
+        //         return  $this->render("admin/user/view.html.twig", [
 
+        //             'user' => $user, "form" => $form->createView()
 
-
-                return  $this->render("admin/user/view.html.twig", [
-
-                    'user' => $user, "form" => $form->createView()
-
-                ]);
-            }
+        //         ]);
+        //     }
 
 
 
-            return $this->render("admin/user/view.html.twig", [
+        //     return $this->render("admin/user/view.html.twig", [
 
-                'user' => $user, "form" => $form->createView()
+        //         'user' => $user, "form" => $form->createView()
 
-            ]);
-        }
+        //     ]);
+        // }
 
 
 
@@ -223,7 +218,7 @@ class UserController extends AbstractController
 
         return $this->render("admin/user/view.html.twig", [
 
-            'user' => $this->security->getUser()
+            'user' => $this->getUser()
 
         ]);
     }

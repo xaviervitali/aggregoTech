@@ -108,9 +108,10 @@ class UserExtension extends AbstractExtension
 
 
 
-    public function avatar(User $user)
+    public function avatar(?User $user)
 
     {
+
 
         if ($user->getAvatar()) {
 

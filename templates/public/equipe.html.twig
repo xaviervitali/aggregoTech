@@ -25,6 +25,23 @@
           </div>
         </div> 
         {% endfor %}
+        {% for user  in rh  %}
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+                         {{user | avatar | raw}}
+                    {# <img src="{{ asset("/assets/img/user/avatar | raw" ) ~ user.username ~ ".png" }}  ? {{ asset("/assets/img/user/avatar"  ~ ".png" ) ~ user.username }}:  "" }}" class="logocarte"/> #}
+              <h2  class="titreservice">{{ user.firstname }} {{ user.lastname}}</h2>
+            </div>
+            <div class="flip-card-back">
+              <div>
+                           <p >{{ user.description }}</p>
+
+              </div>
+            </div>
+          </div>
+        </div> 
+        {% endfor %}
 </div>
 <hr>
     <h2 >Salariés polyvalents</h2>

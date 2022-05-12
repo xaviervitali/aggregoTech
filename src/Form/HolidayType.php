@@ -41,18 +41,21 @@ class HolidayType extends AbstractType
                     "label" => "Du",
 
                     "widget" => "single_text",
+                    "attr" => ["class" => "form-control"]
 
                 ]
             )
             ->add('endDate', DateType::class, [
                 'label' => 'Fin',
                 "widget" => "single_text",
+                "attr" => ["class" => "form-control"]
 
 
             ])
             ->add('restartAt', DateType::class, [
                 'label' => 'Reprise',
                 "widget" => "single_text",
+                "attr" => ["class" => "form-control"]
 
 
             ])

@@ -1,11 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseWithNav.html.twig' %}
 
-{% block title %}New HolidayReason{% endblock %}
 
 {% block body %}
-    <h1>Create new HolidayReason</h1>
+    <h1>Créer un nouveau motif de congés</h1>
 
     {{ include('admin/holiday_reason/_form.html.twig') }}
 
-    <a href="{{ path('holiday_reason_index') }}">back to list</a>
+    <a href="{{ path('holiday_reason_index') }}">Retourner à la liste des motifs</a>
 {% endblock %}

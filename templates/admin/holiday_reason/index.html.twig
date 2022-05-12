@@ -1,28 +1,25 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseWithNav.html.twig' %}
 
-{% block title %}HolidayReason index{% endblock %}
 
 {% block body %}
-    <h1>HolidayReason index</h1>
+    <h1>Liste des motifs de congés</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Comment</th>
+                <th>Nom</th>
+                <th>Commentaire</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for holiday_reason in holiday_reasons %}
             <tr>
-                <td>{{ holiday_reason.id }}</td>
                 <td>{{ holiday_reason.name }}</td>
                 <td>{{ holiday_reason.comment }}</td>
                 <td>
-                    <a href="{{ path('holiday_reason_show', {'id': holiday_reason.id}) }}">show</a>
-                    <a href="{{ path('holiday_reason_edit', {'id': holiday_reason.id}) }}">edit</a>
+                    <a href="{{ path('holiday_reason_show', {'id': holiday_reason.id}) }}">Afficher</a>
+                    <a href="{{ path('holiday_reason_edit', {'id': holiday_reason.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -33,5 +30,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('holiday_reason_new') }}">Create new</a>
+    <a href="{{ path('holiday_reason_new') }}">Nouveau motif</a>
 {% endblock %}

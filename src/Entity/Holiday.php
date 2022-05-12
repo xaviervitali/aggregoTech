@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\HolidayRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=HolidayRepository::class)
@@ -14,26 +15,35 @@ class Holiday
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *  @Groups({"holiday"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="date")
+     *  @Groups({"holiday"})
+     * 
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="date")
+     *  @Groups({"holiday"})
+     * 
      */
     private $endDate;
 
     /**
      * @ORM\Column(type="date")
+     *  @Groups({"holiday"})
+     * 
      */
     private $restartAt;
 
     /**
      * @ORM\Column(type="integer")
+     *  @Groups({"holiday"})
+     * 
      */
     private $days;
 
@@ -49,11 +59,15 @@ class Holiday
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="holidays")
+     *  @Groups({"holiday"})
+     * 
      */
     private $user;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="boolean", nullable="true")
+     *  @Groups({"holiday"})
+     * 
      */
     private $status;
 

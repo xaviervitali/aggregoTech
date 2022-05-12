@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\AppreciationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AppreciationRepository::class)
@@ -19,6 +20,7 @@ class Appreciation
 
     /**
      * @ORM\ManyToOne(targetEntity=Level::class, inversedBy="appreciations")
+     *   @Groups({"statement"})
      */
     private $level;
 
@@ -29,6 +31,7 @@ class Appreciation
 
     /**
      * @ORM\ManyToOne(targetEntity=Skill::class, inversedBy="appreciations")
+     *   @Groups({"statement"})
      */
     private $skill;
 

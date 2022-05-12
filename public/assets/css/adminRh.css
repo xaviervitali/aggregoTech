@@ -1,0 +1,41 @@
+main img {
+  width: 200px !important;
+  object-fit: contain;
+}
+
+main canvas {
+}
+
+@media print {
+  header,
+  h2,
+  #rh_users,
+  .my-2,
+  hr,
+  ul.mb-3,
+  .attendancesMonthButtons *,
+  h4,
+  form,
+  .dropdown {
+    display: none;
+  }
+  main {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+  }
+  table h2 {
+    display: block;
+  }
+
+  div {
+    border: none !important;
+  }
+  body {
+    background: none;
+  }
+
+  #calendar {
+    display: none;
+  }
+}

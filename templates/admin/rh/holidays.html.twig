@@ -1,9 +1,11 @@
-{% extends 'baseWithNav.html.twig' %}
 
 
-{% block body %}
-    <h1>Liste des demandes de congés</h1>
-    <table class="table">
+
+ {% if holidays %}
+ <div>
+                    <h4>Liste des demandes Congés</h4>
+
+ <table class="table">
         <thead>
             <tr>
                 <th>N° de Semaine.s</th>
@@ -35,13 +37,12 @@
 
 
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">Pas de demande en cours</td>
-            </tr>
+ 
         {% endfor %}
         </tbody>
     </table> 
+    </div>
+{% else %}
+    <p>Pas de demande en cours</p>
+{% endif %}
 
-    <a href="{{ path('holiday_new')  }}">Nouvelle demande de congés</a>
-{% endblock %}

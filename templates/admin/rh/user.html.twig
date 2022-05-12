@@ -1,0 +1,168 @@
+
+{# Block info user connecté #}
+<div class="d-flex  align-items-center">
+    {# <div class="mx-3">
+        <h3 > {{user.firstname}} {{user.lastname}}</h3>
+    </div>     #}
+
+    <div class="row ">
+        {# <h5 class="col-auto">{{ user.roles |length > 1 ? (user | role ): ""}}</h5> #}
+        {# <div class="col-auto">
+            inscrit le
+        </div>
+        <h5 class="col-auto">{{ user.createdAt | date("d/m/y")}}</h5>
+
+        {% if user.leaveAt %}
+            <div class="col-auto">
+                a quitté AggregoTech le
+            </div>
+            <h5 class="col-auto">
+             {{user.leaveAt | date('d/m/y')}}. 
+            </h5>
+            <div class="col-auto">
+                <a href="{{path("user_not_leave", {id: user.id})}}"> Annuler le départ ?</a>
+            </div>
+        {% endif %} #}
+
+    </div>
+      
+</div>
+{# Informations sur le compte #}
+<div class="">
+  <div class="row">
+
+    <h4 class="col-auto">Informations sur le compte</h4>
+    <div class="col">
+        <div class="row my-2" >
+            <div class="col">
+                Genre
+            </div>
+            <div class="col">
+                <strong>{{user.gender}}</strong>
+            </div>
+    
+        </div>
+        <div class="row my-2" >
+            <div class="col">
+                Nom
+            </div>
+            <div class="col">
+                <strong>{{user.lastname}}</strong>
+            </div>
+     
+        </div>
+        <div class="row my-2" >
+            <div class="col">
+                Prénom
+            </div>
+            <div class="col">
+                <strong>{{user.firstname}}</strong>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col">
+                Nom d'utilisateur 
+            </div>
+            <div class="col">
+                <strong>{{ user.username}}</strong>
+            </div>
+        </div>
+  <!-- Block type -->
+        <div class="row my-2" >
+            <div class="col">
+                Mot de passe
+            </div>
+            <div class="col">
+                <strong>****************</strong>
+            </div>
+      
+        </div>
+    <!-- fin block type -->
+    {# {% if not is_granted("ROLE_EMPLOYEE") %} #}
+      <!-- Block type -->
+        <div class="row my-2" >
+            <div class="col">
+                A propos
+            </div>
+            <div class="col">
+                <strong>{{ user.description ? user.description : "Champs non rempli"}}</strong>
+            </div>
+        </div>
+    <!-- fin block type -->
+
+        <div class="row my-2" >
+            <div class="col">
+                Inscrit depuis le
+            </div>
+            <div class="col">
+                <strong>{{ user.createdAt | date("d/m/y")}}</strong>
+            </div>
+        </div>
+            {% if user.leaveAt %}
+        <div class="row my-2" >
+            <div class="col">
+                Désinscrit le
+            </div>
+            <div class="col">
+                <strong>{{user.leaveAt | date('d/m/y') }}</strong> <a href="{{path("user_not_leave", {id: user.id})}}"> Annuler le départ ?</a>
+                
+            </div>
+        </div>
+        {% endif %}
+        <!-- Block type -->
+        <div class="row my-2 avatar" >
+            <div class="col">
+                Avatar
+            </div>
+            <div class="col">
+                {{ user | avatar | raw }}
+            </div>
+        </div>
+    {# {% endif %} #}
+    <!-- Block type -->
+        <div class="row my-2" >
+            <div class="col">
+                Signature
+            </div>
+            <div class="col">
+                {% if user.signature %}
+                    <img class="profile-img" src="{{ user.signature }}">
+                {% else %}
+                    Aucune signature définie pour cet utilisateur.trice
+                {% endif %}
+            </div>
+        </div>
+    <!-- fin block type -->
+
+
+        <div class="col my-3 text-end pe-5">
+            <a href={{path("user_edit", {id: user.id})}} >Modifier les Informations</a>
+        </div>
+    </div>
+    </div>
+</div>
+
+    <div>
+        <div class="row my-2">
+          <h4 class="col-4">Actions sur le compte</h4>
+        <div class="col">
+        <div class="row my-2" >
+         
+            <div class="col">
+            <a href="{{ path('user_leave', {'id':user.id}) }}" class="text-danger">Signaler l'utilisateur.trice comme partie</a>
+            </div>
+        </div>
+    <!-- fin block type -->
+      <!-- Block type -->
+        <div class="row my-2" >
+     
+            <div class="col">
+            <a onclick="alert('confirmez la suppression de {{user.firstname }} {{user.lastname}}')" href="{{ path('user_delete', {'id':user.id}) }}"  class="text-danger">Supprimer l'utilisateur.trice</a>
+            </div>
+        </div>
+    <!-- fin block type -->
+{# {% endif %} #}
+        </div>
+
+    </div>
+</div>

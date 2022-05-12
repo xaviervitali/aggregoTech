@@ -1,7 +1,7 @@
 {% extends 'baseWithNav.html.twig' %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="{{ asset("assets/css/userNew.css")}}"
+<link rel="stylesheet" href="{{ asset("assets/css/userNew.css")}}">
 {% endblock %}
 {% block body %}
 <h2>Editer un  utilisateur</h2>
@@ -11,15 +11,18 @@
         {{ form_widget(form.gender) }}
         {{ form_widget(form.firstname) }}
         {{ form_widget(form.lastname) }}
+        {% if is_granted(ROLE_ADMIN) or is_granted(ROLE_RH)%}
         {{ form_row(form.description, {label: "A propos de " ~ user.firstname, placeholder: "A propos de vous " ~ user.firstname}) }}
-
+        {% endif %}
 </fieldset>
+        {% if is_granted(ROLE_ADMIN) or is_granted(ROLE_RH)%}
 
   <fieldset>
-  <legend>Avatar actuel</legend>
-  <div class="text-center">{{ user | avatar |raw }}</div>
-        {{ form_row(form.avatar) }}
-        </fieldset>
+    <legend>Avatar actuel</legend>
+    <div class="text-center">{{ user | avatar |raw }}</div>
+          {{ form_row(form.avatar) }}
+    </fieldset>
+    
         <fieldset >
     <legend>Signature</legend>
 

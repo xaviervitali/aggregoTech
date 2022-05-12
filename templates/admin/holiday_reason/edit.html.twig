@@ -1,13 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseWithNav.html.twig' %}
 
-{% block title %}Edit HolidayReason{% endblock %}
 
 {% block body %}
-    <h1>Edit HolidayReason</h1>
+    <h2>{{ holiday_reason.name}}</h2>
 
-    {{ include('admin/holiday_reason/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('admin/holiday_reason/_form.html.twig') }}
 
-    <a href="{{ path('holiday_reason_index') }}">back to list</a>
 
     {{ include('admin/holiday_reason/_delete_form.html.twig') }}
+    <a href="{{ path('holiday_reason_index') }}">Retour à la liste des motifs</a>
 {% endblock %}

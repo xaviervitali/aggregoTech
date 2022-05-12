@@ -7,7 +7,7 @@ namespace App\Twig;
 
 
 use App\Entity\User;
-
+use phpDocumentor\Reflection\Types\Boolean;
 use Twig\Extension\AbstractExtension;
 
 use Twig\TwigFilter;
@@ -31,14 +31,14 @@ class HolidayStatusExtension extends AbstractExtension
 
 
 
-    public function holidayStatus(String $status)
+    public function holidayStatus(?Boolean $status)
 
     {
 
         $statusObj = [
-            "n/a" => '<i class="fa-solid fa-circle-pause" style="color: orange;"></i>',
-            "ok" => '<i class="fa-solid fa-circle-check" style="color: green;"></i>',
-            "ko" => '<i class="fa-solid fa-circle-xmark" style="color: red;"></i>'
+            null => '<i class="fa-solid fa-circle-pause" style="color: orange;"></i>',
+            true => '<i class="fa-solid fa-circle-check" style="color: green;"></i>',
+            false => '<i class="fa-solid fa-circle-xmark" style="color: red;"></i>'
         ];
 
         return $statusObj[$status];

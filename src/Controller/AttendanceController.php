@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Attendance;
 use App\Entity\User;
-use App\Form\AttendancesViewType;
 use App\Form\AttendanceType;
 use App\Repository\AttendanceRepository;
 use App\Repository\SignatureRepository;
@@ -31,55 +30,55 @@ class AttendanceController extends AbstractController
 {
 
 
-    /**
-     * @Route("/profile/attendance/{id<\d+>}", name="attendance")
-     */
-    public function index(AttendanceRepository $attendanceRepository, User $user, Request $request, EntityManagerInterface $em): Response
-    {
-        /**
-         * @var User $currentUser
-         */
-        $currentUser =  $this->getUser();
-        if ($user != $currentUser && !in_array("ROLE_ADMIN", $currentUser->getRoles())) {
-            return    $this->redirectToRoute('attendance', ['id' => $currentUser->getId()]);
-        }
-        $userAttendance = $attendanceRepository->findBy(["user" => $user], ["createdAt" => "ASC"]);
+    // /**
+    //  * @Route("/profile/attendance/{id<\d+>}", name="attendance")
+    //  */
+    // public function index(AttendanceRepository $attendanceRepository, User $user, Request $request, EntityManagerInterface $em): Response
+    // {
+    //     /**
+    //      * @var User $currentUser
+    //      */
+    //     $currentUser =  $this->getUser();
+    //     if ($user != $currentUser && !in_array("ROLE_ADMIN", $currentUser->getRoles())) {
+    //         return    $this->redirectToRoute('attendance', ['id' => $currentUser->getId()]);
+    //     }
+    //     $userAttendance = $attendanceRepository->findBy(["user" => $user], ["createdAt" => "ASC"]);
 
 
-        $form = $this->createForm(AttendanceType::class);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            /**
-             * @var Attendance attendance
-             */
-            $attendance = new Attendance;
+    //     $form = $this->createForm(AttendanceType::class);
+    //     $form->handleRequest($request);
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         /**
+    //          * @var Attendance attendance
+    //          */
+    //         $attendance = new Attendance;
 
-            $attendance
-                ->setAddedBy($this->getUser())
-                ->setUpdatedAt(new DateTimeImmutable())
-                ->setUser($user)
-                ->setCreatedAt(DateTimeImmutable::createFromMutable($form->getData()["createdAt"]));
-            $em->persist($attendance);
-            $em->flush();
+    //         $attendance
+    //             ->setAddedBy($this->getUser())
+    //             ->setUpdatedAt(new DateTimeImmutable())
+    //             ->setUser($user)
+    //             ->setCreatedAt(DateTimeImmutable::createFromMutable($form->getData()["createdAt"]));
+    //         $em->persist($attendance);
+    //         $em->flush();
 
-            return $this->render('admin/attendance/index.html.twig', [
-                'attendances' => $userAttendance,
-                "form" => $form->createView(),
-                "user" => $user
+    //         return $this->render('admin/attendance/index.html.twig', [
+    //             'attendances' => $userAttendance,
+    //             "form" => $form->createView(),
+    //             "user" => $user
 
-            ]);
-        }
+    //         ]);
+    //     }
 
-        return $this->render('admin/attendance/index.html.twig', [
-            'attendances' => $userAttendance,
-            "form" => $form->createView(),
-            "user" => $user
+    //     return $this->render('admin/attendance/index.html.twig', [
+    //         'attendances' => $userAttendance,
+    //         "form" => $form->createView(),
+    //         "user" => $user
 
-        ]);
-    }
+    //     ]);
+    // }
 
     /** 
-     *  @Route("/profile/attendance_beta", name="attendance_beta")
+     *  @Route("/profile/attendance", name="attendance")
      */
     public function index2(AttendanceRepository $attendanceRepository, Request $request, EntityManagerInterface $em)
     {
@@ -121,8 +120,6 @@ class AttendanceController extends AbstractController
          */
         $user = $userRepository->findOneBy(['id' => $request->request->get('user')]);
         $currentUser =  $this->getUser();
-
-
 
         $date =  DateTimeImmutable::createFromMutable(new DateTime($request->request->get('date')));
 

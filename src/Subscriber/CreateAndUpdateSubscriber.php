@@ -51,8 +51,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
-
-
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CreateAndUpdateSubscriber implements EventSubscriber
 
@@ -64,13 +63,14 @@ class CreateAndUpdateSubscriber implements EventSubscriber
 
 
 
-    public function __construct(Security $security, UserPasswordHasherInterface $passwordHasher,  UserRepository $userRepository)
+    public function __construct(Security $security, UserPasswordHasherInterface $passwordHasher,  UserRepository $userRepository, AuthorizationCheckerInterface $checker)
 
     {
 
         $this->passwordHasher = $passwordHasher;
 
         $this->security = $security;
+        $this->checker = $checker;
 
         $this->userRepository = $userRepository;
 
@@ -128,8 +128,9 @@ class CreateAndUpdateSubscriber implements EventSubscriber
 
             // if (!$entity instanceof User && !$entity instanceof AddressBook && !$entity instanceof AddressBookActivity && !$entity instanceof Collaboration) {
 
-
-            $entity->setCreatedAt($date);
+            if ($this->checker->isGranted('ROLE_EMPLOYEE') && $entity instanceof Attendance) {
+                $entity->setCreatedAt($date);
+            }
         }
 
 

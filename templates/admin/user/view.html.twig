@@ -120,13 +120,17 @@
         </div>
     <!-- fin block type -->
 
+        {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_RH")%}
 
         <div class="col my-3 text-end pe-5">
             <a href={{path("user_edit", {id: user.id})}} >Modifier les Informations</a>
         </div>
+
+        {% endif %}
     </div>
     </div>
 </div>
+        {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_RH")%}
 
     <div>
         <div class="row my-2">
@@ -195,7 +199,7 @@
 
     </div>
 </div>
-
+        {% endif %}
 
 {% if  user.getFileUploads  | length > 0 %}
     {% set catArray = [] %}

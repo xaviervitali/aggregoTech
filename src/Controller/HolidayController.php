@@ -8,43 +8,52 @@ use App\Entity\User;
 use App\Form\HolidayType;
 use App\Repository\HolidayReasonRepository;
 use App\Repository\HolidayRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/profile/holiday')]
 class HolidayController extends AbstractController
 {
-    #[Route('/{id<\d+>}', name: 'holiday_index', methods: ['GET'])]
-    public function index(HolidayRepository $holidayRepository, User $user): Response
+    private SerializerInterface $serializer;
+    public function __construct(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
+    }
+    #[Route('/', name: 'holiday_index', methods: ['GET'])]
+    public function index(HolidayRepository $holidayRepository): Response
     {
         return $this->render('admin/holiday/index.html.twig', [
-            'holidays' => $holidayRepository->findBy(["user" => $user], ['id' => "DESC"]),
+            'holidays' => $holidayRepository->findBy(["user" => $this->getUser()], ['id' => "DESC"]),
         ]);
     }
 
-    #[Route('/new/{id<\d+>}', name: 'holiday_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, HolidayReasonRepository $holidayReasonRepository, User $user): Response
+    #[Route('/new', name: 'holiday_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, HolidayReasonRepository $holidayReasonRepository): Response
     {
-        $currentUser =  $this->getUser();
+        // $currentUser =  $this->getUser();
 
-        if ($user != $currentUser && !in_array("ROLE_ADMIN", $currentUser->getRoles())) {
-            return    $this->redirectToRoute('holiday_new', ['id' => $currentUser->getId()]);
-        }
+        // if ($user != $currentUser && !in_array("ROLE_ADMIN", $currentUser->getRoles())) {
+        //     return    $this->redirectToRoute('holiday_new', ['id' => $currentUser->getId()]);
+        // }
+
         $holiday = new Holiday();
         $form = $this->createForm(HolidayType::class, $holiday);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $holiday->setUser($user)
-                ->setStatus("n/a");
+            $holiday->setUser($this->getUser())
+                ->setCreatedAt(new DateTimeImmutable());
             $entityManager->persist($holiday);
 
             $entityManager->flush();
 
-            return $this->redirectToRoute('holiday_index', ["id" => $user->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('holiday_index');
         }
 
         return $this->renderForm('admin/holiday/new.html.twig', [
@@ -70,7 +79,7 @@ class HolidayController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $holiday = $form->getData();
-            $holiday->setStatus("n/a")
+            $holiday->setStatus(null)
                 ->setManager(null);
             $entityManager->flush();
 
@@ -103,5 +112,22 @@ class HolidayController extends AbstractController
             ->setManager($this->getUser());
         $entityManager->flush();
         return $this->redirectToRoute('holiday_index', ["id" => $holiday->getUser()->getId()], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/all', name: 'holiday_all', methods: ['GET', "POST"])]
+    public function all(HolidayRepository $holidayRepository): Response
+    {
+        $holidays = array_filter($holidayRepository->findAll(), function ($h) {
+            return $h->getStatus() == null || $h->getStatus();
+        });
+
+        $customArray = [];
+
+        foreach ($holidays as $holiday) {
+            $user = $holiday->getUser();
+            $customArray[] = ["title" => $user->getFirstname() . " " . $user->getFirstname(), "start" => $holiday->getStartDate(), "end" => $holiday->getEndDate(), "backgroundColor" => $holiday->getStatus() ? "rgb(65, 180, 120)" : "rgb(241, 97, 131)", "allDay" => true,];
+        };
+
+        return new Response($this->serializer->serialize($customArray, "json"));
     }
 }

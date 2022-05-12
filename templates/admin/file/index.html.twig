@@ -15,7 +15,7 @@
   {% endfor %}
 
   <h3>Liste des fichiers mis à disposition</h3>
-  <div class="d-flex flex-wrap justify-content-around ">
+  <div class="d-flex flex-wrap justify-content-around overflow-auto " style="max-height: 80vh;">
     {% include "admin/file/adminFiles.html.twig" %}
   </div>
    {# {% if is_granted('ROLE_ADMIN') %}
@@ -49,9 +49,6 @@
 {% endblock %}
 
 {% block javascripts %}
-
-   
-   
 
 
 <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>

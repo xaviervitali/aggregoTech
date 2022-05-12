@@ -1,0 +1,38 @@
+{% set categories = fileUploads |map(f=>f.fileCategory) | reduce(
+    (unique, item) => item in unique ? unique : unique|merge([item]), []
+)%}
+Liste des categories : 
+{% for category in categories %}
+<a href="#{{category | fileCategory|replace({' ':  ""})}}">{{category | fileCategory}}</a> |
+{% endfor %}
+
+{% for category in categories %}
+    <div class="mx-1 my-2 p-1 border bg-light" id="{{category | fileCategory|replace({' ':  ""})}}">
+        <h5>{{ category | fileCategory }}</h5>
+        <div class="d-flex flex-wrap justify-content-around">
+        {% for file in fileUploads | filter(f=>f.fileCategory == category) %}
+        {{ file | card | raw}}
+            {# <div class="card p-2 m-2">
+              <p class="preview">{{ ( file.fileUploadedName) | preview  | raw }}</p>
+              <div class="card-body">
+                <p class="card-title"><strong>{{file.title}}</strong></p>
+                <p class="card-text">{{ file.description }}</p>
+                <p class="card-text">{{ file.user.firstname }} <strong>{{ file.user.lastname }}</strong></p>
+                <p class="card-text">{{ file.updatedAt | date("d/m/y") }}</p>
+                <p class="card-text">
+                  <a href="../assets/vichFiles/{{ file.fileUploadedName }}" target="_blank" class="btn btn-primary btn-sm my-2">Visualiser</a>
+                  {% if is_granted('ROLE_ADMIN') or file.user == currentUser %}
+                    <a href="{{ path('file_delete', {'id':file.id}) }}" class="btn btn-danger btn-sm">Supprimer</a>
+                  {% endif %}
+                </p>
+              </div>
+            </div>  #}
+        {% endfor %}
+
+        </div>
+    </div>
+{% endfor %}
+
+<div>
+
+</div>

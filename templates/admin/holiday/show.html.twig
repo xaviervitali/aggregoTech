@@ -45,19 +45,20 @@
             </div>
 
             <div class="col">
-            {% if holiday.manager %}
-                {% if holiday.status == "ok" %}
-                        <p><b>Signature du responsable hierarchique</b></p>
-                        <p><b>Le</b> : {{ holiday.acceptedAt | format_datetime('short', 'none', locale='fr') }}<p>
-                        <p><img style="width: 100%;" src="{{ holiday.manager.signature }}"></p>
-               
+            
+            {% if holiday.manager  %}
+                {% if holiday.status is not null %}
+                    <p><b>Signature du responsable hierarchique</b></p>
+                    <p><b>Le</b> : {{ holiday.acceptedAt | format_datetime('short', 'none', locale='fr') }}<p>
+                    <p><img style="width: 100%;" src="{{ holiday.manager.signature }}"></p>
                 {% else %}
                     <p class="text-danger">
                     Le {{ holiday.acceptedAt | format_datetime('short', 'none', locale='fr') }}
                         Votre demande a été refusée par {{ holiday.manager.firstname }} {{ holiday.manager.lastname }}
                    <p>
                 {% endif %}
-                {% else %}
+                
+            {% else %}
                 <div class="text-info col" >
                 Demande en cours de traitement par le responsable hierarchique
                 <div class="spinner-border text-primary" role="status">
