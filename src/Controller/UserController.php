@@ -159,66 +159,17 @@ class UserController extends AbstractController
 
     /**
 
-     * @Route("/profile/user", name="user_view")
+     * @Route("/admin/user/{id<\d+>}", name="user_view")
 
      */
 
-    public function view(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $encoder): Response
+    public function view(User $user): Response
 
     {
 
-        // if ($this->security->getUser() == $user || $this->checker->isGranted("ROLE_ADMIN") || $this->checker->isGranted("ROLE_RH")) {
-
-        //     $form = $this->createForm(UserType::class, $user);
-
-
-
-        //     $form = $this->createForm(FileUploadType::class);
-
-        //     $form->handleRequest($request);
-
-        //     if ($form->isSubmitted() && $form->isValid()) {
-
-        //         /** 
-
-        //          * @var FileUpload $task
-
-        //          */
-
-        //         $task = $form->getData();
-
-        //         $user = $this->getUser();
-
-        //         $task->setUser($user);
-        //         $em->persist($task);
-
-        //         $em->flush();
-
-
-
-        //         return  $this->render("admin/user/view.html.twig", [
-
-        //             'user' => $user, "form" => $form->createView()
-
-        //         ]);
-        //     }
-
-
-
-        //     return $this->render("admin/user/view.html.twig", [
-
-        //         'user' => $user, "form" => $form->createView()
-
-        //     ]);
-        // }
-
-
-
-
-
         return $this->render("admin/user/view.html.twig", [
 
-            'user' => $this->getUser()
+            'user' => $user
 
         ]);
     }

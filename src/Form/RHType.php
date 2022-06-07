@@ -30,8 +30,10 @@ class RHType extends AbstractType
             'choice_label' => function ($user) {
                 return $user->getLastname() . " " . $user->getFirstname();
             },
+            'placeholder' => 'Veuillez sélectionner un salarié',
             "choices" => $this->userRepository->findBy([], ["lastname" => "ASC"]),
             'group_by' => function ($choice) {
+
                 if (in_array("ROLE_EMPLOYEE", $choice->getRoles())) {
                     return 'Salariés en Insertion';
                 } else  if (in_array("ROLE_ADMIN", $choice->getRoles())) {

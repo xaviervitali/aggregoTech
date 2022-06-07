@@ -28,7 +28,7 @@
                     <a href="{{ path('holiday_show', {'id': holiday.id}) }}">Afficher</a>
                 {% if holiday.user == app.user %}
                     <a href="{{ path('holiday_edit', {'id': holiday.id}) }}">Editer</a>
-                    <a href="{{ path('holiday_edit', {'id': holiday.id}) }}">Supprimer</a>
+                    <a href="{{ path('holiday_delete', {'id': holiday.id}) }}">Supprimer</a>
                 {% endif %}
                     
                 </td>

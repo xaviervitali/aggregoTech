@@ -32,28 +32,24 @@ class FileController extends AbstractController
     {
         $files = $fr->findBy([], ["updatedAt" => 'DESC']);
 
-        $adminUpload = array_filter(
+        $commonFiles = array_filter(
             $files,
             function ($f) {
-                return in_array('ROLE_ADMIN', $f->getUser()->getRoles());
+                return in_array('ROLE_ADMIN', $f->getUser()->getRoles()) || in_array('ROLE_RH', $f->getUser()->getRoles());
             }
         );
 
-        $rhUpload =  array_filter(
+
+        $userFiles = array_filter(
             $files,
             function ($f) {
-                return in_array('ROLE_RH', $f->getUser()->getRoles());
+                /**
+                 * @var FileUpload $f
+                 */
+                return  $f->getUser() === $this->getUser();
             }
         );
 
-        $commonFiles = array_merge($adminUpload,   $rhUpload);
-
-        $employeeUpload = array_filter(
-            $files,
-            function ($f) {
-                return in_array('ROLE_EMPLOYEE', $f->getUser()->getRoles());
-            }
-        );
 
 
         $form = $this->createForm(FileUploadType::class);
@@ -71,7 +67,7 @@ class FileController extends AbstractController
         }
 
         return $this->render('admin/file/index.html.twig', [
-            'form' => $form->createView(), 'adminFiles' => $commonFiles, 'employeeFiles' => $employeeUpload, 'currentUser' => $this->security->getUser()
+            'form' => $form->createView(), 'adminFiles' => $commonFiles, 'userFiles' => $userFiles
         ]);
     }
 

@@ -17,6 +17,8 @@ class AppreciationCategory
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *  @Groups({"statement"})
+     * 
      */
     private $id;
 

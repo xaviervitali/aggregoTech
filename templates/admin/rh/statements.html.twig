@@ -1,121 +1,60 @@
 
-
+{# {{ dump(statements)}} #}
 {% if statements %}
+ {# <h2>Bilan du {{statement.createdAt |  format_datetime('short', 'none', locale='fr')}}</h2> #}
 
-<table class="table">
-        <thead>
-            <tr>
-                <th>Date du Bilan</th>
-                <th>Commentaire du Salarié</th>
-                <th>Commentaire du Responsable</th>
-                <th>Action</th>
-                <th>Graphique</th>
-            </tr>
-        </thead>
-        <tbody>
-        
-        {% for statement in statements %}
-{% set levels = statement.appreciations | map(a=>a.level) |reduce(
-    (unique, item) => item in unique ? unique : unique|merge([item]), []
-)  %}
-{% set categories = statement.appreciations | map(a=>a.skill.category) |reduce(
-    (unique, item) => item in unique ? unique : unique|merge([item]), []
-)  %}
-
-
-            <tr class="align-middle">
-                <td>{{ statement.createdAt ? statement.createdAt| format_datetime('short', 'none', locale='fr') : '' }}</td>
-                <td>
-                    {% if statement.userComment %}
-                        <p><b>Le</b> : {{ statement.userComment.createdAt | format_datetime('short', 'none', locale='fr')}}</p>
-                        <p>{{statement.userComment.comment }}</p>
-                    {% else %}
-                        <p>Pas de commentaire pour l'instant</p>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if statement.managerComment %}
-                        <p><b>Le</b> : {{ statement.managerComment.createdAt | format_datetime('short', 'none', locale='fr')}}</p>
-                        <div><b>{{statement.managerComment.user.firstname |capitalize }}</b> : 
-                        {{statement.managerComment.comment }}</div>
-                    {% else %}
-                        <p>Pas de commentaire pour l'instant</p>
-                    {% endif %}
-                <td>
-                    <a href="{{ path('statement_show', {'id': statement.id}) }}" class="btn btn-sm btn-info">Afficher</a>
-                </td>
-                <td class="graph w-50">
-
-                </td>
-                {# <td class="text-start w-25">
-                  <canvas id="myChart{{loop.index}}"  style=""></canvas>
-                    <script>
-    
-                  const data{{loop.index}} = {
-                      labels : {{ levels | map(e=>e.title ) | json_encode | raw }},
-                    datasets : [
-                        {% for category in categories %}
-
-                        {
-                            label: "{{category.title}}",
-                            data: [
-                                {% for level in levels  %}
-                                    {{ statement.appreciations | filter(s=> s.skill.category == category ) | filter(l=>l.level == level) | length}},
-                                {% endfor %}
-
-                            ],
-                            fill: true,
-                           backgroundColor: 'rgba('+colors[{{ loop.index }} - 1 % colors.length].join()+', 0.2)',
-                            borderColor: 'rgb('+colors[{{ loop.index }} - 1 % colors.length].join()+')',
-                            pointBackgroundColor: 'rgb('+colors[{{ loop.index }} - 1 % colors.length].join()+')', 
-                            pointBorderColor: '#fff',
-                            pointHoverBackgroundColor: '#fff',
-                           pointHoverBorderColor: 'rgb('+colors[{{ loop.index }} - 1 % colors.length].join()+')' 
-                        },
-                        {% endfor %}
-                    ]
-
-
-                  }
-
-                  const ctx{{loop.index}} = document.getElementById('myChart{{loop.index}}');
-                    const myChart = new Chart(ctx{{loop.index}},{
-                        type: 'radar',
-                        data: data{{loop.index}},
-                        options: {
-                            elements: {
-                            line: {
-                                borderWidth: 3
-                            },
-                            responsive: false,
-                            }
-                        },
-                    })
-
-
-
-                  </script>
-                
-       
-                </td> #}
-            </tr>
-     
+ <table class="table table-striped overflow-auto table-light table-bordered">
+ <thead >
+     <tr >
+    <th></th>
+            {% for statement in statements %}
+        <th class="fw-bold fs-5">
+        Bilan du {{ statement.createdAt |    format_datetime('short', 'none', locale='fr')}}
+        </th>
         {% endfor %}
-        </tbody>
-    </table>
+    </tr>
+    </thead>
+    <tbody>
+    {% for category in statementCategories %}
+
+        <tr style="border-top: 2px solid black;">
+        <td  class="fw-bold fs-4 ">{{category.title | upper}} </td>
+
+               {% for statement in statements %}
+                    <td class="graph" data-category = "{{category.id}}"  style="width: 200px;">
+                  {# {% for level in levels %}
+                   
+                    {{ level.title}} : {{ statement.appreciations | filter(e=>e.level == level) | length }}
+                  {% endfor %} #}
+                    </td>
+                {% endfor %}
+{# colspan="{{statements | length + 1}}"  #}
+         {% for skill in category.skills %}
+           <tr>
+                <td class="w-25">
+                    <p class="fw-bold ">{{ skill.title | capitalize }}</p>
+                    <p>{{skill.description |nl2br}}</p>
+                </td>
+                {% for statement in statements %}
+                    <td>
+                         {% set appreciation = statement.appreciations | filter(e=>e.skill == skill) |first %}
+                         {% if appreciation %}
+                            <p><b>Niveau</b> : {{appreciation.level.title}}</p>
+                            <p><b>Commentaire</b> : {{appreciation.comment }}</p> 
+                        {% endif %}
+                    </td>
+                {% endfor %}
+      
+            </tr> 
+        {% endfor %} 
+    
+    {% endfor %}
+    </tbody>
+  </table> 
 
 {% else %}
     <p>l'utilisateur.rice n'a pas encore de bilan</p>
 {% endif %}
-
+{% if user is defined %}
 <a href="{{ path('statement_new', {id: user.id}) }}">Nouveau Bilan pour <strong>{{user.firstname}} {{user.lastname}}</strong> </a>
-<script>
-{# window.addEventListener('beforeprint', () => {
-  // document.querySelectorAll("canvas").forEach(c=>c.resize(600, 600));
-});
-window.addEventListener('afterprint', () => {
-  document.querySelectorAll("canvas").forEach(c=>{
-      debugger
-      c.resize()});
-}); #}
-</script>
+{% endif %}

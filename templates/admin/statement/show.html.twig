@@ -32,39 +32,5 @@
 
     {% endfor %}
   </table>
-<div>
-<h4 class="mb-5">Commentaires</h4>
-    {% if statement.userComment %}
-       <p><b>Le</b>  : {{ statement.userComment.createdAt | format_datetime('short', 'none', locale='fr')}}</p>
-        <p><b>Commentaire de {{ statement.userComment.user.firstname }} {{ statement.userComment.user.lastname }}</b> :</p>
-        <p class="fst-italic">{{ statement.userComment.comment |nl2br}}</p>
-    {% endif %}
-    
-    {% if statement.managerComment %}
-     <p><b>Le</b>  : {{ statement.managerComment.createdAt | format_datetime('short', 'none', locale='fr')}}</p>
-        <p><b>Commentaire de {{ statement.managerComment.user.firstname }} {{ statement.managerComment.user.lastname }}</b> :</p>
-        <p class="fst-italic">{{ statement.managerComment.comment |nl2br   }}</p>
-    {% endif %}
-    {% if not  statement.managerComment  and  not statement.userComment or  (statement.userComment and not statement.managerComment and is_granted("ROLE_RH") or statement.managerComment and not statement.userComment and is_granted("ROLE_EMPLOYEE"))  %}
-    {{ form_start(form)}}
-    {{ form_widget(form)}}
-            <button class="btn btn-success my-2">Enregitrer définitivement votre commentaire</button>
-    {{ form_end(form)}}
-    {% endif %}
 
-</div>
-{# {% if not disabled %}
-
-    {% else %}
-    {% if is_granted("ROLE_EMPLOYEE") %}
-        <p></b>Le</b>  : {{ statement.userComment.createdAt | format_datetime('short', 'none', locale='fr')}}</p>
-        <p><b>Commentaire du salarié</b> :</p>
-        <p>{{ statement}} 
-{% endif %} #}
-
-    {# <a href="{{ path('statement_index') }}">back to list</a> #}
-
-    {# <a href="{{ path('statement_edit', {'id': statement.id}) }}">edit</a> #}
-
-    {# {{ include('admin/statement/_delete_form.html.twig') }} #}
 {% endblock %}

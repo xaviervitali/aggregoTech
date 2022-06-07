@@ -20,7 +20,6 @@
         </tbody>
     </table>
 
-
 {{ form_start(attendanceForm)}}
 {{ form_widget(attendanceForm)}}
 <button  class=" btn btn-sm btn-success">Valider</button>
@@ -59,7 +58,9 @@
                 .then((f) => {
                 if (f.length > 0) {
                     table.classList.remove("d-none");
-
+                    console.log(f.sort(function (a, b) {
+  return new Date(a.date) - new Date(b.date);
+}))
                     attendancesShow(f);
                 } else {
                     // table.append = "<h3>Pas d'emargement à cette période</h3>";

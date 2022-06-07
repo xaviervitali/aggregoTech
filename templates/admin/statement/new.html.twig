@@ -44,10 +44,9 @@ sendStatement
             .then(response => 
                  response.json()
             
-        ).then(a=> window.location.href = "{{ url('statement_index')}}")
+        ).then(a=> window.location.href = "{{ url('admin_rh')}}")
         .catch(error=>console.log(error.message));
         
-
 }
 
 </script>

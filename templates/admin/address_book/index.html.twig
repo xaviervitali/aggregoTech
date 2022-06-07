@@ -1,7 +1,7 @@
 {% extends 'baseWithNav.html.twig' %}
 
 {%  block stylesheets %}
-    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css">
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css">
     <link rel="stylesheet" href="{{ asset("assets/css/addressBook.css")}}">
 {% endblock %}
 {% block body %}
@@ -98,10 +98,8 @@
 <a href="{{path('address_book_new')}}">Ajouter un organisme</a>
 {% endblock %}
 {% block javascripts %}
-
+<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>
 
     <script src="{{ asset("assets/js/addressBook.js")}}"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.19.1/locale/bootstrap-table-fr-CH.min.js" integrity="sha512-oMiFbd095KmJ9vWK5N/MhFffDzK0WT1bflfwdLkpnQTQFiL/SGo7p+ivb9tPwT2wrLGZhj1+/saaUt+NprpMgA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 {% endblock %}

@@ -10,6 +10,7 @@ use App\Repository\HolidayReasonRepository;
 use App\Repository\HolidayRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -94,19 +95,19 @@ class HolidayController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'holiday_delete', methods: ['POST'])]
-    public function delete(Request $request, Holiday $holiday, EntityManagerInterface $entityManager): Response
+    #[Route('/{id{id<\d+>}/delete}', name: 'holiday_delete')]
+    public function delete(Holiday $holiday, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $holiday->getId(), $request->request->get('_token'))) {
+        if ($holiday->getUser() == $this->getUser()) {
             $entityManager->remove($holiday);
             $entityManager->flush();
-        }
 
-        return $this->redirectToRoute('holiday_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('holiday_index', [], Response::HTTP_SEE_OTHER);
+        }
     }
 
     #[Route('/{id<\d+>}/{status}', name: 'holiday_aggrement')]
-    public function aggrement(Request $request, Holiday $holiday, EntityManagerInterface $entityManager, String $status): Response
+    public function aggrement(Request $request, Holiday $holiday, EntityManagerInterface $entityManager, ?Boolean $status): Response
     {
         $holiday->setStatus($status)
             ->setManager($this->getUser());
@@ -114,7 +115,7 @@ class HolidayController extends AbstractController
         return $this->redirectToRoute('holiday_index', ["id" => $holiday->getUser()->getId()], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/all', name: 'holiday_all', methods: ['GET', "POST"])]
+    #[Route('/all', name: 'holiday_all')]
     public function all(HolidayRepository $holidayRepository): Response
     {
         $holidays = array_filter($holidayRepository->findAll(), function ($h) {

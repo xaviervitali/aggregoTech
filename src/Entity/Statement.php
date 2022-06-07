@@ -37,15 +37,7 @@ class Statement
      */
     private $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=StatementComment::class, inversedBy="statements")
-     */
-    private $userComment;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=StatementComment::class, inversedBy="managerStatements")
-     */
-    private $managerComment;
 
     public function __construct()
     {
@@ -107,30 +99,6 @@ class Statement
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function getUserComment(): ?StatementComment
-    {
-        return $this->userComment;
-    }
-
-    public function setUserComment(?StatementComment $userComment): self
-    {
-        $this->userComment = $userComment;
-
-        return $this;
-    }
-
-    public function getManagerComment(): ?StatementComment
-    {
-        return $this->managerComment;
-    }
-
-    public function setManagerComment(?StatementComment $managerComment): self
-    {
-        $this->managerComment = $managerComment;
 
         return $this;
     }

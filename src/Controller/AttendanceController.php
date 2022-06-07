@@ -25,6 +25,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Constraints\Date;
 
 class AttendanceController extends AbstractController
 {
@@ -85,19 +86,33 @@ class AttendanceController extends AbstractController
         $form = $this->createForm(AttendanceType::class);
         $date = new DateTimeImmutable();
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             /**
              * @var Attendance attendance
              */
             $attendance = new Attendance;
+            $userAttendance = $attendanceRepository->findBy(["user" => $this->getUser()], ["createdAt" => "DESC"]);
+            $lastestAttendance = $userAttendance ? $userAttendance[0]->getCreatedAt() : "";
+            if (!$userAttendance || ($date->getTimestamp() - $lastestAttendance->getTimestamp()) > 300) {
 
-            $attendance
-                ->setAddedBy($this->getUser())
-                ->setUpdatedAt(new DateTimeImmutable())
-                ->setUser($this->getUser())
-                ->setCreatedAt($date);
-            $em->persist($attendance);
-            $em->flush();
+                $attendance
+                    ->setAddedBy($this->getUser())
+                    ->setUpdatedAt(new DateTimeImmutable())
+                    ->setUser($this->getUser())
+                    ->setCreatedAt($date);
+                $em->persist($attendance);
+                $em->flush();
+                $this->addFlash('success', message: "Votre emmargement de " . date_format($lastestAttendance, "H:i:s") . " a été pris en compte.");
+                return $this->render('admin/attendance/indexV2.html.twig', [
+                    'attendances' => $attendanceRepository->findAll(),
+                    "form" => $form->createView()
+
+
+                ]);
+            } else {
+                $this->addFlash('danger', message: "Temps minimum entre 2 emmargements 5 minutes votre dernier emmargement a eu lieu à " . date_format($lastestAttendance, "H:i:s") . " ! Cet émargement ne sera pas pris en compte.");
+            }
         }
         return $this->render('admin/attendance/indexV2.html.twig', [
             'attendances' => $attendanceRepository->findAll(),

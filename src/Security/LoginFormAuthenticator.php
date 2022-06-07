@@ -102,7 +102,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $user = $token->getUser();
         if (in_array("ROLE_RH", $user->getRoles())) {
 
-            return new RedirectResponse($this->urlGenerator->generate('user_index'));
+            return new RedirectResponse($this->urlGenerator->generate('admin_rh'));
         }
 
         if (in_array("ROLE_ADMIN", $user->getRoles())) {
@@ -110,12 +110,12 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         }
         if (in_array("ROLE_EMPLOYEE", $user->getRoles())) {
 
-            return new RedirectResponse($this->urlGenerator->generate('attendance', ["id" => $user->getId()]));
+            return new RedirectResponse($this->urlGenerator->generate('attendance'));
         }
 
         if ($user && count($user->getRoles()) < 2) {
 
-            return new RedirectResponse($this->urlGenerator->generate('notAvailable', ['id' => $user->getId()]));
+            return new RedirectResponse($this->urlGenerator->generate('notAvailable'));
         }
 
         throw new \Exception('TODO: provide a valid redirect inside ' . __FILE__);

@@ -4,9 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Appreciation;
 use App\Entity\Statement;
-use App\Entity\StatementComment;
 use App\Entity\User;
-use App\Form\StatementCommentType;
 use App\Form\StatementType;
 use App\Repository\AppreciationCategoryRepository;
 use App\Repository\AppreciationRepository;
@@ -32,32 +30,32 @@ class StatementController extends AbstractController
     private SkillRepository $skillRepository;
     private UserRepository $userRepository;
     private LevelRepository $levelRepository;
-    private Security $security;
 
-    public function __construct(EntityManagerInterface $em, SkillRepository $skillRepository, UserRepository $userRepository, LevelRepository $levelRepository, Security $security)
+    public function __construct(EntityManagerInterface $em, SkillRepository $skillRepository, UserRepository $userRepository, LevelRepository $levelRepository)
     {
 
         $this->userRepository = $userRepository;
         $this->skillRepository = $skillRepository;
         $this->levelRepository = $levelRepository;
-        $this->security = $security;
         $this->em = $em;
     }
-    #[Route('/', name: 'statement_index', methods: ['GET'])]
-    public function index(StatementRepository $statementRepository, UserRepository $userRepository): Response
-    {
 
+
+    #[Route('/', name: 'statement_index', methods: ['GET'])]
+    public function index(StatementRepository $statementRepository, AppreciationCategoryRepository $appreciationCategoryRepository, LevelRepository $levelRepository): Response
+    {
         return $this->render('admin/statement/index.html.twig', [
-            'statements' => $statementRepository->findBy([], ["user" => "ASC"]),
-            "users" => $userRepository->findAll()
+            "statements" => $statementRepository->findBy(["user" => $this->getUser()]),
+            "statementCategories" => $appreciationCategoryRepository->findBy([]),
+            "levels" => $levelRepository->findBy([], ["title" => "ASC"])
+
         ]);
     }
 
     #[Route('/new/{id<\d+>}', name: 'statement_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, User $user, EntityManagerInterface $entityManager, AppreciationCategoryRepository $appreciationCategoryRepository): Response
+    public function new(Request $request, User $user, AppreciationCategoryRepository $appreciationCategoryRepository): Response
     {
 
-        // $form = $this->createForm(AppreciationsType::class);
 
         $form = $this->createForm(StatementType::class);
         $form->handleRequest($request);
@@ -97,35 +95,15 @@ class StatementController extends AbstractController
         $this->em->persist($bilan);
         $this->em->flush();
     }
+
+
     #[Route('/{id}', name: 'statement_show', methods: ['GET', "POST"])]
     public function show(Statement $statement, AppreciationCategoryRepository $appreciationCategoryRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $statementComment = new StatementComment();
-        $form = $this->createForm(StatementCommentType::class, $statementComment);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->security->getUser();
-            $date = new DateTimeImmutable();
-
-            $statementComment
-                ->setComment($form->getData()->getComment())
-                ->setCreatedAt($date)
-                ->setUser($user);
-            $entityManager->persist($statementComment);
-            if (in_array("ROLE_EMPLOYEE", $this->security->getUser()->getRoles())) {
-                $statement->setUserComment($statementComment);
-            } else {
-                $statement->setManagerComment($statementComment);
-            }
-            $entityManager->flush();
-
-            return $this->redirectToRoute('statement_index');
-        }
         return $this->render('admin/statement/show.html.twig', [
             'statement' => $statement,
             "categories" => $appreciationCategoryRepository->findAll(),
-            "form" => $form->createView()
 
         ]);
     }

@@ -257,10 +257,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      */
     private $statements;
 
-    /**
-     * @ORM\OneToMany(targetEntity=StatementComment::class, mappedBy="user")
-     */
-    private $statementComments;
+
 
     /**
      * @ORM\OneToMany(targetEntity=Statement::class, mappedBy="managerComment")
@@ -944,7 +941,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     {
         if (!$this->holidayAccepted->contains($holidayAccepted)) {
             $this->holidayAccepted[] = $holidayAccepted;
-            $holidayAccepted->setAcceptedBy($this);
+            $holidayAccepted->setManager($this);
         }
 
         return $this;
@@ -954,8 +951,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     {
         if ($this->holidayAccepted->removeElement($holidayAccepted)) {
             // set the owning side to null (unless already changed)
-            if ($holidayAccepted->getAcceptedBy() === $this) {
-                $holidayAccepted->setAcceptedBy(null);
+            if ($holidayAccepted->getManager() === $this) {
+                $holidayAccepted->setManager(null);
             }
         }
 
@@ -986,66 +983,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
             // set the owning side to null (unless already changed)
             if ($statement->getUser() === $this) {
                 $statement->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|StatementComment[]
-     */
-    public function getStatementComments(): Collection
-    {
-        return $this->statementComments;
-    }
-
-    public function addStatementComment(StatementComment $statementComment): self
-    {
-        if (!$this->statementComments->contains($statementComment)) {
-            $this->statementComments[] = $statementComment;
-            $statementComment->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeStatementComment(StatementComment $statementComment): self
-    {
-        if ($this->statementComments->removeElement($statementComment)) {
-            // set the owning side to null (unless already changed)
-            if ($statementComment->getUser() === $this) {
-                $statementComment->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Statement[]
-     */
-    public function getManagerStatements(): Collection
-    {
-        return $this->managerStatements;
-    }
-
-    public function addManagerStatement(Statement $managerStatement): self
-    {
-        if (!$this->managerStatements->contains($managerStatement)) {
-            $this->managerStatements[] = $managerStatement;
-            $managerStatement->setManagerComment($this);
-        }
-
-        return $this;
-    }
-
-    public function removeManagerStatement(Statement $managerStatement): self
-    {
-        if ($this->managerStatements->removeElement($managerStatement)) {
-            // set the owning side to null (unless already changed)
-            if ($managerStatement->getManagerComment() === $this) {
-                $managerStatement->setManagerComment(null);
             }
         }
 

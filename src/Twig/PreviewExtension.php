@@ -7,7 +7,7 @@ namespace App\Twig;
 use App\Entity\FileCategory;
 use App\Entity\FileUpload;
 use Exception;
-
+use Symfony\Component\Security\Core\Security;
 use Twig\Extension\AbstractExtension;
 
 use Twig\TwigFilter;
@@ -17,7 +17,12 @@ use Twig\TwigFilter;
 class PreviewExtension extends AbstractExtension
 
 {
+    private $security;
 
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
 
 
     public function getFilters()
@@ -54,7 +59,7 @@ class PreviewExtension extends AbstractExtension
 
 
 
-                return "<img src='/$absoluteUrl' alt='$vichFile'>";
+                return "<img src='/$absoluteUrl' style=' width: 250px; object-fit: cover;' alt='$vichFile'>";
             }
 
 
@@ -92,7 +97,7 @@ class PreviewExtension extends AbstractExtension
 
 
 
-                return '<i class="fas fa-file-pdf" style="color:red;"></i>';
+                return '<i class="fas fa-file-pdf fs-1" style="color:red;"></i>';
             }
 
 
@@ -101,7 +106,7 @@ class PreviewExtension extends AbstractExtension
 
 
 
-                return '<i class="far fa-file-word"  style="color:blue;"></i>';
+                return '<i class="far fa-file-word fs-1"  style="color:blue;"></i>';
             }
 
 
@@ -110,22 +115,22 @@ class PreviewExtension extends AbstractExtension
 
 
 
-                return '<i class="far fa-file-powerpoint"  style="color:orange;"></i>';
+                return '<i class="far fa-file-powerpoint fs-1"  style="color:orange;"></i>';
             }
 
             if (str_contains($mimeContent, "excel") || str_contains($mimeContent, "sheet")) {
 
 
 
-                return '<i class="far fa-file-excel"  style="color:green;"></i>';
+                return '<i class="far fa-file-excel fs-1"  style="color:green;"></i>';
             }
 
 
 
-            return '<i class="far fa-file-archive"  style="color:yellow;"></i>';
+            return '<i class="far fa-file-archive fs-1"  style="color:yellow;"></i>';
         } catch (Exception $e) {
 
-            return '<i class="far fa-question-circle"></i>';
+            return '<i class="far fa-question-circle fs-1"></i>';
         }
     }
 
@@ -173,21 +178,27 @@ class PreviewExtension extends AbstractExtension
 
         $title = $file->getTitle();
         $description = $file->getDescription();
-        $updatedAt = date_format($file->getUpdatedAt(), "d/m/Y H:i:s");
+        $updatedAt = date_format($file->getUpdatedAt(), "d/m/Y");
         $title = $file->getTitle();
+        $by = $file->getUser()->getFirstname() . " " . $file->getUser()->getLastname();
         $id = $file->getId();
+
+        $remove = "";
+        if ($this->security->isGranted("ROLE_ADMIN") || $this->security->isGranted("ROLE_RH") || $this->security->getUser() == $file->getUser()) {
+            $remove = '<a href="/profile/file/delete/' . $id . '" class="text-danger">Supprimer</a>';
+        }
 
         $card =
             <<<Card
-                <div class="card p-2 m-2 text-center">
-                <p>$fileUploadedPreview</p>
+                <div class="card m-2 py-2 text-center" style="width: 250px">
+                <p class="overflow-hidden  d-flex flex-column justify-content-center" style="height: 100px;">$fileUploadedPreview</p>
                 <div class="card-body">
                 <p class="card-title"><strong>$title</strong></p>
                 <p class="card-text">$description</p>
-                <p class="card-text">$updatedAt </p>
+                <p class="card-text">Téléversé le $updatedAt par $by</p>
                 <p class="card-text">
                     <a href="/assets/vichFiles/$fileName" target="_blank" >Visualiser</a>
-                    <a href="/profile/file/delete/$id" class="text-danger">Supprimer</a>
+                    $remove
                 </p>
                 </div>
             </div> 

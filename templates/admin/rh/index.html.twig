@@ -10,7 +10,7 @@
 
 {% block body %}
   <h2>Bienvenue dans l'espace RH</h2>
-
+<div class="text-center">
   <div class="dropdown">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
       Gestion des bilans
@@ -35,47 +35,63 @@
         <a class="nav-link" href="{{path('user_add')}}">Ajouter un nouvel utilisateur</a>
       </li>
     </ul>
-     <a class="btn btn-secondary" href="{{path("holiday_reason_index")}}">Editer la liste des motifs des congés</a>
-        {{form_start(form)}}
-        {{form_widget(form)}}
-        {{form_end(form)}}
+     <a class="btn btn-secondary disabled" href="{{path("holiday_reason_index")}}">Editer la liste des motifs des congés</a>
+     </div>
+     <hr>
+     {% for userType, users in userTypes %}
+          {% if users %}
+        <div class="fs-3">{{userType}}</div>
+        <div  class="d-flex justify-content-around flex-wrap">
+          {% for user in users  %}
+          <a href='{{path("admin_rh_show", {id: user.id})}}#{{user.firstname}}' class=" btn-sm btn btn-info" style= "width: 250px">{{user.firstname}} {{user.lastname}}</a>
+          {% endfor %}
+</div>
+        <hr>
+          {% endif %}
+
+     {% endfor %}
   </div>
 
   <hr>
   
-{{ include("admin/holiday/calendar.html.twig")}}
+{# {{ include("admin/holiday/calendar.html.twig")}} #}
 
   {% if user is defined  %}
-  <div>
+  <div id="{{user.firstname}}">
     <div class="fs-2">{{user.firstname}} {{user.lastname}} <span class="fs-6">{{ user | role}}</span></div>
     <!-- Tabs navs -->
     <hr>
     <div>
       <ul class="nav nav-tabs mb-3" id="ex1" role="tablist">
+        {% if user.roles | filter(r=>r == "ROLE_EMPLOYEE") %}
+
           <li class="nav-item" role="presentation">
-              <a class="nav-link active" id="attendance" data-mdb-toggle="tab" href="#attendances" role="tab" aria-controls="attendances"  aria-selected="true" >Emargements</a>
-          </li>
-          <li class="nav-item" role="presentation">
-              <a class="nav-link " id="file" data-mdb-toggle="tab" href="#files" role="tab" aria-controls="files"  aria-selected="true" >Fichiers</a>
+              <a class="nav-link " id="attendance" data-mdb-toggle="tab" href="#attendances" role="tab" aria-controls="attendances"  aria-selected="true" >Emargements</a>
           </li>
           <li class="nav-item" role="presentation">
               <a class="nav-link " id="survey" data-mdb-toggle="tab" href="#surveys" role="tab" aria-controls="surveys"  aria-selected="true" >Suivi d'activité</a>
           </li>
-
           <li class="nav-item" role="presentation">
               <a class="nav-link " id="statement" data-mdb-toggle="tab" href="#statements" role="tab" aria-controls="statements"  aria-selected="true" >Bilans</a>
           </li>
           <li class="nav-item" role="presentation">
               <a class="nav-link " id="holiday" data-mdb-toggle="tab" href="#holidays" role="tab" aria-controls="holidays"  aria-selected="true" >Congés</a>
           </li>
+          {% endif %}
+
+          <li class="nav-item" role="presentation">
+              <a class="nav-link " id="file" data-mdb-toggle="tab" href="#files" role="tab" aria-controls="files"  aria-selected="true" >Fichiers</a>
+          </li>
+
           <li class="nav-item" role="presentation">
               <a class="nav-link " id="about" data-mdb-toggle="tab" href="#abouts" role="tab" aria-controls="abouts"  aria-selected="true" >Plus d'Informations</a>
           </li>
       </ul>
       <!-- Tabs navs -->
-
-      <!-- Tabs content -->
+      <!-- Tabs content --> 
+  
       <div class="tab-content" id="ex1-content">
+        {% if user.roles | filter(r=>r == "ROLE_EMPLOYEE") %}
         <div
           class="tab-pane fade show active"
           id="attendances"
@@ -84,13 +100,6 @@
         >
           <h4>Liste des Emargements</h4>
           {{ include("admin/rh/attendances.html.twig")}}
-
-        </div>
-
-        <div class="tab-pane fade" id="files" role="tabpanel" aria-labelledby="file">
-              <h4>Liste des Fichiers televersés par l'utilisateur</h4>
-          {# {{ include("admin/holiday/calendar.html.twig")}} #}
-          {{ include("admin/rh/files.html.twig")}}
 
         </div>
 
@@ -116,7 +125,13 @@
           {{ include("admin/rh/holidays.html.twig")}}
 
         </div>
+{% endif %}
+        <div class="tab-pane fade " id="files" role="tabpanel" aria-labelledby="file">
+              <h4>Liste des Fichiers televersés par l'utilisateur</h4>
+          {# {{ include("admin/holiday/calendar.html.twig")}} #}
+          {{ include("admin/rh/files.html.twig")}}
 
+        </div>
         <div class="tab-pane fade" id="abouts" role="tabpanel" aria-labelledby="about">
           {{ include("admin/rh/user.html.twig")}}
         </div>
@@ -132,6 +147,8 @@
   <script>
   const adminPath = "{{ url("admin_rh" )}}"
   const statements = {{statements is defined ? (statements | serialize('json', {groups: 'statement'})  | raw) : "[]"  }}
+  const levels = {{ levels is defined ? ( levels | map(e=>e.title) | serialize('json', {groups: 'statement'})  | raw) : "[]"  }}
+  const statementCategories = {{ statementCategories is defined ?( statementCategories | map(e=>e.title) | serialize('json', {groups: 'statement'}) | raw) :"[]"  }}
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
@@ -140,4 +157,6 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
  
 <script src="{{asset("assets/js/adminRH.js")}}" ></script>
+<script src="{{ asset("assets/js/statementGraphs.js")}}"></script>
+
 {% endblock %}

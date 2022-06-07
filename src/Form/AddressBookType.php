@@ -25,11 +25,12 @@ class AddressBookType extends AbstractType
             ->add('contacts', CollectionType::class, [
                 'entry_type' => AddressBookContactType::class,
                 'entry_options' => [
-                    'attr' => ['class' => 'email-box'],
+                    'attr' => ['class' => 'd-flex border p-2 my-2 justify-content-between'],
                 ],
                 'allow_add' => true,
                 'allow_delete' => true,
-                'prototype' => true
+                'prototype' => true,
+
             ])
             ->add('website', TextType::class, ['label' => 'site web', 'attr' => [
                 'placeholder' => 'site web', 'rows' => 4, "class" => 'form-control my-2 '

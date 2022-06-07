@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\HolidayRepository;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -180,7 +181,7 @@ class Holiday
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(?Boolean $status): self
     {
         $this->status = $status;
 

@@ -4,7 +4,7 @@
 
 {% endblock %}
 {% block header %}
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light " >
     <div class="container-fluid">
       <a class="navbar-brand d-block" href="{{path("public")}}">
         <img src="{{asset("assets/img/logoHDT2.png")}}" >
@@ -13,69 +13,26 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-      {% if is_granted("ROLE_RH") %}
-        <li class="nav-item">
-          <a class="nav-link" href="{{ path('admin_rh')}}">accueil</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Outils RH
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          {% if is_granted("ROLE_RH") %}
             <li class="nav-item">
-              <p>Bilans</p>
-              <ul >
-                  <li class="nav-item">
-                  <a class="nav-link" href="{{ path('statement_index', {"id": app.user.id})}}">Liste des Bilans</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{{ path('appreciation_level_index')}}">Familles de compétences</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{{ path('appreciation_category_index')}}">Compétences</a>
-                </li>
-          
-              </ul>
-              <li><hr class="dropdown-divider"></li>
-              <li class="nav-item ">
-                <p>
-                  Gestion des utilisateurs
-                </p>
-                <ul>
-                  <li class="nav-item">
-                    <a class="nav-link" href="{{ path('user_index')}}">Liste des utilisateurs</a>
-                  </li>
-                  <li class="nav-item" >
-                    <a class="nav-link" href="{{ path('admin_attendance_view')}}">Edition des emargements</a>
-                  </li>
-                </ul>
-              </li>
-              <li><hr class=" dropdown-divider"></li>
-              <li class="nav-item">
-                <p>
-                  Autre
-                </p>
-                <ul>
-                  <li class="nav-item">
-                    <a class="nav-link  position-relative" href="{{ path('contact_index')}}" >Liste des messages
-                    {{ messages > 0 ?  '<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ messages }}  <span class="visually-hidden">unread messages</span></span>' : ""}}
-                    </a>
-                  </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="{{ path('exutoire')}}">Exutoire</a>
-                    </li>
-                    </ul>
-                    <li><hr class=" dropdown-divider"></li>
-                  </li>
-                </li>
-              </ul>
+              <a class="nav-link" href="{{ path('admin_rh')}}">Accueil</a>
             </li>
-      {% endif %}
+
+            <li class="nav-item">
+              <a class="nav-link  position-relative" href="{{ path('contact_index')}}" >Liste des messages
+              {{ messages > 0 ?  '<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ messages }}  <span class="visually-hidden">unread messages</span></span>' : ""}}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ path('exutoire')}}">Exutoire</a>
+            </li>
+          {% endif %}
       {% if is_granted("ROLE_ADMIN") %}   <li class="nav-item">
-            <a class="nav-link" href="{{ path('admin_rh')}}">accueil</a>
-          </li>
+        <li class="nav-item">
+              <a class="nav-link" href="{{ path('admin_rh')}}">Menu RH</a>
+            </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                Administration
@@ -104,30 +61,28 @@
               </li>
             </li>
           </ul>
-
+        </li>
       {% endif %}
+
+
       {% if is_granted('ROLE_EMPLOYEE') %}
           <li class="nav-item">
             <a class="nav-link" href="{{path('attendance')}}">emargements</a>
           </li>
-      
           <li class="nav-item" >
-            <a class="nav-link" href="{{ path('survey')}}">Suivi Activité</a>
+            <a class="nav-link" href="{{ path('survey')}}">Suivi Activités</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ path('statement_index')}}">Mes Bilans</a>
           </li>
-
-                       <li class="nav-item">
-            <a class="nav-link" href="{{ path('holiday_index')}}">Congés</a>
-
-
+          {# <li class="nav-item">
+            <a class="nav-link disabled" href="{{ path('holiday_index')}}">Congés</a>
           </li>
-             
+              #}
       {% endif %}
 
             {# Menu Commun #}
-            <div class="border"></div>
+            <div style="border-left: 3px solid grey;"></div>
             <li class="nav-item ">
               <a class="nav-link" href="{{ path('file_index')}}">Espace documentaire</a>
               </li>

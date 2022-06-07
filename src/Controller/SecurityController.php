@@ -59,13 +59,13 @@ class SecurityController extends AbstractController
 
         if ($user && in_array("ROLE_RH", $user->getRoles())) {
 
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute('admin_rh');
         }
         // For example:
 
         if ($user && in_array("ROLE_EMPLOYEE", $user->getRoles())) {
 
-            return $this->redirectToRoute('attendance', ['id' => $user->getId()]);
+            return $this->redirectToRoute('attendance');
         }
 
         if ($user && count($user->getRoles()) < 2) {

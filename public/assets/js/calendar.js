@@ -5,6 +5,7 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
   firstDay: 1,
   buttonText: { today: "Aujourd'hui" },
   events: "/profile/holiday/all",
+
   contentHeight: 400,
   handleWindowResize: true,
 });
