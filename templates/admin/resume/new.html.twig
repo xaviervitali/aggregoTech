@@ -1,0 +1,26 @@
+{% extends "baseWithNav.html.twig" %}
+
+{% block body %}
+{# {{ include('admin/resume/index.html.twig') }} #}
+{{ form_start(form) }}
+    {{ form_widget(form.motivation) }}
+    <hr>
+    {{ form_row(form.uploadedFile) }}
+    <hr>
+    {{ form_widget(form.extLink) }}
+    <button class="btn btn-success my-2">Valider</button>
+{{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+ <script src="https://cdn.tiny.cloud/1/jwifx6cyqjsshd8l1nxakb6hbbvlisgj6ngqgvw0aiyc15lr/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>    
+{# tinymce.init({
+      selector: '.tinymce',
+      plugins: 'advlist autolink lists link image charmap preview anchor pagebreak',
+      language: 'fr_FR'
+    });  #}
+
+
+    </script>
+{% endblock %}

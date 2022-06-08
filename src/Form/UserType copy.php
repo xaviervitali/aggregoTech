@@ -11,16 +11,32 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 
 use Symfony\Component\Form\CallbackTransformer;
+
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+
 use Symfony\Component\Form\FormBuilderInterface;
+
+use Symfony\Component\Form\FormEvent;
+
+use Symfony\Component\Form\FormEvents;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
 use Symfony\Component\Security\Core\Security;
+
 use Vich\UploaderBundle\Form\Type\VichFileType;
 
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 
@@ -103,15 +119,39 @@ class UserType extends AbstractType
 
             ])
 
-            ->add("uploadedFile",  VichFileType::class, array(
+            ->add("avatar",  FileType::class, array(
+
+                'data_class' => null,
+
                 'required' => false,
-                'allow_delete' => true,
-                'delete_label' => '...',
-                'download_uri' => '...',
-                'download_label' => '...',
-                'asset_helper' => true,
-                'label' => 'avatar',
-                "attr" => ["accept" => "image/*"]
+
+                'label' => 'Avatar',
+
+                // 'constraints' => array(
+
+                //     new Assert\Image(array(
+
+                //         'maxHeight' => 600,
+
+                //         'maxWidth' => 600,
+
+                //         'maxSize' => 1000000,
+
+                //         'maxHeightMessage' => 'Longeur maximale de 600Px',
+
+                //         'maxWidthMessage' => 'Largeur maximale de 600Px',
+
+                //         'maxSizeMessage' => 'Taille maximale de 1Mo',
+
+                //     ))
+
+                // ),
+
+                'invalid_message' => 'Cette valeur est invalide',
+
+                // 'mapped' => false, 
+
+                "attr" => ["accept" => "image/jpeg, image/png, image/gif"]
 
             ))
 
@@ -176,15 +216,23 @@ class UserType extends AbstractType
         // Data transformer
 
         $builder->get('roles')
+
             ->addModelTransformer(new CallbackTransformer(
 
                 function ($rolesArray) {
 
+                    // transform the array to a string
+
                     return $rolesArray != null ? $rolesArray[0] : null;
                 },
+
                 function ($rolesString) {
+
+                    // transform the string back to an array
+
                     return [$rolesString];
                 }
+
             ));
     }
 

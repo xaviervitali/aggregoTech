@@ -68,12 +68,9 @@ class CreateAndUpdateSubscriber implements EventSubscriber
     {
 
         $this->passwordHasher = $passwordHasher;
-
         $this->security = $security;
         $this->checker = $checker;
-
         $this->userRepository = $userRepository;
-
         date_default_timezone_set('Europe/Paris');
     }
 
@@ -84,13 +81,8 @@ class CreateAndUpdateSubscriber implements EventSubscriber
     {
 
         return [
-
             Events::prePersist,
-
             Events::preUpdate,
-
-
-
         ];
     }
 
@@ -99,7 +91,6 @@ class CreateAndUpdateSubscriber implements EventSubscriber
     {
 
         $entity = $event->getObject();
-
         if (method_exists($entity, "getUpdatedAt")) {
 
             // if (!$entity instanceof User && !$entity instanceof AddressBook && !$entity instanceof AddressBookActivity && !$entity instanceof Collaboration) {
@@ -133,40 +124,22 @@ class CreateAndUpdateSubscriber implements EventSubscriber
             }
         }
 
+        if (method_exists($entity, "setUpdatedAt")) {
 
-        if ($entity instanceof FileUpload  || $entity instanceof User) {
-
-            $date = new DateTimeImmutable();
-
-            if (!$entity instanceof FileUpload) {
-
-                $entity->setCreatedAt($date);
-            }
+            // if (!$entity instanceof User && !$entity instanceof AddressBook && !$entity instanceof AddressBookActivity && !$entity instanceof Collaboration) {
 
 
-            if (!$entity instanceof User) {
-
-                if (method_exists($entity, "setUpdatedAt")) {
-
-                    // if (!$entity instanceof User && !$entity instanceof AddressBook && !$entity instanceof AddressBookActivity && !$entity instanceof Collaboration) {
+            $entity->setUpdatedAt($date);
+        }
 
 
-                    $entity->setUpdatedAt($date);
-                }
-            } else {
-
-                $plainPwd = $entity->getPassword();
-
-                $hashedPwd = $this->passwordHasher->hashPassword(
-
-                    $entity,
-
-                    $plainPwd
-
-                );
-
-                $entity->setPassword($hashedPwd);
-            }
+        if ($entity instanceof User) {
+            $plainPwd = $entity->getPassword();
+            $hashedPwd = $this->passwordHasher->hashPassword(
+                $entity,
+                $plainPwd
+            );
+            $entity->setPassword($hashedPwd);
         }
     }
 }

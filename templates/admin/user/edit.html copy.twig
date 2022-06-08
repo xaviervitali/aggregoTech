@@ -1,79 +1,89 @@
 {% extends 'baseWithNav.html.twig' %}
 
-
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset("assets/css/userNew.css")}}">
+{% endblock %}
 {% block body %}
-<div class="form-group">
+<h2>Editer un  utilisateur</h2>
+{{ form_start(form,  { attr: {novalidate: 'novalidate'}} ) }}
+<fieldset >
+    <legend>Informations personnelles</legend>
+        {{ form_widget(form.gender) }}
+        {{ form_widget(form.firstname) }}
+        {{ form_widget(form.lastname) }}
+        {% if is_granted(ROLE_ADMIN) or is_granted(ROLE_RH)%}
+        {{ form_row(form.description, {label: "A propos de " ~ user.firstname, placeholder: "A propos de vous " ~ user.firstname}) }}
+        {% endif %}
+</fieldset>
+        {% if is_granted(ROLE_ADMIN) or is_granted(ROLE_RH)%}
 
-{{form_start(form)}}
-<div class="border p-2">
-    <div class="form-group mb-2 mr-sm-2 row " >
-    <div class="col" >
-        {{ form_row(form.lastname) }}
-    </div>
-    <div class="col">
-        {{form_row(form.firstname) }}
-    </div>
-   <div class="col"> 
-
-        {{form_row(form.roles)}}
-    </div>
-    </div>
-</div>
-<div class="border p-2 my-2">
-    <h2>Identifiant et mot de passe</h2>
-    <div class="form-group mb-2 mr-sm-2 row ">
-    <div class="col">
-        {{form_row(form.username)}}
-    </div>
-   
-
-
-    <div class="col">
-        {{form_row(form.password, {'attr': {'class':''}})}}
-        <button class="btn btn-block btn-light btn-sm newPwd">Generer un nouveau mot de passe</button>
-    </div>
-    </div>
-    <div class="row mt-5">
+  <fieldset>
+    <legend>Avatar actuel</legend>
+    <div class="text-center">{{ user | avatar |raw }}</div>
+          {# {{ form_row(form.avatar) }} #}
+    </fieldset>
     
-   <button class="btn btn-block btn-success col-6 p-3 m-auto">Valider</button>
-</div> 
-</div>
+        <fieldset >
+    <legend>Signature</legend>
 
-</div>
+  <div class="sigPad" id="linear" >
+    <div class="sig sigWrapper current">
+     <div class="typed" style="display: none;"></div>
+      <canvas class="pad form-control " width="400" height="250"></canvas>
 
-{{form_end(form)}}
+        {{ form_widget(form.signature) }}
+     <div class="clearButton" ><a href="#clear">Effacer</a></div>
+  </div>
+  </div>
+</fieldset>
 
-</div>
+<fieldset >
+    <legend>Informations du compte</legend>
+        {{ form_widget(form.username) }}
+        {{ form_errors(form.username) | join(", ") | raw}}
+        <div class="d-flex">
+        {{ form_widget(form.password, {"attr" : {"value" : user.password}} )}}
+        <button class="btn btn-info newPwd">Générer</button>
+        </div>
+        {{ form_widget(form.roles) }}
 
-<div>
-</div>
-<script>;
-document.querySelector("#user_firstname").addEventListener('keyup', e=>
- fillUsername(e.target.value)
+        </div>
+        </div>
+        </div>
+</fieldset>
 
-)
+        <button class="btn btn-success d-block col-6 p-3 my-5 m-auto" type="submit">Valider</button>
 
-document.querySelector("#user_lastname").addEventListener('keyup', e=>
- fillUsername(e.target.value)
+{{ form_end(form) }}
+{% endblock %}
 
-)
+{% block javascripts %}
+  <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/json2/20160511/json2.min.js" integrity="sha512-uWk2ZXl3GVrq6DZsrL5dSg1S/F3MNQ9VaDFigqXOoKUnWG58UxOuJGfTrzh5KjpoBvPiFniL2PahU2HUTFMJXw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-function fillUsername(e){
-    document.querySelector("#user_username").value = document.querySelector("#user_lastname").value.replace(/[^a-zA-Z \-]/g, '').toLowerCase() + '-' + document.querySelector("#user_firstname").value.replace(/[^a-zA-Z \-]/g, '').toLowerCase()
+<script src="{{asset("assets/js/editUser.js")}}" ></script>
+<script>
+    $(document).ready(function() {
+      $('#linear').signaturePad({drawOnly:true, lineTop:200});
+
+    });
+
+  const canvas=document.querySelector("canvas")
+    const signature =  fetch("{{ user.signature }}").then(s=> 
+{
+   var context=canvas.getContext('2d');
+        drawing = new Image();
+        drawing.srcset = s.url
+        drawing.onload = function() {
+            context.drawImage(drawing,0,0);
+   
+    console.log(s)
+
+    document.querySelector("#user_signature").value =  canvas.toDataURL();
+    }
 }
-
-
-async function getPassword(){
-{    return await fetch('{{ path('api', {"query" : "word"})}}').then(e=>e.json(e)).then( password =>{
-     document.querySelector("#user_password").setAttribute('type', 'text')
-    document.querySelector("#user_password").value = password 
-    })}
-}
-
-document.querySelector('.newPwd').addEventListener('click', e=>{
-    e.preventDefault(e)
-    getPassword()
-
-})
-</script>
+    
+    )
+ 
+  </script>
 {% endblock %}

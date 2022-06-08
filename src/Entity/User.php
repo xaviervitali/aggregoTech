@@ -7,6 +7,7 @@ namespace App\Entity;
 
 
 use App\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\File\File;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -21,18 +22,18 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
-
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\File as FileExtension;
 
 
 
 /**
 
  * @ORM\Entity(repositoryClass=UserRepository::class)
-
  * @ORM\Table(name="`user`")
-
+ * @Vich\Uploadable
  * @UniqueEntity(fields={"username"}, message="Le nom d'utilisateur existe déjà")
 
  */
@@ -40,201 +41,111 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serializable
 
 {
-
-
-
-
-
     /**
-
      * @ORM\Id
-
      * @ORM\GeneratedValue
-
+     *  @Groups({"user"})
      * @ORM\Column(type="integer")
-
      */
-
     private $id;
 
-
+    /**
+     * NOTE: This is not a mapped field of entity metadata, just a simple property.
+     * 
+     * @Vich\UploadableField(mapping="avatar", fileNameProperty="avatar")
+     * @FileExtension(
+     *     mimeTypes = {"image/*"},
+     * )
+     * @Assert\File(maxSize="1M")
+     * @var File|null
+     */
+    private $uploadedFile;
 
     /**
-
      * @ORM\Column(type="string", length=180, unique=true)
-
      * @Assert\NotBlank(message="le champs nom d'utilateur ne peut être vide")
-
+     *  @Groups({"user"})
      * @Assert\NotNull(message="le champs nom d'utilateur ne peut être vide")
-
-     
-
+     *
      */
-
     private $username;
 
-
-
     /**
-
      * @ORM\Column(type="json")
-
      * @Assert\NotNull(message="Veuillez spécifier au moins un rôle à l'utilisateur")
-
-     
-
+     *  @Groups({"user"})
+     * 
      */
-
     private $roles = [];
 
-
-
     /**
-
      * @var string The hashed password
-
      * @ORM\Column(type="string")
-
      * @Assert\NotNull
-
      * @Assert\NotBlank(message="le mot de passe ne peut être vide")
-
      */
-
     private $password;
 
-
-
-
-
     /**
-
      * @ORM\Column(type="string", length=255)
-
      * @Assert\NotNull(message="le prénom ne peut être vide")
-
      * @Assert\NotBlank(message="le prénom ne peut être vide")
-     *  @Groups({"holiday"})
-
+     *  @Groups({"holiday", "user"})
      */
-
     private $firstname;
 
-
-
     /**
-
      * @ORM\Column(type="string", length=255)
-
      * @Assert\NotNull(message="le nom ne peut être vide")
-
      * @Assert\NotBlank(message="le nom ne peut être vide")
-     *  @Groups({"holiday"})
-
+     *  @Groups({"holiday", "user"})
      */
-
     private $lastname;
 
-
-
-
-
     /**
-
      * @ORM\Column(type="datetime_immutable")
-
      */
-
     private $createdAt;
 
-
-
     /**
-
      * @ORM\OneToMany(targetEntity=FileUpload::class, mappedBy="user",  orphanRemoval=true)
-
      */
-
     private $fileUploads;
 
-
-
     /**
-
      * @ORM\OneToMany(targetEntity=Attendance::class, mappedBy="user", cascade={"persist", "remove"})
-
      */
-
     private $attendances;
 
-
-
-
-
     /**
-
      * @ORM\OneToMany(targetEntity=Attendance::class, mappedBy="addedBy",  cascade={"persist", "remove"})
-
      */
-
     private $attendanceOwner;
 
-
-
     /**
-
      * @ORM\Column(type="datetime_immutable", nullable=true)
-
      */
-
     private $leaveAt;
 
-
-
-
-
-
-
     /**
-
      * @ORM\Column(type="string", length=255)
-
      */
-
     private $gender;
 
-
-
     /**
-
+     *  @Groups({"user"})
      * @ORM\Column(type="text",  nullable=true)
-
      */
-
     private $signature;
 
-
-
-
-
-
-
     /**
-
      * @ORM\Column(type="string", length=255, nullable=true)
-
      */
-
     private $description;
 
-
-
     /**
-
      * @ORM\Column(type="string", length=255, nullable=true)
-
      */
-
     private $avatar;
 
     /**
@@ -264,6 +175,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      */
     private $managerStatements;
 
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private $updatedAt;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Resume::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $resume;
+
 
 
 
@@ -273,15 +194,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     {
 
         $this->surveys = new ArrayCollection();
-
         $this->categories = new ArrayCollection();
-
         $this->fields = new ArrayCollection();
-
         $this->fileUploads = new ArrayCollection();
-
         $this->attendances = new ArrayCollection();
-
         $this->attendanceOwner = new ArrayCollection();
         $this->holidays = new ArrayCollection();
         $this->holidayAccepted = new ArrayCollection();
@@ -291,6 +207,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
     }
 
 
+    /**
+
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+
+     * of 'UploadedFile' is injected into this setter to trigger the  update. If this
+
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+
+     * during Doctrine hydration.
+
+     *
+
+     * @param File|UploadedFile|null $UploadedFile
+
+     */
+
+    public function setUploadedFile(?File $uploadedFile = null): void
+
+    {
+        $this->uploadedFile = $uploadedFile;
+
+        if ($this->uploadedFile) {
+            $this->updatedAt = new \DateTimeImmutable('now');
+        }
+    }
+
+
+
+    public function getUploadedFile(): ?File
+
+    {
+
+        return $this->uploadedFile;
+    }
 
     public function getId(): ?int
 
@@ -985,6 +937,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
                 $statement->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getResume(): ?Resume
+    {
+        return $this->resume;
+    }
+
+    public function setResume(?Resume $resume): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($resume === null && $this->resume !== null) {
+            $this->resume->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($resume !== null && $resume->getUser() !== $this) {
+            $resume->setUser($this);
+        }
+
+        $this->resume = $resume;
 
         return $this;
     }

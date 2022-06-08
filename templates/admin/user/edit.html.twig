@@ -11,16 +11,16 @@
         {{ form_widget(form.gender) }}
         {{ form_widget(form.firstname) }}
         {{ form_widget(form.lastname) }}
-        {% if is_granted(ROLE_ADMIN) or is_granted(ROLE_RH)%}
+        {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_RH")%}
         {{ form_row(form.description, {label: "A propos de " ~ user.firstname, placeholder: "A propos de vous " ~ user.firstname}) }}
         {% endif %}
 </fieldset>
-        {% if is_granted(ROLE_ADMIN) or is_granted(ROLE_RH)%}
+        {# {% if is_granted(ROLE_ADMIN) or is_granted(ROLE_RH)%} #}
 
   <fieldset>
     <legend>Avatar actuel</legend>
     <div class="text-center">{{ user | avatar |raw }}</div>
-          {{ form_row(form.avatar) }}
+          {{ form_row(form.uploadedFile) }}
     </fieldset>
     
         <fieldset >
@@ -59,31 +59,17 @@
 
 {% block javascripts %}
   <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/json2/20160511/json2.min.js" integrity="sha512-uWk2ZXl3GVrq6DZsrL5dSg1S/F3MNQ9VaDFigqXOoKUnWG58UxOuJGfTrzh5KjpoBvPiFniL2PahU2HUTFMJXw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script src="{{asset("assets/js/editUser.js")}}" ></script>
 <script>
-    $(document).ready(function() {
-      $('#linear').signaturePad({drawOnly:true, lineTop:200});
-
-    });
-
-  const canvas=document.querySelector("canvas")
-    const signature =  fetch("{{ user.signature }}").then(s=> 
-{
-   var context=canvas.getContext('2d');
-        drawing = new Image();
-        drawing.srcset = s.url
-        drawing.onload = function() {
-            context.drawImage(drawing,0,0);
+    const user = JSON.parse("{{ app.user  | serialize("json", { groups: 'user'})| nl2br }}".replace(/&quot;/g,'"').replace(/&#039;/g, "'"))
    
-    console.log(s)
-
-    document.querySelector("#user_signature").value =  canvas.toDataURL();
-    }
-}
-    
-    )
- 
+   signaturePad.fromDataURL(user.signature)
+   document.querySelector("form").addEventListener("submit", function(event){
+      document.querySelector("#user_signature").value = signaturePad.toDataURL()
+   })
+   
   </script>
 {% endblock %}

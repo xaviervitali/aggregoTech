@@ -79,8 +79,6 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-
-
             $user = $form->getData();
 
             $em->persist($user);
@@ -110,44 +108,23 @@ class UserController extends AbstractController
      */
 
     public function edit(Request $request,  EntityManagerInterface $em, User $user): Response
-
     {
 
         $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
 
-
-
-        $this->avatar = !$this->avatar ? $user->getAvatar() : $this->avatar;
-
-
-
         if ($form->isSubmitted() && $form->isValid()) {
 
+
             /**
-
-             * @var User $userTemp
-
+             * @var User $user
              */
-
-            $userTemp = $form->getData();
-
-
-
-            $this->setAvatar($userTemp, $em);
-
-            $em->persist($userTemp);
-
+            $user = $form->getData();
+            $em->persist($user);
             $em->flush();
-
-
-
-
-
             return $this->redirectToRoute("user_view", ["id" => $user->getId()]);
         }
-
 
 
         return $this->render("admin/user/edit.html.twig", [

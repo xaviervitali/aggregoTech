@@ -625,6 +625,9 @@
     "theseer/tokenizer": {
         "version": "1.2.1"
     },
+    "tinymce/tinymce": {
+        "version": "6.0.3"
+    },
     "twig/extra-bundle": {
         "version": "v3.3.8"
     },
