@@ -17,7 +17,7 @@ vich_uploader:
     avatar:
       uri_prefix: /assets/img/user/avatars
       upload_destination: "%kernel.project_dir%/public/assets/img/user/avatars"
-      namer: Vich\UploaderBundle\Naming\UniqidNamer
+      namer: App\Naming\UsernameFileNamer
       delete_on_update: true
       delete_on_remove: true
       inject_on_load: true
@@ -25,7 +25,7 @@ vich_uploader:
     resume:
       uri_prefix: /assets/resumes
       upload_destination: "%kernel.project_dir%/public/assets/resumes"
-      namer: Vich\UploaderBundle\Naming\UniqidNamer
+      namer: App\Naming\UsernameFileNamer
       delete_on_update: true
       delete_on_remove: true
       inject_on_load: true

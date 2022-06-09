@@ -74,9 +74,13 @@
           <li class="nav-item" role="presentation">
               <a class="nav-link " id="statement" data-mdb-toggle="tab" href="#statements" role="tab" aria-controls="statements"  aria-selected="true" >Bilans</a>
           </li>
-          <li class="nav-item" role="presentation">
-              <a class="nav-link " id="holiday" data-mdb-toggle="tab" href="#holidays" role="tab" aria-controls="holidays"  aria-selected="true" >Congés</a>
+
+            <li class="nav-item" role="presentation">
+              <a class="nav-link " id="resume" data-mdb-toggle="tab" href="#resumes" role="tab" aria-controls="resumes"  aria-selected="true" >CV</a>
           </li>
+          {# <li class="nav-item" role="presentation">
+              <a class="nav-link " id="holiday" data-mdb-toggle="tab" href="#holidays" role="tab" aria-controls="holidays"  aria-selected="true" >Congés</a>
+          </li> #}
           {% endif %}
 
           <li class="nav-item" role="presentation">
@@ -120,9 +124,14 @@
 
         </div>
 
-        <div class="tab-pane fade" id="holidays" role="tabpanel" aria-labelledby="holiday">
+        {# <div class="tab-pane fade" id="holidays" role="tabpanel" aria-labelledby="holiday">
 
           {{ include("admin/rh/holidays.html.twig")}}
+
+        </div> #}
+               <div class="tab-pane fade" id="resumes" role="tabpanel" aria-labelledby="holiday">
+
+          {{ include("admin/rh/resume.html.twig")}}
 
         </div>
 {% endif %}

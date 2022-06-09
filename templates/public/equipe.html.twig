@@ -24,6 +24,7 @@
             </div>
           </div>
         </div> 
+    
         {% endfor %}
         {% for user  in rh  %}
         <div class="flip-card">
@@ -48,7 +49,7 @@
     <div class="cadres d-flex flex-wrap justify-content-around">
     {% for user  in employees %}
       {% if   user.lastname  != "test"  %}
-
+<div>
         <div class="flip-card-min">
           <div class="flip-card-inner">
             <div class="flip-card-front">
@@ -63,6 +64,10 @@
             </div>
           </div>
         </div> 
+            {% if user.resume %}
+              <a href="{{path("resume", {"username":user.username})}}">En savoir plus sur {{user.firstname}}</a>
+            {% endif %}
+            </div>
         {% endif %}
 
         {% endfor %}

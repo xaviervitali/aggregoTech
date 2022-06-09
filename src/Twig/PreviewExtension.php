@@ -6,6 +6,7 @@ namespace App\Twig;
 
 use App\Entity\FileCategory;
 use App\Entity\FileUpload;
+use Doctrine\ORM\Query\Expr\Func;
 use Exception;
 use Symfony\Component\Security\Core\Security;
 use Twig\Extension\AbstractExtension;
@@ -31,8 +32,7 @@ class PreviewExtension extends AbstractExtension
 
         return [
 
-            new TwigFilter('preview', [$this, 'showPreview']),
-
+            new TwigFilter('preview', [$this, 'preview']),
             new TwigFilter('icon', [$this, 'icon']),
             new TwigFilter('card', [$this, 'card']),
             new TwigFilter('fileCategory', [$this, 'fileCategory']),
@@ -41,97 +41,23 @@ class PreviewExtension extends AbstractExtension
         ];
     }
 
-
-
-    public function showPreview($vichFile)
-
+    public function preview($vichFile)
     {
-
-        $absoluteUrl = "assets/vichFiles/$vichFile";
-
-        try {
-
-            $mimeContent = mime_content_type($absoluteUrl);
-
-
-
-            if (str_contains($mimeContent, "image")) {
-
-
-
-                return "<img src='/$absoluteUrl' style=' width: 250px; object-fit: cover;' alt='$vichFile'>";
+        $assets = "assets";
+        $folders = scandir($assets);
+        $url = "";
+        $embed = "<embed src='%s'  type='%s'>";
+        foreach ($folders as $folder) {
+            if (file_exists($assets . "/" . $folder . "/" . $vichFile)) {
+                $url =  $assets . "/" . $folder . "/" . $vichFile;
             }
-
-
-
-            if (str_contains($mimeContent, "video")) {
-
-                return <<<VIDEO
-
-                <video controls width="250" autoplay>
-
-                
-
-                <source src="/$absoluteUrl"
-
-                type= "$mimeContent">
-
-                
-
-                
-
-                
-
-                Sorry, your browser doesn't support embedded videos.
-
-                </video>
-
-                
-
-                VIDEO;
-            }
-
-
-
-            if (str_contains($mimeContent, "application/pdf")) {
-
-
-
-                return '<i class="fas fa-file-pdf fs-1" style="color:red;"></i>';
-            }
-
-
-
-            if (str_contains($mimeContent, "word") || str_contains($mimeContent, "text")) {
-
-
-
-                return '<i class="far fa-file-word fs-1"  style="color:blue;"></i>';
-            }
-
-
-
-            if (str_contains($mimeContent, "powerpoint") || str_contains($mimeContent, "powerpoint")) {
-
-
-
-                return '<i class="far fa-file-powerpoint fs-1"  style="color:orange;"></i>';
-            }
-
-            if (str_contains($mimeContent, "excel") || str_contains($mimeContent, "sheet")) {
-
-
-
-                return '<i class="far fa-file-excel fs-1"  style="color:green;"></i>';
-            }
-
-
-
-            return '<i class="far fa-file-archive fs-1"  style="color:yellow;"></i>';
-        } catch (Exception $e) {
-
-            return '<i class="far fa-question-circle fs-1"></i>';
         }
+        if ($url) {
+            $mimeContent = mime_content_type($url);
+
+            return sprintf($embed, "/" . $url, $mimeContent);
+        }
+        return '<i class="far fa-question-circle fs-1"></i>';
     }
 
 
@@ -143,20 +69,11 @@ class PreviewExtension extends AbstractExtension
         $icons = [
 
             'Présentiel' => '<i class="fa-solid fa-handshake fa-2xl"></i>',
-
             'Appel Téléphonique' => '<i class="fa-solid fa-phone fa-2xl"></i>',
-
             'Visio' => ' <i class="fa-solid fa-headset fa-2xl"></i>',
-
             'Mail' => '<i class="fa-solid fa-envelope fa-2xl"></i>',
-
             'Courrier Postal' => '<i class="fa-solid fa-mailbox "></i>',
-
-
-
         ];
-
-
 
         return $icons[$text];
     }
@@ -174,7 +91,7 @@ class PreviewExtension extends AbstractExtension
     function card(FileUpload $file)
     {
         $fileName = $file->getFileUploadedName();
-        $fileUploadedPreview = $this->showPreview($fileName);
+        $fileUploadedPreview = $this->preview($fileName);
 
         $title = $file->getTitle();
         $description = $file->getDescription();
@@ -203,8 +120,6 @@ class PreviewExtension extends AbstractExtension
                 </div>
             </div> 
             Card;
-
-
         return $card;
     }
 }

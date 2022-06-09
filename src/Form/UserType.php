@@ -94,6 +94,9 @@ class UserType extends AbstractType
                     'Salarié' => "ROLE_EMPLOYEE",
                     'Administrateur' => "ROLE_ADMIN",
                     'RH' => "ROLE_RH",
+                    'Test_Salarié' => "ROLE_TEST_EMPLOYEE",
+                    'Test_RH' => "ROLE_TEST_RH",
+                    'Test_Administrateur' => "ROLE_TEST_ADMIN",
 
                 ],
 

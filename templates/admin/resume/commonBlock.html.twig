@@ -1,0 +1,23 @@
+{% if not  resume %}
+    <p>Pas de CV pour l'instant</p> 
+    {% if  is_granted("ROLE_EMPLOYEE")%}
+    <a href="{{path("resume_new")}}">Créer mon espace emploi</a>
+    {% endif %}
+    {% else %}
+    <div class="d-flex justify-content-around bg-white p-4 preview">
+        <div class="cv col-6 border m-1 p-3">
+            {# <a href=""> <embed {{ asset("/assets/resume/") ~ resume.resumeFile }} type="{{resume.resumeFile|mimeType }}"></a>
+             #}
+             <div>
+             <h4 class="text-center">CV</h4>
+             <hr>
+             {{ resume.resumeFile | preview | raw}}
+             </div>
+        </div>
+        <div class=" border m-1 p-3  col-6">
+             <h4 class="text-center">Lettre de motiv</h4>
+<hr>
+            {{ resume.motivation | raw}}
+        </div>
+    </div>
+{% endif %}

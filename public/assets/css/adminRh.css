@@ -39,3 +39,15 @@ main canvas {
     display: none;
   }
 }
+.preview {
+  height: 80vh;
+}
+embed {
+  height: 100%;
+  object-fit: scale-down;
+  width: 100%;
+}
+
+.preview > div {
+  overflow: auto;
+}

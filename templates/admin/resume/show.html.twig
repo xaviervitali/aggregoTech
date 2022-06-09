@@ -1,0 +1,121 @@
+{% extends 'baseWithPublicMenu.html.twig' %}
+
+{% block stylesheets %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+<style>
+    .motivation *{
+        font-family: 'Dancing Script', cursive;
+        font-size: 20px;
+        text-align: left;
+    }
+    .links{
+        display: flex;
+        justify-content: space-between;
+    }
+.signature{
+    display: none;
+}
+    img{
+        width: 300px;
+        height: 200px;
+        object-fit:  scale-down;
+    }
+.letter {
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  margin: 26px auto 0;
+  padding: 24px;
+  position: relative;
+}
+.letter:before, .letter:after {
+  content: "";
+  height: 98%;
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+}
+.letter:before {
+  background: #fafafa;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  left: -5px;
+  top: 4px;
+  transform: rotate(-2.5deg);
+}
+.letter:after {
+  background: #f6f6f6;
+  box-shadow: 0 0 3px rgba(0,0,0,0.2);
+  right: -3px;
+  top: 1px;
+  transform: rotate(1.4deg);
+}
+    @media print {
+        header, footer, .avatar  , .links{
+            display: none;
+        }
+        main{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        .signature{
+            display: block;
+        }
+        .motivation{
+            
+            display: block;
+        }
+        .letter:after, .letter:before, .letter{
+            content: none;
+            box-shadow: none ;
+        }
+    }
+</style>
+
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    {% if resume is defined %}
+    <section class="p-2 letter bg-white my-5">
+        
+        <article class=" my-3 p-2">
+        <article >
+        <p class="text-end avatar">{{resume.user | avatar | raw}}</p>
+            <p class="text-end links">{{ resume.user.firstname}} {{ resume.user.lastname}} </p>
+            <p class="text-end">Fait à Aix-en-Provence, le {{ date() | format_datetime('full', 'none', locale='fr') }}</p>
+        </article>
+        <article class="text-start">
+            <p class="links">
+                <a href="{{ asset('/assets/resumes/' ~ resume.resumeFile) }}" >Visualiser le CV</a>
+            </p>
+            <p>Objet : Candidature spontanée</p>
+            <article class="motivation">
+            {{ resume.motivation |raw}}
+            </article>
+
+            <p class="text-end signature ">{{ resume.user.firstname}} {{ resume.user.lastname}} </p>
+            <p class="text-end signature">
+            <img src="{{resume.user.signature}}"></p>
+            <article class="links">
+                {% if resume.extlink %}
+                    <p>
+                        <a href="{{resume.extlink}}">Voir ma page : {{resume.extlink}}</a>
+                    </p>
+                {% endif %}
+                {% if app.user == resume.user %}
+                    <p> <a href="{{path("resume_edit")}}">Modifier le CV</a></p>
+                {% endif %}
+            </article>
+        </article>
+    </section>
+    {% else %}
+    <p>L'utilisateur n'a pas encore créé de page emploi</p>
+ 
+    {% if app.user == resume.user %}
+        <p><a href="{{path('resume_new')}}">Créer un CV</a></p>
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

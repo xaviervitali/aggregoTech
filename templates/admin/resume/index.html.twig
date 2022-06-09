@@ -1,45 +1,23 @@
-{% extends 'baseWithPublicMenu.html.twig' %}
-
+{% extends "baseWithNav.html.twig" %}
 {% block stylesheets %}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
 <style>
-    .motivation{
-        font-family: 'Dancing Script', cursive;
-        font-size: 1.5rem;
-    }
-    .links{
-        display: flex;
-        justify-content: space-between;
-    }
+.preview{
+    height: 80vh;
+}
+embed{
+    height: 100%;
+    object-fit: scale-down;
+    width: 100%;
+}
+
+.preview > div{
+    overflow: auto;
+}
+img{
+}
 </style>
-
 {% endblock %}
-
 {% block body %}
-<div>
-    {% if resume is defined %}
-    <section class="p-2">
-        <h3>{{ resume.user.firstname}} {{ resume.user.lastname}}</h3>
-        <article class="motivation my-3 bg-white p-2">
-        {{ resume.motivation}}
-        </article>
-     <hr>
-            
-        <article class="links">
-           {% if resume.extlink %}
-            <p>
-                <a href="{{resume.extlink}}">Voir ma page : {{resume.extlink}}</a>
-            </p>
-            {% endif %}
-            <p>
-                <a href="{{ asset('/assets/resumes/' ~ resume.resumeFile) }}" >Télécharger mon CV</a>
-            </p>
-        </article>
-    </section>
-    {% else %}
-    <p>L'utilisateur n'a pas encore créé de page emploi</p>
-    {% endif %}
-</div>
+
+{% include "admin/resume/commonBlock.html.twig" %}
 {% endblock %}

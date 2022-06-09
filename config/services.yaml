@@ -25,3 +25,6 @@ services:
   App\Subscriber\CreateAndUpdateSubscriber:
     tags:
       - { name: "doctrine.event_subscriber", connection: default }
+
+  App\Naming\UsernameFileNamer:
+    public: true
