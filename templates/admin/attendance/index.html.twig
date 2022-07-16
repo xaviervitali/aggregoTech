@@ -12,6 +12,19 @@
             </div>
         {% endfor %}
     {% endfor %}
+</div>
+
+  {% set postItsRemember = app.user.postIts  | filter(e=>e.category == "remember" )%}
+<pre>
+    {{ dump(app) }}
+</pre>
+    {% if postItsRemember %}
+        <div class="postIt d-flex justify-content-around flex-wrap">
+            {% for postIt in postItsRemember %}
+             {{ include("admin/rh/postItView.html.twig")}}
+            {% endfor %}
+        </div>
+    {% endif %}
 
     {% if is_granted('ROLE_EMPLOYEE') %}
 

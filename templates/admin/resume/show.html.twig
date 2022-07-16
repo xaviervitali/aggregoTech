@@ -82,7 +82,7 @@
         
         <article class=" my-3 p-2">
         <article >
-        <p class="text-end avatar">{{resume.user | avatar | raw}}</p>
+        <p class="text-end avatar">{{resume.user.avatar | preview | raw}}</p>
             <p class="text-end links">{{ resume.user.firstname}} {{ resume.user.lastname}} </p>
             <p class="text-end">Fait à Aix-en-Provence, le {{ date() | format_datetime('full', 'none', locale='fr') }}</p>
         </article>

@@ -1,0 +1,11 @@
+<li class="">
+<h3 class="text-end">
+{% if not is_granted("ROLE_EMPLOYEE") %}
+    
+<a data-toggle="tooltip" href=" {{ path("postIt_delete", {id: postIt.id })}} " data-placement="top" title="Supprimer le pense bête"> <i class="fa-solid fa-xmark"></i></a>
+{% endif %}
+</h3>
+<h4>le {{ postIt.createdAt | format_datetime("short", "short", locale='fr') }}</h4>
+<h5>par {{ postIt.createdBy.firstname }} {{ postIt.createdBy.lastname }}</h5>
+<p>{{ postIt.content }}<p>
+</li>

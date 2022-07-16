@@ -1,15 +1,29 @@
 
+    
 
+
+        {% for message in app.flashes('info') %}
+            <div class="alert alert-info">
+                {{ message }}
+            </div>
+        {% endfor %}
     {% set months = (attendances | map(a=>a.createdAt |date("m/Y"))) | reduce(
         (unique, item) => item in unique ? unique : unique|merge([item]), []
     )%}
     <div class="attendancesMonthButtons d-flex justify-content-center flex-wrap">
         {% for month in months %}
-            <button class="btn btn-info m-2" value="{{month}}">{{ month }}</button>
+            {% set postItsForMonth = postIts | filter(e=>(e.createdAt | date("m/Y")) == month ) %}
+            <button class="btn btn-info m-2" value="{{month}}">{{ month }}
+            {% if postItsForMonth %}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{postIts | filter(e=>(e.createdAt | date("m/Y")) == month ) | length}} penses bêtes
+                    <span class="visually-hidden">unread messages</span>
+                </span>
+            {% endif %}
+            </button>
         {% endfor %}
-
     </div>
-
+    <ul class="postIt d-flex justify-content-around flex-wrap align-items-start"></ul>
     <table class="table d-none table-bordered attendancesTable">
         <thead>
             <th scope="col">Date</th>
@@ -22,12 +36,14 @@
 
 {{ form_start(attendanceForm)}}
 {{ form_widget(attendanceForm)}}
+
 <button  class=" btn btn-sm btn-success">Valider</button>
 {{ form_end(attendanceForm)}}
 
 
 {% block moreJavascripts %}
     <script>
+    const postItDeleteUrl = "{{ path("postIt_delete", { "id": 0 } )}}"
     {% if user is defined %}
 
         // Attendances
@@ -38,29 +54,36 @@
         const tbody = document.querySelector(".attendancesTable tbody");
         const attendancePath = "{{path("admin_get_attendances")}}";
 
-        // document.getElementById("users").addEventListener("change", (e) => {
-
-        //   table.classList.add("d-none");
-
-        //   signature = e.target.options[e.target.selectedIndex].dataset.signature;
-
-        // });
-
         monthButtons.forEach((button) =>
         button.addEventListener("click", (b) => {
             monthSelected = b.target.value;
-            const month = b.target.value.split("/").reverse().join("/");
-
-
-            fetch(attendancePath + "?user=" + {{ user.id }} + "&month=" + month + "/01")
+            const month = b.target.value.split("/").reverse().join("/") + "/01";
+            fetch(attendancePath + "?user=" + {{ user.id }} + "&month=" + month)
                 .then((r) => r.json())
-
                 .then((f) => {
+                    document.querySelector("ul.box").innerHTML = ""
+
+                const postIts = {{postIts | serialize('json', { groups: 'postIt'}) | raw}}.filter(e=>{
+                    const date = new Date(e.createdAt)
+                        return date.getMonth() === new Date(month).getMonth() && date.getYear() === new Date(month).getYear() && e.category == "attendance"
+                    })
+                if(postIts){
+                    postIts.forEach(postIt=> document.querySelector("ul.box").innerHTML += `<li class="col-lg-4 col-md-6 col-sm-12">
+                    <h3 class="text-end">
+                    <a data-toggle="tooltip" href="${postItDeleteUrl.replace(0, postIt.id) }" data-placement="top" title="Supprimer le pense bête"> <i class="fa-solid fa-xmark"></i></a>
+                    </h3>
+                    <h4>le ${new Date(postIt.createdAt).toLocaleDateString()}</h4>
+                    <h5>par ${postIt.createdBy.firstname}</h5>
+                    <p>${postIt.content}<p>
+                    </li>
+`)
+                }
                 if (f.length > 0) {
                     table.classList.remove("d-none");
-                    console.log(f.sort(function (a, b) {
-  return new Date(a.date) - new Date(b.date);
-}))
+                    f.sort(function (a, b) {
+                        return new Date(a.date) - new Date(b.date);
+                        }
+                        )
                     attendancesShow(f);
                 } else {
                     // table.append = "<h3>Pas d'emargement à cette période</h3>";
@@ -70,83 +93,67 @@
         );
 
         function attendancesShow(attendances) {
-        const attendancesDate = attendances.map((a) => new Date(a.date));
+        const attendancesDate = attendances.map((a) => { return{date:new Date( a.createdAt.date), id:a.id}});
 
         let dates = [
             ...new Set(
             attendancesDate.map((a) => {
-                return a.getDate();
+                return a.date.toLocaleDateString() ;
             })
             ),
-        ].map((d) => {
+        ]
+       dates= dates.map((d) => {
             return {
-            [d]: attendancesDate
-
-                .filter((aa) => aa.getDate() === d)
-
+                day:d, attendances: 
+                attendancesDate
+                    .filter((aa) => aa.date.toLocaleDateString()  === d)
+                   .sort((a, b)=> {
+                    
+                   return new Date(a.date) -    new Date(b.date)} )
                 .map(
-                (aaa) => aaa.getHours() + ":" + ("0" + aaa.getMinutes()).slice(-2)
-                ),
-            };
-        });
-
+                    (aaa) =>{return {time: aaa.date.getHours() + ":" + ("0" + aaa.date.getMinutes()).slice(-2),id:aaa.id}}
+                    )
+        
+            }});
+// console.log(dates)
         let html = "";
-
-        dates.forEach(function (d) {
-            let attendanceOfDay = Object.values(d).join().split(",");
-
-            let alert = false;
-
-            let deleted = "";
-
-            if (attendanceOfDay.length % 2 != 0) {
-            deleted = attendanceOfDay.pop();
-
-            alert = true;
-            }
-
-            let minutes = attendanceOfDay
-
-            .map((a) => a.split(":"))
-
-            .map((b) => b[0] * 60 + parseInt(b[1]))
-
-            .reverse()
-
-            .reduce((accumulator, currentValue, currentIndex) => {
-                if (currentIndex % 2 == 0) {
-                return +accumulator + currentValue;
-                } else {
-                return +accumulator - currentValue;
-                }
-            }, 0);
-
-            const hours = attendanceOfDay.join("</p><p>");
-
-            const signatures = [];
-
-            for (let i = 0; i < attendanceOfDay.length; i++) {
-            signatures.push("<img src='" + signature + "'>");
-            }
-
-            html += `<tr><td ><h2>${Object.keys(d) + "/" + monthSelected}</h2>
-
-            ${
-            alert
-                ? "<p class='text-danger d-block'> /!\\ Attention l'emargement de " +
-                deleted +
-                " à été retiré</p>"
-                : ""
-            }<p class="d-block">Temps de présence : <strong>${Math.floor(
-            minutes / 60
-            )}h${("0" + (minutes % 60)).slice(
-            -2
-            )}</strong></p></td><td ><p  >${hours}</p></td><td>${signatures.join(
-            ""
-            )}</td></tr>`;
-        });
-
+  
+    dates.forEach(function(date){
+        
+        const htt = getTime(date.attendances.map(t=>t.time))
+        html +=`<tr><td ><p class="fs-3">${date.day}</p><p class="d-block">Temps de présence : <strong>${htt}</strong></p></td><td>`
+        date.attendances.forEach(attendance=>{
+        var url = "{{ path('attendance_delete', {'id': 0 }) }}".replace(0, attendance.id)
+        html+=`<p>${attendance.time} <a href="${url}" class="text-danger">supprimer ? </a></p>`
+        })
+        html+="</td><td><img src="+"{{user.signature}}"+"></td></tr>"
+    })
         tbody.innerHTML = html;
+        }
+/*
+* Convert array of attendances time in h:m values
+*/
+        function getTime(attendances){
+            if( attendances.length % 2 != 0 ){
+                return "Erreur dans le nombre d'emargements"
+            }
+
+            const minutes=  attendances.map((a) => a.split(":"))
+
+                        .map((b) => b[0] * 60 + parseInt(b[1]))
+
+                        .reverse()    .reduce((accumulator, currentValue, currentIndex) => {
+                            if (currentIndex % 2 == 0) {
+                            return +accumulator + currentValue;
+                            } else {
+                            return +accumulator - currentValue;
+                            }
+                        }, 0);
+                        return `<strong>${Math.floor(
+                            minutes / 60
+                            )}h${("0" + (minutes % 60)).slice(
+                            -2
+                            )}</strong>`
         }
     {% endif %}
 </script>

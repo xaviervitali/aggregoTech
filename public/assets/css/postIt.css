@@ -1,0 +1,39 @@
+.box {
+  position: relative;
+  z-index: 1; /* prevent shadows falling behind containers with backgrounds */
+  overflow: hidden;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.postIt li {
+  font-family: "Gloria Hallelujah", cursive;
+  text-align: center;
+  padding: 2vw;
+  width: 20%;
+  min-width: 400px;
+  /* position: relative;
+    float: left; */
+  /* height: 250px; */
+  /*border: 1px solid #efefef;*/
+  /* margin: 2vw; */
+  background: #ffffa5;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27),
+    0 0 40px rgba(0, 0, 0, 0.06) inset;
+  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27),
+    0 0 40px rgba(0, 0, 0, 0.06) inset;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 40px rgba(0, 0, 0, 0.06) inset;
+}
+
+.postIt li:nth-child(2n) {
+  background-color: #ff7eb9;
+}
+
+.postIt li:nth-child(3n) {
+  background-color: #7afcff;
+}
+
+.postIt a:hover {
+  color: #ffffff !important;
+}

@@ -25,7 +25,7 @@ class ResumeController extends AbstractController
      * @Route("/profile/resume/new", name="resume_new")
      */
 
-    public function new(Request $request,  EntityManagerInterface $em, ResumeRepository $resumeRepository): Response
+    public function new(Request $request,  EntityManagerInterface $em): Response
 
     {
 
@@ -38,26 +38,8 @@ class ResumeController extends AbstractController
              * @var Resume $resume
              */
             $resume = $form->getData();
-
-            $oldResume = $resumeRepository->findOneBy([
-                "user" => $user
-            ]);
-
-            if ($oldResume) {
-                try {
-                    unlink("assets/resumes/" . $oldResume->getResumeFile());
-                } catch (Exception $e) {
-                    // echo 'Exception reçue : ',  $e->getMessage(), "\n";
-                }
-                $oldResume->setResumeFile("");
-                $oldResume->setUploadedFile($resume->getUploadedFile());
-                $oldResume->setMotivation($resume->getMotivation());
-                $oldResume->setExtLink($resume->getExtLink());
-                $em->persist($oldResume);
-            } else {
-                $resume->setUser($user);
-                $em->persist($resume);
-            }
+            $resume->setUser($user);
+            $em->persist($resume);
             $em->flush();
 
             return $this->redirectToRoute("user_resume");
@@ -88,13 +70,11 @@ class ResumeController extends AbstractController
              * @var Resume $resume
              */
             $resume = $form->getData();
-
-            // dd($resume);
             $oldResume = $resumeRepository->findOneBy([
                 "user" => $user
             ]);
 
-            if ($oldResume) {
+            if ($resume->getUploadedFile()) {
                 try {
                     unlink("assets/resumes/" . $oldResume->getResumeFile());
                 } catch (Exception $e) {
@@ -102,16 +82,13 @@ class ResumeController extends AbstractController
                 }
                 $oldResume->setResumeFile("");
                 $oldResume->setUploadedFile($resume->getUploadedFile());
-                $oldResume->setMotivation($resume->getMotivation());
-                $oldResume->setExtLink($resume->getExtLink());
-                $em->persist($oldResume);
-            } else {
-                $resume->setUser($user);
-                $em->persist($resume);
-            }
+            };
+            $oldResume->setMotivation($resume->getMotivation());
+            $oldResume->setExtLink($resume->getExtLink());
+            $em->persist($oldResume);
             $em->flush();
 
-            return $this->redirectToRoute("user_resume", ["form" => $form->createView()]);
+            return $this->redirectToRoute("user_resume");
         }
 
         return $this->render("admin/resume/new.html.twig", [
@@ -124,5 +101,15 @@ class ResumeController extends AbstractController
     public function index(): Response
     {
         return $this->render('admin/resume/index.html.twig', ["resume" => $this->getUser()->getResume()]);
+    }
+
+    #[Route('profile/resume/{id<d+>}', name: 'resume_delete')]
+    public function delete(Resume $resume,  EntityManagerInterface $entityManager): Response
+    {
+        if ($resume->getUser() == $this->getUser()) {
+            $entityManager->remove($resume);
+            $entityManager->flush();
+            return $this->redirectToRoute('user_resume', [], Response::HTTP_SEE_OTHER);
+        }
     }
 }

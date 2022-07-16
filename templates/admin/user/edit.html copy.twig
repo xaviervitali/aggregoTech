@@ -19,7 +19,7 @@
 
   <fieldset>
     <legend>Avatar actuel</legend>
-    <div class="text-center">{{ user | avatar |raw }}</div>
+    <div class="text-center">{{ user.avatar | preview |raw }}</div>
           {# {{ form_row(form.avatar) }} #}
     </fieldset>
     

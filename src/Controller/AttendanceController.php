@@ -6,6 +6,7 @@ use App\Entity\Attendance;
 use App\Entity\User;
 use App\Form\AttendanceType;
 use App\Repository\AttendanceRepository;
+use App\Repository\PostItRepository;
 use App\Repository\SignatureRepository;
 use App\Repository\UserRepository;
 use DateTime;
@@ -81,11 +82,12 @@ class AttendanceController extends AbstractController
     /** 
      *  @Route("/profile/attendance", name="attendance")
      */
-    public function index2(AttendanceRepository $attendanceRepository, Request $request, EntityManagerInterface $em)
+    public function index2(AttendanceRepository $attendanceRepository, Request $request, EntityManagerInterface $em, PostItRepository $postItRepository)
     {
         $form = $this->createForm(AttendanceType::class);
         $date = new DateTimeImmutable();
         $form->handleRequest($request);
+        $postIts = $postItRepository->getUserRemembers($this->getUser()->getId());
 
         if ($form->isSubmitted() && $form->isValid()) {
             /**
@@ -116,7 +118,8 @@ class AttendanceController extends AbstractController
         }
         return $this->render('admin/attendance/indexV2.html.twig', [
             'attendances' => $attendanceRepository->findAll(),
-            "form" => $form->createView()
+            "form" => $form->createView(),
+            "postIts" => $postIts
 
 
         ]);
@@ -173,7 +176,7 @@ class AttendanceController extends AbstractController
         $user = $attendance->getUser();
         $em->remove($attendance);
         $em->flush();
-        return $this->redirectToRoute('attendance', ['id' => $user->getId()]);
+        return $this->redirectToRoute('admin_rh_show', ['id' => $user->getId()]);
     }
 
     /**
@@ -196,10 +199,10 @@ class AttendanceController extends AbstractController
     public function getAttendances(Request $request, AttendanceRepository $attendanceRepository,)
     {
         $month = date_create($request->query->get('month'));
-        $user = $request->query->get('user');;
-        $attendances = $attendanceRepository->findByExampleField($month, $user);
+        $user = $request->query->get('user');
+        $attendances = $attendanceRepository->findAttendanceForDateAndUser($month, $user);
         $createdAt = (array_map(function ($a) {
-            return  $a->getCreatedAt();
+            return  ["createdAt" => $a->getCreatedAt(), "id" => $a->getId()];
         }, $attendances));
         $reponse = new JsonResponse($createdAt);
 

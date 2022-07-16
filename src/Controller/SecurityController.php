@@ -162,7 +162,7 @@ class SecurityController extends AbstractController
 
         $files = [];
 
-        $dirs = ["../var/cache/dev/twig", "../var/cache/prod/twig"];
+        $dirs = ["../var/cache"];
 
         foreach ($dirs as $dir) {
 

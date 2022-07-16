@@ -21,7 +21,7 @@
                   <span class="visually-hidden">{{ holidays}}demande de congés</span>
                 </span>
               {% endif %}
-              {{ user | avatar |raw}}
+              {{ user.avatar| preview |raw}}
               <div class="card-body">
                 <h5 class="card-title"><a href="{{path("user_view", {id: user.id})}}">{{ user.firstname}} {{user.lastname }}</a></h5>
                   <p class="card-text">
@@ -61,7 +61,7 @@
                     <span class="visually-hidden">{{ holidays}}demande de congés</span>
                   </span>
                 {% endif %}
-                {{ user | avatar |raw}}
+                {{ user.avatar | preview |raw}}
                 <div class="card-body">
                   <h5 class="card-title"><a href="{{path("user_view", {id: user.id})}}">{{ user.firstname}} {{user.lastname }}</a></h5>
                   <p class="card-text">

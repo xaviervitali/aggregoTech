@@ -1,0 +1,30 @@
+{% extends "baseWithNav.html.twig" %}
+{% block stylesheets %}
+        <style>
+                .d-flex, .d-flex *{
+                        max-height: 300px;
+                }
+                .d-flex *{
+                        object-fit: scale-down;
+                }
+                i{
+                        font-size: 3em;
+                }
+        </style>
+{% endblock %}
+{% block body  %}
+        <div>
+                {{ form_start(form) }}
+                {{ form_row(form.title) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.fileCategory) }}
+                <div class="my-3 d-flex justify-content-center align-items-center flex-column">
+                        <a href="{{asset("/assets/vichFiles/"~ fileUpload.fileUploadedName)}}" target="_blank">{{ fileUpload.fileUploadedName | preview | raw }}</a>
+                </div>
+                {{ form_row(form.uploadedFile )}}
+
+                        <button class="btn btn-success d-block col-6 p-3 my-5 m-auto" type="submit">Valider</button>
+
+                {{ form_end(form) }}
+        </div>
+{% endblock %}

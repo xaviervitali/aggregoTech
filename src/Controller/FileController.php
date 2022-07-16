@@ -9,6 +9,7 @@ use App\Repository\FileCategoryRepository;
 use App\Repository\FileRepository;
 use App\Repository\FileUploadRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -110,6 +111,47 @@ class FileController extends AbstractController
         $em->remove($fileUpload);
         $em->flush();
 
+
+
         return $this->redirectToRoute('file_index');
+    }
+
+    /**
+     * @Route("/profile/file/edit/{id}", name="file_edit")
+     */
+    public function edit(FileUpload $fileUpload,  EntityManagerInterface $em, Request $request, FileUploadRepository $fileUploadRepository): Response
+    {
+        $form = $this->createForm(FileUploadType::class, $fileUpload);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** 
+             * @var FileUpload $file
+             */
+            $file = $form->getData();
+            $oldFile = $fileUploadRepository->findOneBy(["id" => $fileUpload->getId()]);
+            if ($file->getUploadedFile()) {
+                try {
+                    unlink("assets/vichFiles/" . $file->getFileUploadedName());
+                } catch (Exception $e) {
+                    // echo 'Exception reçue : ',  $e->getMessage(), "\n";
+                }
+                $oldFile->setFileUploadedName("");
+                $oldFile->setUploadedFile($file->getUploadedFile());
+            };
+
+            $user = $this->getUser();
+            $file->setUser($user);
+
+
+            $em->persist($file);
+            $em->flush();
+
+            return $this->redirectToRoute("file_index");
+        }
+
+
+        return $this->render('admin/file/edit.html.twig', [
+            'form' => $form->createView(), "fileUpload" => $fileUpload
+        ]);
     }
 }

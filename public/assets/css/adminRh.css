@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Give+You+Glory|The+Girl+Next+Door|Gloria+Hallelujah|Indie+Flower);
+
 main img {
   width: 200px !important;
   object-fit: contain;
@@ -16,7 +18,10 @@ main canvas {
   .attendancesMonthButtons *,
   h4,
   form,
-  .dropdown {
+  .dropdown,
+  .text-center,
+  .text-danger,
+  .box {
     display: none;
   }
   main {

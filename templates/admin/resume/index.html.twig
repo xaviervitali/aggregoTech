@@ -1,23 +1,29 @@
 {% extends "baseWithNav.html.twig" %}
 {% block stylesheets %}
-<style>
-.preview{
-    height: 80vh;
-}
-embed{
-    height: 100%;
-    object-fit: scale-down;
-    width: 100%;
-}
+    <style>
+        .preview{
+            min-height: 60vh;
+        }
+        img{
+            height: 100%;
+            object-fit: scale-down;
+            width: 100%;
+        }
 
-.preview > div{
-    overflow: auto;
-}
-img{
-}
-</style>
+        .preview > div{
+            overflow: auto;
+        }
+        img{
+        }
+    </style>
 {% endblock %}
 {% block body %}
 
-{% include "admin/resume/commonBlock.html.twig" %}
+    {% include "admin/resume/commonBlock.html.twig" %}
+    {% if   resume %}
+    <p>
+        <a class="btn btn-info" href="{{path("resume_edit")}}">Modifier les informations</a>
+        <a class="btn btn-danger" href="{{path("resume_delete", {id: resume.id})}}">Supprimer l'espace emploi</a>
+    </p>
+    {% endif %}
 {% endblock %}

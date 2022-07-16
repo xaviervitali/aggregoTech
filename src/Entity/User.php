@@ -47,6 +47,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      *  @Groups({"user"})
      * @ORM\Column(type="integer")
      */
+    #[Groups("postIt")]
+
     private $id;
 
     /**
@@ -92,6 +94,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      * @Assert\NotBlank(message="le prénom ne peut être vide")
      *  @Groups({"holiday", "user"})
      */
+    #[Groups("postIt")]
+
     private $firstname;
 
     /**
@@ -100,6 +104,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      * @Assert\NotBlank(message="le nom ne peut être vide")
      *  @Groups({"holiday", "user"})
      */
+    #[Groups("postIt")]
+
     private $lastname;
 
     /**
@@ -185,6 +191,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
      */
     private $resume;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PostIt::class, mappedBy="createdBy")
+     */
+    private $postIts;
+
 
 
 
@@ -204,6 +215,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
         $this->statements = new ArrayCollection();
         $this->statementComments = new ArrayCollection();
         $this->managerStatements = new ArrayCollection();
+        $this->employee = new ArrayCollection();
+        $this->postIts = new ArrayCollection();
     }
 
 
@@ -973,5 +986,43 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
         $this->resume = $resume;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, PostIt>
+     */
+    public function getPostIt(): Collection
+    {
+        return $this->employee;
+    }
+
+    public function addPostIt(PostIt $postIts): self
+    {
+        if (!$this->postIts->contains($postIts)) {
+            $this->postIts[] = $postIts;
+            $postIts->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostIt(PostIt $postIts): self
+    {
+        if ($this->postIts->removeElement($postIts)) {
+            // set the owning side to null (unless already changed)
+            if ($postIts->getCreatedBy() === $this) {
+                $postIts->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PostIt>
+     */
+    public function getPostIts(): Collection
+    {
+        return $this->postIts;
     }
 }

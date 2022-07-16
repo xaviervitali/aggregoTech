@@ -13,7 +13,7 @@ use App\Repository\FileUploadRepository;
 use App\Repository\UserRepository;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Component\Routing\Annotation\Route;
@@ -57,6 +57,7 @@ class PublicController extends AbstractController
     public function equipe(UserRepository $userRepository): Response
 
     {
+
 
         $admins = array_filter($userRepository->findBy([], ["firstname" => "ASC"]), function ($user) {
 
@@ -193,5 +194,13 @@ class PublicController extends AbstractController
 
 
         return $this->render('public/telechargement.html.twig', ["files" => $files]);
+    }
+    /** 
+     * @Route("/google5c1745170e072f7a", name="google")
+     */
+
+    function google()
+    {
+        return $this->render('public/google5c1745170e072f7a.html');
     }
 }

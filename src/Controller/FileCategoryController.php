@@ -36,7 +36,7 @@ class FileCategoryController extends AbstractController
             return $this->redirectToRoute('file_category_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('admin/ile_category/new.html.twig', [
+        return $this->renderForm('admin/file_category/new.html.twig', [
             'file_category' => $fileCategory,
             'form' => $form,
         ]);

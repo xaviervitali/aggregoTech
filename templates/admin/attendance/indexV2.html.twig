@@ -1,5 +1,7 @@
 {% extends "baseWithNav.html.twig" %}
 {%  block stylesheets %}
+  <link rel="stylesheet" href="{{ asset("assets/css/postIt.css")}}">
+
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css">
     {# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.2.0/css/tableexport.css" integrity="sha512-+m+NCQG6uttXsLjwxHTUdhov99LW3TSFEiM2LSFMwfOePszb2as348/96cCBG35mOK+3Gp4P0EQRWpKLZfGTnA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> #}
 {% endblock %}
@@ -13,6 +15,14 @@
         {% endfor %}
     {% endfor %}
 
+    {% if postIts %}
+        <div class="postIt d-flex justify-content-around flex-wrap">
+            {% for postIt in postIts %}
+             {{ include("admin/rh/postItView.html.twig")}}
+            {% endfor %}
+        </div>
+        <hr>
+    {% endif %}
     {% if is_granted('ROLE_EMPLOYEE') %}
     {{ form_start(form)}}
     {{ form_widget(form)}}
