@@ -43,12 +43,12 @@ class RHController extends AbstractController
     }
 
     #[Route('admin/rh', name: 'admin_rh')]
-    public function index(): Response
+    public function index(PostItRepository $postItRepository): Response
     {
 
         return $this->render('admin/rh/index.html.twig', [
-            'controller_name' => 'RHController',
-            "userTypes" => $this->userTypes
+            "userTypes" => $this->userTypes,
+            "postIts" => $postItRepository->findAll()
 
         ]);
     }
@@ -101,7 +101,9 @@ class RHController extends AbstractController
             "statements" => $statementRepository->findBy(["user" => $user]),
             "statementCategories" => $appreciationCategoryRepository->findBy([]),
             "levels" => $levelRepository->findBy([], ["title" => "ASC"]),
-            "postIts" => $postItRepository->findBy(["employee" => $user])
+            "userPostIts" => $postItRepository->findBy(["employee" => $user]),
+            "postIts" => $postItRepository->findAll()
+
         ]);
     }
 

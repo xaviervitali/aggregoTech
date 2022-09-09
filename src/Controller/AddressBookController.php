@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\AddressBook;
 use App\Entity\AddressBookActivity;
+use App\Entity\AddressBookContact;
 use App\Form\AddressBookActivityType;
 use App\Form\AddressBookType;
 use App\Form\SurveyType;
@@ -93,11 +94,14 @@ class AddressBookController extends AbstractController
         $addressBookForm = $this->createForm(AddressBookType::class, $addressBook);
         $addressBookForm->handleRequest($request);
         if ($addressBookForm->isSubmitted() && $addressBookForm->isValid()) {
-            $addressBook = $addressBookForm->getData();
+            foreach ($addressBook->getContacts() as $contact) {
+                $contact->setAddressBook($addressBook);
+            }
             $em->persist($addressBook);
             $em->flush();
-            return $this->redirectToRoute('addressBook');
+            return $this->redirectToRoute("addressBook");
         }
+
         $addressBookActivityForm = $this->createForm(AddressBookActivityType::class);
 
         $addressBookActivityForm->handleRequest($request);
@@ -105,7 +109,6 @@ class AddressBookController extends AbstractController
             $addressBookActivity = $addressBookActivityForm->getData();
             $em->persist($addressBookActivity);
             $em->flush();
-            // return $this->redirectToRoute('addressBook');
         }
 
         return $this->render('admin/address_book/new.html.twig', [

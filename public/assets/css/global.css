@@ -4,6 +4,13 @@
   src: url(../fonts/d-din/D-DIN.woff);
 }
 
+:root {
+  --post-it-color1: #ffffa5;
+  --post-it-color2: #ff7eb9;
+  --post-it-color3: #7afcff;
+  --post-it-color4: #ff65a3;
+  --post-it-color5: #fff740;
+}
 li {
   list-style: none;
 }

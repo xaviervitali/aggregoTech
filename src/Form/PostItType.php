@@ -31,7 +31,7 @@ class PostItType extends AbstractType
                 "label" => "Catégorie",
                 "choices" => ["Émargement" => "attendance", "Info  générale" => "info", "Notification au salarié" => "remember"],
                 "attr" => [
-                    "class" => "form-control my-2 bg-secondary text-white",
+                    "class" => "form-control my-2  text-white",
 
                 ],
                 "expanded" => true,

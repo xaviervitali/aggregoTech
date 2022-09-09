@@ -11,14 +11,16 @@
         (unique, item) => item in unique ? unique : unique|merge([item]), []
     )%}
     <div class="attendancesMonthButtons d-flex justify-content-center flex-wrap">
+
         {% for month in months %}
-            {% set postItsForMonth = postIts | filter(e=>(e.createdAt | date("m/Y")) == month ) %}
-            <button class="btn btn-info m-2" value="{{month}}">{{ month }}
+            {% set postItsForMonth = userPostIts | filter(e=>(e.createdAt | date("m/Y")) == month  ) %}
+            <button class="btn btn-info m-2 relative" value="{{month}}">{{ month }}
             {% if postItsForMonth %}
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {# <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                     {{postIts | filter(e=>(e.createdAt | date("m/Y")) == month ) | length}} penses bêtes
                     <span class="visually-hidden">unread messages</span>
-                </span>
+                </span> #}
+                <span class="badge badge-warning">{{postIts | filter(e=>(e.createdAt | date("m/Y")) == month  and e.employee == user) | length}}</span>
             {% endif %}
             </button>
         {% endfor %}
@@ -28,7 +30,7 @@
         <thead>
             <th scope="col">Date</th>
             <th scope="col">Heure</th>
-            <th scope="col">Signature</th>
+            <th scope="col">Signature</th
         </thead>
         <tbody>
         </tbody>
@@ -61,22 +63,22 @@
             fetch(attendancePath + "?user=" + {{ user.id }} + "&month=" + month)
                 .then((r) => r.json())
                 .then((f) => {
-                    document.querySelector("ul.box").innerHTML = ""
+                    document.querySelector("ul.postIt").innerHTML = ""
 
-                const postIts = {{postIts | serialize('json', { groups: 'postIt'}) | raw}}.filter(e=>{
+                const postIts = {{userPostIts | serialize('json', { groups: 'postIt'}) | raw}}.filter(e=>{
                     const date = new Date(e.createdAt)
                         return date.getMonth() === new Date(month).getMonth() && date.getYear() === new Date(month).getYear() && e.category == "attendance"
                     })
-                if(postIts){
-                    postIts.forEach(postIt=> document.querySelector("ul.box").innerHTML += `<li class="col-lg-4 col-md-6 col-sm-12">
-                    <h3 class="text-end">
-                    <a data-toggle="tooltip" href="${postItDeleteUrl.replace(0, postIt.id) }" data-placement="top" title="Supprimer le pense bête"> <i class="fa-solid fa-xmark"></i></a>
-                    </h3>
-                    <h4>le ${new Date(postIt.createdAt).toLocaleDateString()}</h4>
-                    <h5>par ${postIt.createdBy.firstname}</h5>
-                    <p>${postIt.content}<p>
-                    </li>
-`)
+                   if(postIts){
+                        postIts.forEach(postIt=> document.querySelector("ul.postIt").innerHTML += `<li class="col-lg-4 col-md-6 col-sm-12">
+                        <h3 class="text-end">
+                        <a data-toggle="tooltip" href="${postItDeleteUrl.replace(0, postIt.id) }" data-placement="top" title="Supprimer le pense bête"> <i class="fa-solid fa-xmark"></i></a>
+                        </h3>
+                        <h4>le ${new Date(postIt.createdAt).toLocaleDateString()}</h4>
+                        <h5>par ${postIt.createdBy.firstname}</h5>
+                        <p>${postIt.content}<p>
+                        </li>
+                        `)
                 }
                 if (f.length > 0) {
                     table.classList.remove("d-none");

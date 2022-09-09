@@ -46,6 +46,7 @@ class PostIt
      * @ORM\Column(type="string", length=255)
      */
     #[Groups("postIt")]
+
     private $category;
 
 

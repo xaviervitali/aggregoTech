@@ -37,7 +37,6 @@ if (document.querySelector(".add-another-collection-widget")) {
   document
     .querySelector(".add-another-collection-widget")
     .addEventListener("click", function (event) {
-      return this;
       var list = event.target.getAttribute("data-list-selector");
       var counter = document.querySelector(list).dataset.widgetCounter;
       var newWidget = document.querySelector(list).dataset.prototype;
@@ -108,26 +107,28 @@ document
     })
   );
 
-document
-  .querySelector("#modal")
-  .addEventListener("show.bs.modal", function (event) {
-    var button = event.relatedTarget;
-    var titleData = button.dataset.company;
+if (document.querySelector("#modal")) {
+  document
+    .querySelector("#modal")
+    .addEventListener("show.bs.modal", function (event) {
+      var button = event.relatedTarget;
+      var titleData = button.dataset.company;
 
-    var contacts = button.dataset.contacts;
+      var contacts = button.dataset.contacts;
 
-    let html = "";
+      let html = "";
 
-    contacts.forEach((c) => {
-      html += `<option value="${c.id}">${c.name} | ${c.email} | ${c.phone}</option> `;
+      contacts.forEach((c) => {
+        html += `<option value="${c.id}">${c.name} | ${c.email} | ${c.phone}</option> `;
+      });
+
+      // Change modal title
+
+      document.querySelector(".modal-title").innerText = titleData;
+
+      document.querySelector("#survey_contact").innerHTML = html;
     });
-
-    // Change modal title
-
-    document.querySelector(".modal-title").innerText = titleData;
-
-    document.querySelector("#survey_contact").innerHTML = html;
-  });
+}
 // debugger;
 
 // $(document).ready(function () {

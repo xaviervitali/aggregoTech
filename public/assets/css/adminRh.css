@@ -5,9 +5,6 @@ main img {
   object-fit: contain;
 }
 
-main canvas {
-}
-
 @media print {
   header,
   h2,
@@ -55,4 +52,47 @@ embed {
 
 .preview > div {
   overflow: auto;
+}
+
+#post_it_category label {
+  margin-right: 1rem;
+}
+
+.addPostIt {
+  padding: 1rem;
+  background-color: var(--post-it-color4);
+}
+.addPostIt * {
+  background-color: var(--post-it-color4);
+  color: black;
+}
+
+.addPostIt textarea,
+.addPostIt button {
+  background-color: #bbb;
+}
+.addPostIt button:hover {
+  color: white;
+}
+
+.addPostIt label {
+  font-size: 1.1em;
+}
+.addPostIt input:checked + label {
+  color: white;
+}
+
+/* Card User */
+
+.card {
+  width: 250px;
+}
+
+.card p {
+  margin: 0;
+  padding: 0;
+}
+
+.card img {
+  border-radius: 50%;
 }

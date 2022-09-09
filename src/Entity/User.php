@@ -201,7 +201,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \Serial
 
 
     public function __construct()
-
     {
 
         $this->surveys = new ArrayCollection();

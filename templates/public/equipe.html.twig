@@ -1,101 +1,128 @@
-
 {% extends 'baseWithPublicMenu.html.twig' %}
 {% block stylesheets %}
-
-
-<link rel="stylesheet" href="{{asset("assets/css/aggregoteam.css")}}"/>
+  <link rel="stylesheet" href="{{ asset('assets/css/aggregoteam.css') }}" />
 {% endblock %}
-  {% block main %}
-      <h2 >Salariés permanents</h2>
-    <div class="cadres d-flex flex-wrap justify-content-around ">
-    {% for user  in admins %}
-        <div class="flip-card ">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-                    {# <img src="{{ asset("/assets/img/user/avatar | raw" ) ~ user.username ~ ".png" }}  ? {{ asset("/assets/img/user/avatar"  ~ ".png" ) ~ user.username }}:  "" }}" class="logocarte"/> #}
-                         {{user.avatar | preview | raw}}
-              <h2  class="titreservice">{{ user.firstname }} {{ user.lastname}}</h2>
+{% block main %}
+  <h2>
+    Salariés permanents
+  </h2>
+  <div class="cadres d-flex flex-wrap justify-content-around">
+    {% for user in admins %}
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            {# <img src="{{ asset("/assets/img/user/avatar | raw" ) ~ user.username ~ ".png" }} ? {{ asset("/assets/img/user/avatar" ~ ".png" ) ~ user.username }}: "" }}" class="logocarte"/> #}
+            {{ user.avatar|preview|raw }}
+            <h2 class="titreservice">
+              {{ user.firstname }} {{ user.lastname }}
+            </h2>
+          </div>
+          <div class="flip-card-back">
+            <div>
+              <p>
+                {{ user.description }}
+              </p>
             </div>
-            <div class="flip-card-back">
-              <div>
-                           <p >{{ user.description }}</p>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    {% for user in rh %}
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            {{ user.avatar|preview|raw }}
+            {# <img src="{{ asset("/assets/img/user/avatar | raw" ) ~ user.username ~ ".png" }} ? {{ asset("/assets/img/user/avatar" ~ ".png" ) ~ user.username }}: "" }}" class="logocarte"/> #}
+            <h2 class="titreservice">
+              {{ user.firstname }} {{ user.lastname }}
+            </h2>
+          </div>
+          <div class="flip-card-back">
+            <div>
+              <p>
+                {{ user.description
+                  ?? "Pas d'informations supplémentaires actuellement pour "
+                  ~ user.firstname }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <hr />
+  <h2>
+    Salariés polyvalents
+  </h2>
+  <div class="cadres d-flex flex-wrap justify-content-around">
+    {% for user in employees %}
+      {% if user.lastname != 'test' %}
+        <div>
+          <div class="flip-card-min">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                {{ user.avatar|preview|raw }}
 
+                <h2 class="titreservice">
+                  {{ user.firstname }}
+                </h2>
+              </div>
+              <div class="flip-card-back">
+                <div>
+                  <p>
+                    {{ user.description
+                      ?? "Pas d'informations supplémentaires actuellement pour "
+                      ~ user.firstname }}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        </div> 
-    
-        {% endfor %}
-        {% for user  in rh  %}
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-                         {{user.avatar | preview | raw}}
-                    {# <img src="{{ asset("/assets/img/user/avatar | raw" ) ~ user.username ~ ".png" }}  ? {{ asset("/assets/img/user/avatar"  ~ ".png" ) ~ user.username }}:  "" }}" class="logocarte"/> #}
-              <h2  class="titreservice">{{ user.firstname }} {{ user.lastname}}</h2>
-            </div>
-            <div class="flip-card-back">
-              <div>
-                           <p >{{ user.description ?? "Pas informations supplémentaires actuellement pour " ~ user.firstname}}</p>
-
-              </div>
-            </div>
-          </div>
-        </div> 
-        {% endfor %}
-</div>
-<hr>
-    <h2 >Salariés polyvalents</h2>
-    <div class="cadres d-flex flex-wrap justify-content-around ">
-    {% for user  in employees %}
-      {% if   user.lastname  != "test"  %}
-<div >
+          {% if user.resume %}
+            <a href="{{
+              path(
+                'resume',
+                {
+                  username: user.username
+                }
+              )
+              }}"
+              target="_blank">
+              En savoir plus sur {{ user.firstname }}
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% if haveLeave %}
+    <hr />
+    <h2>
+      Ils ont fait partie de l'équipe
+    </h2>
+    <div class="cadres d-flex flex-wrap justify-content-around">
+      {% for user in haveLeave %}
         <div class="flip-card-min">
           <div class="flip-card-inner">
             <div class="flip-card-front">
-                         {{user.avatar | preview | raw}}
+              {{ user.avatar|preview|raw }}
 
-              <h2  class="titreservice">{{ user.firstname }}</h2>
+              <h2 class="titreservice">
+                {{ user.firstname }}
+              </h2>
             </div>
             <div class="flip-card-back">
               <div>
-                <p >{{ user.description ?? "Pas informations supplémentaires actuellement pour " ~ user.firstname}}</p>
+                <p>
+                  {{ user.description
+                    ?? "Pas d'informations supplémentaires actuellement pour "
+                    ~ user.firstname }}
+                </p>
               </div>
             </div>
           </div>
-        </div> 
-            {% if user.resume %}
-              <a href="{{path("resume", {"username":user.username})}}" target="_blank">En savoir plus sur {{user.firstname}}</a>
-            {% endif %}
-            </div>
-        {% endif %}
-
-        {% endfor %}
-    </div>
-    {% if haveLeave %}
-    <hr>
-              <h2 >Ils ont fait partie de l'équipe</h2> 
-    <div class="cadres d-flex flex-wrap justify-content-around ">
-    {% for user  in haveLeave %}
-        <div class="flip-card-min  ">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-                      {{user.avatar | preview | raw}}
-
-
-              
-              <h2  class="titreservice">{{ user.firstname }}</h2>
-            </div>
-              <div class="flip-card-back">
-                <div>
-                                <p >{{ user.description ?? "Pas informations supplémentaires actuellement pour " ~ user.firstname}}</p>
-
-                </div>
-              </div>
-          </div>
-        </div> 
+        </div>
       {% endfor %}
     </div>
-    {% endif %}
-    
-    {% endblock %}
+  {% endif %}
+{% endblock %}

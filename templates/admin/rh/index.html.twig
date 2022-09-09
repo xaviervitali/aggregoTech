@@ -44,18 +44,33 @@
         <div class="fs-3">{{userType}}</div>
         <div  class="d-flex justify-content-around flex-wrap">
           {% for user in users  %}
-            <a href='{{path("admin_rh_show", {id: user.id})}}#{{user.firstname}}' class=" btn btn-info position-relative" style= "width: 250px">   
-              {{user.firstname}} {{user.lastname}}
-              {% if postIts is defined and postIts | filter(e=>e.employee == user ) | length > 0 %}
+          <div class="card  text-center position-relative m-3" >
+                      {% set postItsForUser = postIts | filter(e=>e.employee == user) %}
+              {% if postItsForUser | length > 0 %}
                       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
-                    {{postIts | filter(e=>e.employee == user ) | length}} penses bêtes
+                    {{postItsForUser  | length}} penses bêtes
                       <span class="visually-hidden">unread messages</span>
                     </span>
               {% endif %}
-            </a>
+              <div class="text-center p-2">
+              {{ user.avatar| preview |raw}}
+              </div>
+              <div class="card-body">
+                <h5 class="card-title"><a href="{{path("admin_rh_show", {id: user.id})}}#{{user.firstname}}">{{ user.firstname}} {{user.lastname }}</a></h5>
+ 
+                {% if user.roles | filter(e=> e == "ROLE_EMPLOYEE") | length > 0%}
+                  <p class="card-text">
+                    Dernier emargement : 
+                  </p>
+                  <p class="card-text text-danger">
+                     {{ user.getAttendances() | length > 0 ? user.getAttendances() | map(e=>e.createdAt) |sort | last | date("\\L\\e d/m/y à h:i"): "Pas d'emargement" }}
+                  </p>
+                {% endif %}
+              </div>
+              </div>
       
           {% endfor %}
-</div>
+          </div>
         <hr>
           {% endif %}
 
@@ -70,19 +85,20 @@
   <div id="{{ user.firstname }}">
   <div class="d-flex justify-content-between align-items-center">
     <div class="fs-2">{{user.firstname}} {{user.lastname}} <span class="fs-6">{{ user | role}}</span></div>
-    <div>
+    <div class="addPostIt">
+      {{ form_start(postItForm, {attr: { class:" p-3 rounded border"}})}}
     <h3>Ajouter un pense bête</h3>
-      {{ form_start(postItForm, {attr: { class:"bg-secondary p-3 rounded border"}})}}
       {{ form_widget(postItForm.content, {'value': '', attr: {"placeholder": "Pense bête du " ~ ("now"| date("d/m")) ~ " pour " ~ user.firstname}})}}
       {{ form_widget(postItForm.category)}}
-      <button  class=" btn btn-block  btn-block text-white" >Enregistrer le pense-bête</button>
+      <button  class=" btn btn-block btn-block" >Enregistrer le pense-bête</button>
       {{ form_end(postItForm)}}
     </div>
   </div>
     <hr>
 
-  {% set postItsInfo = postIts | filter(e=>e.category == "info" and e.employee == user)%}
-  {% set postItsRemember = postIts | filter(e=>e.category == "remember" and e.employee == user)%}
+
+  {% set postItsInfo = userPostIts | filter(e=>e.category == "info" and e.employee == user)%}
+  {% set postItsRemember = userPostIts | filter(e=>e.category == "remember" and e.employee == user)%}
 
 
   {% if postItsInfo %}
@@ -98,11 +114,12 @@
 
     {% if postItsRemember %}
     <h5>Penses bêtes sur l'espace de  {{ user.firstname}}</h5>
-    <table class="table table-striped table-dark">
+    <table class="table table-striped table-light">
     <thead>
       <th>Date</th>
       <th>Message de</th>
       <th>Message</th>
+      <th>Actions</th>
     </thead>  
     <tbody>
        {% for postIt in postItsRemember %}
@@ -110,6 +127,9 @@
         <td>{{ postIt.createdAt | format_datetime("short", "short", locale='fr')}}</td>
         <td>{{ postIt.createdBy.firstname}} {{ postIt.createdBy.lastname}} </td>
         <td>{{ postIt.content}} </td>
+        <td>
+        <a class="btn btn-danger" href=" {{ path("postIt_delete", {id: postIt.id })}} " target="_blank" rel="noopener noreferrer">       
+        Supprimer le Pense Bête</a> </td>
        </tr>
     {% endfor %}
     </tbody>

@@ -33,11 +33,11 @@
                 {% for contact in company.contacts %}
                 <li class="text-center">
                     <div>
-                    {{ contact.name}}
+                    {{ contact.name | title}}
                     </div>
                     <div>
                         <strong>
-                            {{ contact.role}}
+                            {{ contact.role | title}}
                         </strong>
                     </div>
                     <div> 
